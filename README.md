@@ -1,2 +1,3 @@
-# csce3513-team11
-Software Engineering Project
+# CSCE 3513 Team 11
+
+Project: Fitness Tracker Application
