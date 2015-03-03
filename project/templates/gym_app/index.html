@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
 
-    <head>
-        <title>Gym Manager</title>
-    </head>
+{% block content%}
 
-    <body>
-        <h1>Gym Manager System</h1>
-        <strong>{{ boldmessage }}</strong><br />
-    </body>
+<h1>Gym Manager System</h1>
+<p class="lead"> {{boldmessage}} </p>
 
-</html>
+{% endblock %}
