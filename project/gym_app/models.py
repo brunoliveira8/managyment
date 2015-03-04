@@ -17,4 +17,4 @@ class Account(models.Model):
 class User(Account):
     
     def __unicode__(self):      #For Python 2, use __str__ on Python 3
-        return self.firstName, self.username
+        return self.username
