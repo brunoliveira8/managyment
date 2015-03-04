@@ -13,3 +13,8 @@ class Account(models.Model):
     class Meta:
         abstract = True
 
+#Class to make and test the login/logout system 
+class User(Account):
+    
+    def __unicode__(self):      #For Python 2, use __str__ on Python 3
+        return self.username
