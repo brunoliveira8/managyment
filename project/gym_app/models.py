@@ -13,3 +13,14 @@ class Account(models.Model):
     class Meta:
         abstract = True
 
+class RegularAthlete(Account):
+    goalWeight = models.IntegerField(max_length=4)
+
+
+class WeightProgress(models.Model):
+    startDate = models.DateField(auto_now_add=True)
+    startWeight = models.IntegerField(max_length=4)
+    previousDate = models.DateField()
+    previousWeight = models.IntegerField(max_length=4)
+    lastDate = models.DateField(auto_now=True)
+    lastWeight = models.IntegerField(max_length=4)
