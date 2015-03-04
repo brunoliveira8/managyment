@@ -14,8 +14,10 @@ class Account(models.Model):
         abstract = True
 
 class RegularAthlete(Account):
-    goalWeight = models.IntegerField(max_length=4)
+    goalWeight = models.IntegerField(default = 1, max_length=4)
 
+    def __unicode__(self):  #For Python 2, use __str__ on Python 3
+        return self.username+" name: "+self.firstName
 
 class WeightProgress(models.Model):
     startDate = models.DateField(auto_now_add=True)
