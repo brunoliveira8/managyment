@@ -103,6 +103,3 @@ TEMPLATE_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Absolute path to the media directory
 
-#Rediction to restricted pages
-LOGIN_URL = '/login/'
-
