@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>GYM Manager</title>
+    <title>GYM Management</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
@@ -31,16 +31,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">GYM Manager</a>
+          <a class="navbar-brand" href="/index">GYM Management</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li class="active"><a href="/index">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
             <li><a href="/workout">Workout</a></li>
+            <li><a href="/edit">Edit</a></li>
+            <li><a href="/change_password">Change Password</a></li>
             {% if user.is_authenticated %}
-              <li><a>Hello {{ user.username }}!</a></li>
+              <li><a>Hello {{ user.first_name }}!</a></li>
               <li><a href="/logout/">Logout</a></li>
             {% else %}
               <li><a href="/register/">Register Here</a></li>
