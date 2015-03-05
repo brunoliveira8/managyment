@@ -25,6 +25,8 @@ def workout(request):
 
     t_list = Task.objects.all()
 
+    print "Test"
+
     context = {'task_list' : t_list}
 
     # Return a rendered response to send to the client.
