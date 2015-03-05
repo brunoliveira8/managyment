@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from gym_app.forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth.decorators import login_required
 from gym_app.models import RegularAthlete
+from gym_app.forms import UserForm
 
 
 
@@ -120,4 +121,17 @@ def user_logout(request):
     logout(request)
 
     # Take the user back to the homepage.
-    return HttpResponseRedirect('/index/')        
+    return HttpResponseRedirect('/index/')    
+
+#This is the First Page's view.
+@login_required
+def restricted(request):
+	# Construct a dictionary to pass to the template engine as its context.
+    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
+    context_dict = {'boldmessage': "Congrats, you are looged."}
+
+    # Return a rendered response to send to the client.
+    # We make use of the shortcut function to make our lives easier.
+    # Note that the first parameter is the template we wish to use.
+
+    return render(request, 'gym_app/index.html', context_dict)
