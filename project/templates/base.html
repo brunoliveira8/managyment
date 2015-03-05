@@ -38,6 +38,14 @@
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
+            {% if user.is_authenticated %}
+              <li><a>Hello {{ user.username }}!</a></li>
+              <li><a href="/logout/">Logout</a></li>
+            {% else %}
+              <li><a href="/register/">Register Here</a></li>
+              <li><a href="/login/">Login</a></li>
+            {% endif %}
+           
           </ul>
         </div><!--/.nav-collapse -->
       </div>
