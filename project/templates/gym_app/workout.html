@@ -3,30 +3,8 @@
 
 {% block content%}
 
-<table>
-<tr>
-	<td>
-		<div class="dropdown">
-  		<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">Task
-    	<span class="caret"></span>
-  		</button>
-  		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-  			<li role="presentation" class="dropdown-header">Task</li>
- 			{% for task in task_list %}
-   		 	<li role="presentation"><a role="menuitem" tabindex="-1" href="#">{{ task.name }}</a></li>
-    		{% endfor %}
-  		</ul>
-		</div>
-	</td>
-	<td>
-		<div class="input-group">
-  		<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
-		</div>
+<h1>Gym Manager System</h1>
+<p class="lead"> {{boldmessage}} </p>
 
-
-
-	</td>
-</tr>
-</table>
 
 {% endblock %}
