@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from gym_app.forms import UserForm
+from gym_app.models import RegularAthlete
 
 
 # Create your views here.
@@ -45,6 +46,9 @@ def register(request):
             #profile = profile_form.save(commit=False)
             #profile.user = user
 
+            athlete = RegularAthlete()
+            athlete.user = user
+            athlete.save()
 
             # Update our variable to tell the template registration was successful.
             registered = True
