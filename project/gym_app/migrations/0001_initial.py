@@ -13,11 +13,34 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Exercise',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('weight', models.IntegerField(max_length=4)),
+                ('repetition', models.IntegerField(max_length=4)),
+                ('sets', models.IntegerField(max_length=4)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='RegularAthlete',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('goalWeight', models.IntegerField(default=1, max_length=4)),
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Task',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=32)),
+                ('typeTask', models.CharField(max_length=32)),
             ],
             options={
             },
@@ -37,5 +60,21 @@ class Migration(migrations.Migration):
             options={
             },
             bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Workout',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('day', models.ManyToManyField(to='gym_app.Exercise')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='exercise',
+            name='task',
+            field=models.ManyToManyField(to='gym_app.Task'),
+            preserve_default=True,
         ),
     ]
