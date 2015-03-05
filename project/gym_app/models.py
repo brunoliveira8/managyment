@@ -24,3 +24,17 @@ class WeightProgress(models.Model):
     previousWeight = models.IntegerField(max_length=4)
     lastDate = models.DateField(auto_now=True)
     lastWeight = models.IntegerField(max_length=4)
+
+class Task(models.Model):
+    name = models.CharField(max_length=32)
+    typeTask = models.CharField(max_length=32)
+
+class Exercise(models.Model):
+    task = models.ManyToManyField(Task)
+    weight = models.IntegerField(max_length=4)
+    repetition = models.IntegerField(max_length=4)
+    sets = models.IntegerField(max_length=4)
+
+class Workout(models.Model):
+    day = models.ManyToManyField(Exercise)
+
