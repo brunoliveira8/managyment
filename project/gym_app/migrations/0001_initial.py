@@ -2,48 +2,22 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Exercise',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('weight', models.IntegerField(max_length=4)),
-                ('repetition', models.IntegerField(max_length=4)),
-                ('sets', models.IntegerField(max_length=4)),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
             name='RegularAthlete',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('firstName', models.CharField(max_length=32)),
-                ('lastName', models.CharField(max_length=32)),
-                ('username', models.CharField(unique=True, max_length=32)),
-                ('password', models.CharField(max_length=32)),
-                ('email', models.EmailField(max_length=64)),
-                ('goalWeight', models.IntegerField(max_length=4)),
-            ],
-            options={
-                'abstract': False,
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='Task',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=32)),
-                ('typeTask', models.CharField(max_length=32)),
+                ('goalWeight', models.IntegerField(default=1, max_length=4)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
