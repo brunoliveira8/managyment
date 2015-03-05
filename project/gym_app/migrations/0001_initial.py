@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=32)),
-                ('typeTask', models.CharField(max_length=32)),
+                ('typeTask', models.CharField(default=b'NT', max_length=2, choices=[(b'NT', b'No type'), (b'LG', b'Leg'), (b'SH', b'Shoulder'), (b'CH', b'Chest')])),
             ],
             options={
             },
