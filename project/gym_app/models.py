@@ -2,16 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-
-<<<<<<< HEAD
 class RegularAthlete(models.Model):
     user = models.OneToOneField(User) #Inheritance of User model
     goalWeight = models.IntegerField(default = 1, max_length=4)
 
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return self.username+" name: "+self.firstName
-=======
->>>>>>> workout-model
 
 class WeightProgress(models.Model):
     startDate = models.DateField(auto_now_add=True)
@@ -24,7 +20,19 @@ class WeightProgress(models.Model):
 
 class Task(models.Model):
     name = models.CharField(max_length=32)
-    typeTask = models.CharField(max_length=32)
+    LEG = 'LG'
+    CHEST = 'CH'
+    SHOULDER = 'SH'
+    NOTYPE = 'NT'
+    TYPE_OF_TASKS_CHOICES = (
+        (NOTYPE, 'No type'),
+        (LEG, 'Leg'),
+        (SHOULDER, 'Shoulder'),
+        (CHEST, 'Chest'),
+    )
+    typeTask = models.CharField(max_length=2,
+                                      choices=TYPE_OF_TASKS_CHOICES,
+                                      default=NOTYPE)
 
 class Exercise(models.Model):
     task = models.ManyToManyField(Task)
