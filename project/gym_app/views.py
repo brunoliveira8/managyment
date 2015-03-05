@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from gym_app.models import RegularAthlete, Task
-from gym_app.forms import UserForm
+from gym_app.models import RegularAthlete, Task, User
+from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm
 
 # Create your views here.
 #This is the First Page's view.
@@ -144,6 +144,76 @@ def restricted(request):
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
     context_dict = {'boldmessage': "Congrats, you are looged."}
     return render(request, 'gym_app/index.html', context_dict)
+
+
+@login_required
+def edit(request):
+
+    # If it's a HTTP POST, we're interested in processing form data.
+    if request.method == 'POST':
+
+        user = User.objects.get(username = request.user.username)
+        user_form = UserEditForm(data=request.POST, instance = user)
+        athlete = RegularAthlete.objects.get(user = request.user)
+        
+        athlete_form = RegularAthleteForm(data=request.POST, instance = athlete)
+
+        # If the forms are valid...
+        if user_form.is_valid():
+            # Save the user's form data to the database.
+            user_form.save()
+            athlete_form.save()
+            context_dict = {'boldmessage': "Edit successful"}
+            return render(request, 'gym_app/index.html', context_dict)
+
+        else:
+            print user_form.errors
+
+       
+        
+
+    else:
+        athlete = RegularAthlete.objects.get(user = request.user)
+        user_form = UserEditForm(instance = request.user)
+        athlete_form = RegularAthleteForm(instance = athlete)
+
+        #profile_form = UserProfileForm()
+
+        # Render the template depending on the context.
+        return render(request,
+            'gym_app/edit.html',
+            {'user_form': user_form, 'athlete_form': athlete_form} )    
+
+@login_required
+def change_password(request):
+    # If it's a HTTP POST, we're interested in processing form data.
+    if request.method == 'POST':
+
+        user = User.objects.get(username = request.user.username)
+        user_form = ChangePasswordForm(data=request.POST, instance = user)
+        
+
+        # If the forms are valid...
+        if user_form.is_valid():
+            # Save the user's form data to the database.
+            # Save the user's form data to the database.
+            user = user_form.save(commit=False)
+            # Now we hash the password with the set_password method.
+            # Once hashed, we can update the user object.
+            user.set_password(user.password)
+            user.save()
+            context_dict = {'boldmessage': "Edit successful"}
+            return render(request, 'gym_app/index.html', context_dict)
+
+        else:
+            print user_form.errors    
+
+    else:
+        user_form = ChangePasswordForm(instance = request.user)
+        # Render the template depending on the context.
+        return render(request,
+            'gym_app/change_password.html',
+            {'user_form': user_form} )     
 
    
 
