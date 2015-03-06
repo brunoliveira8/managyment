@@ -6,7 +6,30 @@ from django.contrib.auth.models import User
 
 class RegularAthlete(models.Model):
     user = models.OneToOneField(User) #Inheritance of User model
-    goalWeight = models.IntegerField(default = 1, max_length=4)
+    goal_weight = models.IntegerField(default = 1, max_length=4)
+    BEGGINER = 'BG'
+    INTERMEDIATE = 'IN'
+    ADVANCED = 'AD'
+    LEVELS = (
+        (BEGGINER, 'Begginer'),
+        (INTERMEDIATE, 'Intermediate'),
+        (ADVANCED, 'Advanced'),
+    )
+    level = models.CharField(max_length=2,
+                                      choices=LEVELS,
+                                      default=BEGGINER)
+
+    MORNING = 'MO'
+    AFTERNOON = 'AF'
+    NIGHT = 'NI'
+    TRAINING_PERIOD = (
+        (MORNING, 'Morning'),
+        (AFTERNOON, 'Afternoon'),
+        (NIGHT, 'Night'),
+    )
+    training_period = models.CharField(max_length=2,
+                                      choices=TRAINING_PERIOD,
+                                      default=MORNING)
     
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return self.username+" name: "+self.firstName
