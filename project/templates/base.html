@@ -42,6 +42,7 @@
             <li><a href="/edit">Edit</a></li>
             <li><a href="/change_password">Change Password</a></li>
             {% if user.is_authenticated %}
+              <li><a href="/tracker">Weight Tracker</a></li>
               <li><a>Hello {{ user.first_name }}!</a></li>
               <li><a href="/logout/">Logout</a></li>
             {% else %}

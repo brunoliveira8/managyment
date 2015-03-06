@@ -2,14 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+
+
 class RegularAthlete(models.Model):
     user = models.OneToOneField(User) #Inheritance of User model
     goalWeight = models.IntegerField(default = 1, max_length=4)
-
+    
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return self.username+" name: "+self.firstName
 
-class WeightProgress(models.Model):
+class Tracker(models.Model):
     startDate = models.DateField(auto_now_add=True)
     startWeight = models.IntegerField(max_length=4)
     previousDate = models.DateField()
