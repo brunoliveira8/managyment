@@ -35,5 +35,5 @@ class RegularAthleteForm(forms.ModelForm):
 
     class Meta:
         model = RegularAthlete
-        fields = ('goalWeight',)
+        fields = ('goal_weight','level', 'training_period')
 
