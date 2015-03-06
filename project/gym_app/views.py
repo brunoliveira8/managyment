@@ -2,8 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from gym_app.models import RegularAthlete, Task, User
+from gym_app.models import RegularAthlete, Task, User, Tracker
 from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm
+from datetime import datetime
+import urllib2, urllib
 
 # Create your views here.
 #This is the First Page's view.
@@ -66,6 +68,15 @@ def register(request):
             athlete = RegularAthlete()
             athlete.user = user
             athlete.save()
+            
+            tracker = Tracker()
+            tracker.startDate=datetime.now()
+            tracker.previousDate=datetime.now()
+            tracker.lastDate=datetime.now()
+            tracker.startWeight = 1
+            tracker.previousWeight = 1
+            tracker.lastWeight = 1
+            tracker.save()
 
             # Update our variable to tell the template registration was successful.
             registered = True
@@ -215,7 +226,22 @@ def change_password(request):
             'gym_app/change_password.html',
             {'user_form': user_form} )     
 
-   
-
+@login_required
+def tracker(request):
+    #User and tracker created at same time
+    #Should always have the same ID but may be changed later
+    user_id = request.user.id
+    weight = Tracker.objects.get(id=user_id)
+    previousWeight = weight.lastWeight
+    context = {'previousWeight' : previousWeight}
     
-
+    #update the weights
+    if request.method == 'POST':
+        lastWeight = request.POST.get('lastWeight')
+        weight.previousWeight=weight.lastWeight
+        weight.lastWeight=lastWeight
+        weight.previousDate=weight.lastDate
+        weight.lastDate=datetime.now()
+        weight.save()
+    
+    return render(request, 'gym_app/tracker.html', context)

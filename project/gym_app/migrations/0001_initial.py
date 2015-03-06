@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='WeightProgress',
+            name='Tracker',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('startDate', models.DateField(auto_now_add=True)),
