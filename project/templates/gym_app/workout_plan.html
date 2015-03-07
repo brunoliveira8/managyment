@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content%}
+{% csrf_token %}
+
+       <h1>Workout Plan</h1>
+            <div class="table table-bordered">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Weight</th>
+                            <th>Repetition</th>
+                            <th>Sets</th>
+                            <th>Day</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for exercise in exercises %}
+                        <tr>
+                            <td>{{exercise.task.name}}</td>
+                            <td>{{exercise.weight}}</td>
+                            <td>{{exercise.repetition}}</td>
+                            <td>{{exercise.sets}}</td>
+                            <td>{{exercise.day}}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+            <ul class="nav nav-pills">
+              <li role="presentation" class="active"><a href="/add_workout">New Exercise</a></li>
+            </ul>
+         
+{% endblock %}
