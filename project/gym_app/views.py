@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -26,8 +26,6 @@ def workout(request):
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
 
     t_list = Task.objects.all()
-
-    print "Test"
 
     context = {'task_list' : t_list}
 
@@ -251,7 +249,7 @@ def tracker(request):
     return render(request, 'gym_app/tracker.html', context)
 
 @login_required
-def workout_plan(request):
+def add_workout(request):
 
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
@@ -259,7 +257,6 @@ def workout_plan(request):
         user = User.objects.get(username = request.user.username)
         exercise_form = ExerciseForm(data=request.POST)
         athlete = RegularAthlete.objects.get(user = request.user)
-        
 
         # If the forms are valid...
         if exercise_form.is_valid():
@@ -269,19 +266,17 @@ def workout_plan(request):
             exercise.task = task
             exercise.save()
             athlete.workout_plan.exercises.add(exercise)
+            athlete.save()
 
 
             context_dict = {'boldmessage': "Edit successful"}
-            return render(request, 'gym_app/index.html', context_dict)
+            return redirect('/workout_plan/')
 
         else:
             print user_form.errors
-
-       
         
 
     else:
-
         t_list = Task.objects.all()
         athlete = RegularAthlete.objects.get(user = request.user)
         #user_form = UserEditForm(instance = request.user)
@@ -290,5 +285,18 @@ def workout_plan(request):
 
         # Render the template depending on the context.
         return render(request,
-            'gym_app/workout_plan.html',
+            'gym_app/add_workout.html',
             {'exercise_form': exercise_form, 'task_list' : t_list})    
+
+@login_required
+def workout_plan(request):
+
+    user = User.objects.get(username = request.user.username)
+    athlete = RegularAthlete.objects.get(user = request.user)
+    exercises = athlete.workout_plan.exercises.all()
+    
+
+    # Render the template depending on the context.
+    return render(request,
+        'gym_app/workout_plan.html',
+        {'exercises': exercises}) 

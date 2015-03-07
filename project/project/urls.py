@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
-from gym_app.views import index, register, user_login, user_logout, restricted, workout, edit, change_password, tracker, workout_plan
+from gym_app.views import index, register, user_login, user_logout, restricted, workout, edit, change_password, tracker, workout_plan, add_workout
 
 urlpatterns = patterns('',
     # Examples:
@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^change_password/', change_password),
     url(r'^tracker/', tracker),
     url(r'^workout_plan/', workout_plan),
+    url(r'^add_workout/', add_workout),
 )
 
 

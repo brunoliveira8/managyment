@@ -38,13 +38,13 @@
             <li class="active"><a href="/index">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="/workout">Workout</a></li>
             <li><a href="/edit">Edit</a></li>
             <li><a href="/change_password">Change Password</a></li>
             {% if user.is_authenticated %}
               <li><a href="/tracker">Weight Tracker</a></li>
               <li><a>Hello {{ user.first_name }}!</a></li>
               <li><a href="/logout/">Logout</a></li>
+              <li><a href="/workout_plan/">Workout</a></li>
             {% else %}
               <li><a href="/register/">Register Here</a></li>
               <li><a href="/login/">Login</a></li>

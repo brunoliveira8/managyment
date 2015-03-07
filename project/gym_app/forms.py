@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from gym_app.models import User, RegularAthlete, Tracker, Exercise, WorkoutPlan
+from gym_app.models import User, RegularAthlete, Tracker, Exercise
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -41,5 +41,5 @@ class ExerciseForm(forms.ModelForm):
 
     class Meta:
         model = Exercise
-        fields = ('weight','repetition', 'sets')
+        fields = ('weight','repetition', 'sets','day')
 
