@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from gym_app.models import RegularAthlete, Task, User, Tracker
-from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm
+from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan
+from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm, ExerciseForm
 from datetime import datetime
 import urllib2, urllib
 
@@ -66,7 +66,11 @@ def register(request):
             #profile.user = user
 
             athlete = RegularAthlete()
+            workout_plan = WorkoutPlan()
+            workout_plan.save()
             athlete.user = user
+            athlete.workout_plan = workout_plan
+
             athlete.save()
             
             tracker = Tracker()
@@ -90,7 +94,7 @@ def register(request):
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
-        user_form = UserForm()
+        user_form = UserForm(initial={'username' : "bruno", 'first_name':"Bruno", 'last_name' : "Olivera", 'email':'bruno@email.com'})
         #profile_form = UserProfileForm()
 
     # Render the template depending on the context.
@@ -245,3 +249,46 @@ def tracker(request):
         weight.save()
     
     return render(request, 'gym_app/tracker.html', context)
+
+@login_required
+def workout_plan(request):
+
+    # If it's a HTTP POST, we're interested in processing form data.
+    if request.method == 'POST':
+        task_name = request.POST.get('task_name')
+        user = User.objects.get(username = request.user.username)
+        exercise_form = ExerciseForm(data=request.POST)
+        athlete = RegularAthlete.objects.get(user = request.user)
+        
+
+        # If the forms are valid...
+        if exercise_form.is_valid():
+            # Save the user's form data to the database.
+            exercise = exercise_form.save(commit=False)
+            task = Task.objects.get(name = task_name)
+            exercise.task = task
+            exercise.save()
+            athlete.workout_plan.exercises.add(exercise)
+
+
+            context_dict = {'boldmessage': "Edit successful"}
+            return render(request, 'gym_app/index.html', context_dict)
+
+        else:
+            print user_form.errors
+
+       
+        
+
+    else:
+
+        t_list = Task.objects.all()
+        athlete = RegularAthlete.objects.get(user = request.user)
+        #user_form = UserEditForm(instance = request.user)
+        #athlete_form = RegularAthleteForm(instance = athlete)
+        exercise_form = ExerciseForm()
+
+        # Render the template depending on the context.
+        return render(request,
+            'gym_app/workout_plan.html',
+            {'exercise_form': exercise_form, 'task_list' : t_list})    
