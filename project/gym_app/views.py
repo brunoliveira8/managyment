@@ -1,3 +1,4 @@
+from __future__ import division
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -66,19 +67,14 @@ def register(request):
             athlete = RegularAthlete()
             workout_plan = WorkoutPlan()
             workout_plan.save()
+            tracker = Tracker()
+            tracker.save()
             athlete.user = user
             athlete.workout_plan = workout_plan
-
+            athlete.tracker = tracker
             athlete.save()
             
-            tracker = Tracker()
-            tracker.startDate=datetime.now()
-            tracker.previousDate=datetime.now()
-            tracker.lastDate=datetime.now()
-            tracker.startWeight = 1
-            tracker.previousWeight = 1
-            tracker.lastWeight = 1
-            tracker.save()
+            
 
             # Update our variable to tell the template registration was successful.
             registered = True
@@ -232,20 +228,43 @@ def change_password(request):
 def tracker(request):
     #User and tracker created at same time
     #Should always have the same ID but may be changed later
-    user_id = request.user.id
-    weight = Tracker.objects.get(id=user_id)
-    previousWeight = weight.lastWeight
-    context = {'previousWeight' : previousWeight}
+    user = User.objects.get(username = request.user.username)
+    athlete = RegularAthlete.objects.get(user = request.user)
+    tracker = athlete.tracker
+    progress=0
+    result=0
+    goal=0
     
     #update the weights
     if request.method == 'POST':
-        lastWeight = request.POST.get('lastWeight')
-        weight.previousWeight=weight.lastWeight
-        weight.lastWeight=lastWeight
-        weight.previousDate=weight.lastDate
-        weight.lastDate=datetime.now()
-        weight.save()
-    
+        newCurrentWeight = int(request.POST.get('currentWeight'))
+        tracker.previousWeight=tracker.currentWeight
+        tracker.currentWeight=newCurrentWeight
+        tracker.previousWeightDate=tracker.currentWeightDate
+        tracker.currentWeightDate=datetime.now()
+
+        newGoalWeight = int(request.POST.get('goalWeight'))
+        if tracker.goalWeight != newGoalWeight:
+            tracker.startWeightDate = datetime.now()
+            tracker.startWeight = newCurrentWeight
+            tracker.goalWeight = newGoalWeight
+
+    if tracker.goalWeight < tracker.startWeight: #lose weight goal
+        goal = float(tracker.startWeight - tracker.goalWeight)
+        result = float(tracker.startWeight - tracker.currentWeight)
+
+        if goal == 0 or result > goal:
+            progress = 100.0
+        else: 
+            if result < 0:
+                progress = 0.0
+            else:
+                progress = (result / goal) * 100.0
+
+    tracker.save()
+
+    context = {'tracker' : tracker, 'goal': goal, 'result': result, 'progress': progress}
+
     return render(request, 'gym_app/tracker.html', context)
 
 @login_required

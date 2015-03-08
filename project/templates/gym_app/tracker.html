@@ -2,16 +2,30 @@
 {% load staticfiles %}
 
 {% block content%}
-
     <h1>Weight Tracker</h1>
-    <h2>Hi you weighed {{previousWeight}} pounds last time</h2>
+   <div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%;">
+
+    {{progress}}%
+  </div>
+</div>
+    <h2>The last weighing date was {{tracker.currentWeightDate}} ({{tracker.currentWeight}}) <br>
+        Previous weight date {{tracker.previousWeightDate}} when you wheighed {{tracker.previousWeight}} pounds <br>
+        Goal weight: {{tracker.goalWeight}}<br>
+        Start weight: {{tracker.startWeight}}<br>
+        Result: {{result}}<br>
+        Goal: {{goal}}<br>
+        Progress: {{progress}}%<br>
+        New goal weight: {{new}}
+    </h2>
 
 
        <form id="user_form" method="post" action="/tracker/"
                 enctype="multipart/form-data">
 
             {% csrf_token %}
-            Current Weight: <input type="number" min=1 max=500 name="lastWeight" value="" size="50" /><br/><br/>
+            Current Weight: <input type="number" min=1 max=500 name="currentWeight" value={{tracker.currentWeight}} size="50" /><br/><br/>
+            Goal Weight: <input type="number" min=1 max=500 name="goalWeight" value={{tracker.goalWeight}} size="50" /><br/><br/>
             <!-- Display each form. The as_p method wraps each element in a paragraph
                  (<p>) element. This ensures each element appears on a new line,
                  making everything look neater. -->

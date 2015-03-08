@@ -5,12 +5,14 @@ from django.contrib.auth.models import User
 
 
 class Tracker(models.Model):
-    startDate = models.DateField(auto_now_add=True)
-    startWeight = models.IntegerField(max_length=4)
-    previousDate = models.DateField()
-    previousWeight = models.IntegerField(max_length=4)
-    lastDate = models.DateField(auto_now=True)
-    lastWeight = models.IntegerField(max_length=4)
+    startWeightDate = models.DateField(auto_now_add=True)
+    startWeight = models.IntegerField(max_length=4, default=0)
+    previousWeightDate = models.DateField(auto_now=True)
+    previousWeight = models.IntegerField(max_length=4, default=0)
+    currentWeightDate = models.DateField(auto_now=True)
+    currentWeight = models.IntegerField(max_length=4, default=100)
+    goalWeight = models.IntegerField(default=100, max_length=4)
+
 
 
 class Task(models.Model):
@@ -66,7 +68,7 @@ class WorkoutPlan(models.Model):
 class RegularAthlete(models.Model):
     user = models.OneToOneField(User) #Inheritance of User model
 
-    goal_weight = models.IntegerField(default = 1, max_length=4)
+    tracker = models.OneToOneField(Tracker)
 
     workout_plan = models.OneToOneField(WorkoutPlan)
 
