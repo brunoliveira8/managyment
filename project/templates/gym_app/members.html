@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content%}
+        <h1>Send Email</h1>
+        <br/>
+
+        <form id="msg_form" method="post" action="/send/">
+            {% csrf_token %}
+            To:      
+            <select id="list_users" name="username">
+            {% for user in user_list %}
+              <option value="{{ user.email }}">{{ user.username }}</option>
+            {% endfor %}
+            </select>  
+            <br />
+            Subject: <input type="text" name="subject" value="" size="50" />
+            <br />
+            Message: <textarea rows="4" cols="50" name="msg" value="" size="30" ></textarea>
+            <br />
+
+            <input type="submit" value="submit" />
+        </form>
+{% endblock %}
+
+
