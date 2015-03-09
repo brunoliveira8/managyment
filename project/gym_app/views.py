@@ -6,6 +6,7 @@ from gym_app.models import RegularAthlete, Task, User, Tracker
 from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm
 from datetime import datetime
 import urllib2, urllib
+from django.core.mail import send_mail
 
 # Create your views here.
 #This is the First Page's view.
@@ -245,3 +246,37 @@ def tracker(request):
         weight.save()
     
     return render(request, 'gym_app/tracker.html', context)
+
+@login_required
+def members(request):
+    # Construct a dictionary to pass to the template engine as its context.
+    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
+
+    u_list = User.objects.all()
+
+    print "Test"
+
+    context = {'user_list' : u_list}
+
+    # Return a rendered response to send to the client.
+    # We make use of the shortcut function to make our lives easier.
+    # Note that the first parameter is the template we wish to use.
+
+    return render(request, 'gym_app/members.html', context)
+
+def message(request):
+
+    # If the request is a HTTP POST, try to pull out the relevant information.
+    if request.method == 'POST':
+
+        user = User.objects.get(username = request.user.username)
+        user_email = user.email
+        to_email = request.POST.get('username')
+        msg = request.POST.get('msg')
+        sbj = request.POST.get('subject')
+
+        send_mail(sbj, msg, user_email,
+        [to_email], fail_silently=False)
+        #send_mail(sbj, msg, from_email,
+        #['pent.alef@gmail.com'], fail_silently=False)
+        return HttpResponseRedirect('/members/')    
