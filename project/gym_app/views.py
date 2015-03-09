@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan
 from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm, ExerciseForm
 from datetime import datetime
+from decimal import Decimal
 import urllib2, urllib
 
 # Create your views here.
@@ -252,18 +253,24 @@ def tracker(request):
     if tracker.goalWeight < tracker.startWeight: #lose weight goal
         goal = float(tracker.startWeight - tracker.goalWeight)
         result = float(tracker.startWeight - tracker.currentWeight)
+    else:
+        if tracker.goalWeight > tracker.startWeight: #gain weight goal
+            goal = float(tracker.goalWeight - tracker.startWeight)
+            result = float(tracker.currentWeight - tracker.startWeight)
 
-        if goal == 0 or result > goal:
-            progress = 100.0
-        else: 
-            if result < 0:
-                progress = 0.0
-            else:
-                progress = (result / goal) * 100.0
+    if goal == 0 or result > goal:
+        progress = 100.0
+    else: 
+        if result < 0:
+            progress = 0.0
+        else:
+            progress = (result / goal) * 100.0
 
+    progress = round(Decimal(progress), 1)
+            
     tracker.save()
 
-    context = {'tracker' : tracker, 'goal': goal, 'result': result, 'progress': progress}
+    context = {'tracker' : tracker, 'progress': progress}
 
     return render(request, 'gym_app/tracker.html', context)
 
