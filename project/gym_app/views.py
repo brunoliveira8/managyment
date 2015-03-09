@@ -280,3 +280,46 @@ def message(request):
         #send_mail(sbj, msg, from_email,
         #['pent.alef@gmail.com'], fail_silently=False)
         return HttpResponseRedirect('/members/')    
+
+
+@login_required
+def buddy_match(request):
+      
+    # Construct a dictionary to pass to the template engine as its context.
+    # Note the key boldmessage is the same as {{ boldmessage }} in the template!
+    user = User.objects.get(username = request.user.username)
+    athlete = RegularAthlete.objects.get(user = request.user)    
+    buddy_list = RegularAthlete.objects.filter(level = athlete.level, training_period = athlete.training_period).exclude(user = user)
+    buddy_matched = 0;
+    context = {'buddy_list' : buddy_list, 'buddy_matched' : buddy_matched}
+
+    # Return a rendered response to send to the client.
+    # We make use of the shortcut function to make our lives easier.
+    # Note that the first parameter is the template we wish to use.
+
+    return render(request, 'gym_app/buddy_match.html', context)
+
+def message_match(request):
+
+    # If the request is a HTTP POST, try to pull out the relevant information.
+    if request.method == 'POST':
+
+        user = User.objects.get(username = request.user.username)
+        user_email = user.email
+        to_email = request.POST.get('username')
+        print
+        msg = "The user {0} wish workout with you!".format(user)
+        sbj = "Buddy Match Message"
+
+        send_mail(sbj, msg, user_email,
+        [to_email], fail_silently=False)
+        #send_mail(sbj, msg, from_email,
+        #['pent.alef@gmail.com'], fail_silently=False)
+        buddy_matched = 1;
+        message = 'You have sent a Buddy Match request for: {0}!'.format(User.objects.get(email = to_email).username)
+        context = {'message' : message, 'buddy_matched' : buddy_matched}
+
+        # Return a rendered response to send to the client.
+        # We make use of the shortcut function to make our lives easier.
+        # Note that the first parameter is the template we wish to use.
+        return render(request, 'gym_app/buddy_match.html', context)

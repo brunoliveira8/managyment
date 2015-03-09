@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content%}
+
+        {%if buddy_matched %}
+        </br>
+        <h3>{{message}}</h3>
+
+        {% else %}
+        <h1>Find a workout buddy</h1>
+        <br/>
+
+        <form id="msg_form" method="post" action="/send_match/">
+            {% csrf_token %}
+            To:      
+            <select id="list_users" name="username">
+            {% for user in buddy_list %}
+              <option value="{{ user.user.email }}">{{ user.user.username }}</option>
+            {% endfor %}
+            </select>  
+            <br /></br>
+
+            <input type="submit" value="Match!" />
+        </form>
+
+        {% endif %}
+{% endblock %}
