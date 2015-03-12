@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from gym_app.models import RegularAthlete, Task, User, Tracker
-from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm
+from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan
+from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm, ExerciseForm
 from datetime import datetime
 import urllib2, urllib
 from django.core.mail import send_mail
@@ -27,8 +27,6 @@ def workout(request):
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
 
     t_list = Task.objects.all()
-
-    print "Test"
 
     context = {'task_list' : t_list}
 
@@ -67,7 +65,11 @@ def register(request):
             #profile.user = user
 
             athlete = RegularAthlete()
+            workout_plan = WorkoutPlan()
+            workout_plan.save()
             athlete.user = user
+            athlete.workout_plan = workout_plan
+
             athlete.save()
             
             tracker = Tracker()
@@ -91,7 +93,7 @@ def register(request):
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
-        user_form = UserForm()
+        user_form = UserForm(initial={'username' : "bruno", 'first_name':"Bruno", 'last_name' : "Olivera", 'email':'bruno@email.com'})
         #profile_form = UserProfileForm()
 
     # Render the template depending on the context.
@@ -323,3 +325,74 @@ def message_match(request):
         # We make use of the shortcut function to make our lives easier.
         # Note that the first parameter is the template we wish to use.
         return render(request, 'gym_app/buddy_match.html', context)
+
+def workout_plan(request):
+
+    user = User.objects.get(username = request.user.username)
+    athlete = RegularAthlete.objects.get(user = request.user)
+    exercises_day1 = athlete.workout_plan.exercises.filter( day = 1)
+    exercises_day2 = athlete.workout_plan.exercises.filter( day = 2)
+    exercises_day3 = athlete.workout_plan.exercises.filter( day = 3)
+    exercises_day4 = athlete.workout_plan.exercises.filter( day = 4)
+    exercises_day5 = athlete.workout_plan.exercises.filter( day = 5)
+    exercises_day6 = athlete.workout_plan.exercises.filter( day = 6)
+    exercises_day7 = athlete.workout_plan.exercises.filter( day = 7)
+
+    
+
+    # Render the template depending on the context.
+    return render(request,
+        'gym_app/workout_plan.html',
+        {'day1': exercises_day1, 'day2': exercises_day2, 'day3': exercises_day3, 'day4': exercises_day5, 'day6': exercises_day6, 'day7': exercises_day7}) 
+
+
+@login_required
+def workout_day(request, day = '1'):
+
+    # If it's a HTTP POST, we're interested in processing form data.
+    if request.method == 'POST':
+        task_name = request.POST.get('task_name')
+        user = User.objects.get(username = request.user.username)
+        exercise_form = ExerciseForm(data=request.POST)
+        athlete = RegularAthlete.objects.get(user = request.user)
+
+        # If the forms are valid...
+        if exercise_form.is_valid():
+            # Save the user's form data to the database.
+            exercise = exercise_form.save(commit=False)
+            task = Task.objects.get(name = task_name)
+            exercise.task = task
+            exercise.day = day
+            exercise.save()
+            athlete.workout_plan.exercises.add(exercise)
+            athlete.save()
+
+
+            path = '/workout/days/{0}'.format(day)
+            print path
+
+            return redirect(path)
+
+        else:
+            print user_form.errors
+        
+    else:
+        t_list = Task.objects.all()
+        #user = User.objects.get(username = request.user.username)
+        athlete = RegularAthlete.objects.get(user = request.user)
+        exercises = athlete.workout_plan.exercises.filter( day = int(day))
+        exercise_form = ExerciseForm()
+
+        # Render the template depending on the context.
+        return render(request,
+            'gym_app/workout_day.html',
+            {'exercise_form': exercise_form, 'task_list' : t_list, 'exercises' : exercises, 'day': day})  
+
+
+def delete_exercise(request):
+
+    exercise_id = int(request.POST.get("delete"))
+    Exercise.objects.filter(id = exercise_id).delete()
+    path = '/workout/days/{0}'.format(request.POST.get("day"))
+    return redirect(path)
+

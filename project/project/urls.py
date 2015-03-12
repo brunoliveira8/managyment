@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
-from gym_app.views import index, register, user_login, user_logout, restricted, workout, edit, change_password, tracker, members, message, buddy_match, message_match
+from gym_app.views import index, register, user_login, user_logout, restricted, workout, edit, change_password, tracker, members, message, buddy_match, message_match,  workout_plan, workout_day, delete_exercise
 
 urlpatterns = patterns('',
     # Examples:
@@ -15,7 +15,6 @@ urlpatterns = patterns('',
     url(r'^login/', user_login), # ADD THIS NEW TUPLE!  
     url(r'^logout/', user_logout), # ADD THIS NEW TUPLE!  
     url(r'^restricted/', restricted),
-    url(r'^workout/', workout),
     url(r'^edit/', edit),
     url(r'^change_password/', change_password),
     url(r'^tracker/', tracker),
@@ -23,6 +22,9 @@ urlpatterns = patterns('',
     url(r'^send/', message),
     url(r'^buddy_match/', buddy_match),
     url(r'^send_match/', message_match),
+    url(r'^workout_plan/', workout_plan),
+    url(r'^workout/days/(?P<day>\d{1})/$', workout_day),
+    url(r'^delete_exercise/', delete_exercise),
 )
 
 

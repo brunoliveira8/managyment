@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content%}
+{% csrf_token %}
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="/workout_plan/">Days<span class="sr-only">(current)</span></a></li>
+            <li><a href="/workout/days/1">Day 1</a></li>
+            <li><a href="/workout/days/2">Day 2</a></li>
+            <li><a href="/workout/days/3">Day 3</a></li>
+            <li><a href="/workout/days/4">Day 4</a></li>
+            <li><a href="/workout/days/5">Day 5</a></li>
+            <li><a href="/workout/days/6">Day 6</a></li>
+            <li><a href="/workout/days/7">Day 7</a></li>
+          </ul>
+        </div>
+
+
+         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">Day {{day}}</h1><br>
+
+          <h2 class="sub-header">Add Exercise</h2>
+          
+        <form id="user_form" method="post" action="/workout/days/{{day}}/"
+                enctype="multipart/form-data">
+          
+          {% csrf_token %}
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Weight</th>
+                    <th>Repetition</th>
+                    <th>Sets</th>
+                </tr>
+              </thead>
+              <tbody>
+               
+                        <tr>
+                             <td align="left">  
+                                    <select class="form-control" id="sel1" name="task_name">
+                                    {% for task in task_list %}
+                                    <option>{{ task.name }}</option>
+                                    {% endfor %}
+                                    </select>
+                            </td>
+                            {% for field in exercise_form %}
+                            <td align="left"><div class="fieldWrapper">
+                                    {{ field.errors }}
+                                    {{ field }}
+                            </div></td>
+                            {% endfor %}
+                        </tr>
+            
+              </tbody>
+            </table>
+          </div>
+           <!-- Provide a button to click to submit the form. -->
+            <input type="submit" class="btn btn-primary" name="submit" value="Add Exercise" />
+        </form>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          
+          <h2 class="sub-header">Exercises</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Weight</th>
+                    <th>Repetition</th>
+                    <th>Sets</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                
+                 {% for exercise in exercises %}
+                        <tr>
+                            <td align="left">{{exercise.task.name}}</td>
+                            <td align="left">{{exercise.weight}}</td>
+                            <td align="left">{{exercise.repetition}}</td>
+                            <td align="left">{{exercise.sets}}</td>
+                            
+                            <form method="post" action="/delete_exercise/" enctype="multipart/form-data">
+                                {% csrf_token %}
+                               <td align="left"> <button  name ='delete' type='submit' value='{{exercise.id}}'class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button> </td>
+                               <input type="hidden" name="day" value="{{day}}">
+                            </form>
+                           
+
+                        </tr>
+                {% endfor %}         
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>  
+    
+{% endblock %}

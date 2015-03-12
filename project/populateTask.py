@@ -12,6 +12,7 @@ def populate():
     add_Task(name = "Leg Press", typeTask = "LG")
     add_Task(name = "Chest fly", typeTask = "CH")
     add_Task(name = "Shoulder fly", typeTask = "SH")
+    add_Task(name = "Rest", typeTask = "NT")
 
     print Task.objects.all()
 

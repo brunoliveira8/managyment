@@ -4,36 +4,6 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
-class RegularAthlete(models.Model):
-    user = models.OneToOneField(User) #Inheritance of User model
-    goal_weight = models.IntegerField(default = 1, max_length=4)
-    BEGGINER = 'BG'
-    INTERMEDIATE = 'IN'
-    ADVANCED = 'AD'
-    LEVELS = (
-        (BEGGINER, 'Begginer'),
-        (INTERMEDIATE, 'Intermediate'),
-        (ADVANCED, 'Advanced'),
-    )
-    level = models.CharField(max_length=2,
-                                      choices=LEVELS,
-                                      default=BEGGINER)
-
-    MORNING = 'MO'
-    AFTERNOON = 'AF'
-    NIGHT = 'NI'
-    TRAINING_PERIOD = (
-        (MORNING, 'Morning'),
-        (AFTERNOON, 'Afternoon'),
-        (NIGHT, 'Night'),
-    )
-    training_period = models.CharField(max_length=2,
-                                      choices=TRAINING_PERIOD,
-                                      default=MORNING)
-    
-    def __unicode__(self):  #For Python 2, use __str__ on Python 3
-        return self.username+" name: "+self.firstName
-
 class Tracker(models.Model):
     startDate = models.DateField(auto_now_add=True)
     startWeight = models.IntegerField(max_length=4)
@@ -59,13 +29,77 @@ class Task(models.Model):
                                       choices=TYPE_OF_TASKS_CHOICES,
                                       default=NOTYPE)
 
-class Exercise(models.Model):
-    task = models.ManyToManyField(Task)
-    weight = models.IntegerField(max_length=4)
-    repetition = models.IntegerField(max_length=4)
-    sets = models.IntegerField(max_length=4)
+    def __unicode__(self):
+        return u'%s' % (self.name)
 
-class Workout(models.Model):
-    day = models.ManyToManyField(Exercise)
+class Exercise(models.Model):
+    task = models.ForeignKey(Task)
+    weight = models.IntegerField(max_length=4, default = 1)
+    repetition = models.IntegerField(max_length=4, default = 1)
+    sets = models.IntegerField(max_length=4, default = 1)
+
+    ONE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+    FIVE = 5
+    SIX = 6
+    SEVEN = 7
+    DAYS = (
+        (ONE, 'Day 1'),
+        (TWO, 'Day 2'),
+        (THREE, 'Day 3'),
+        (FOUR, 'Day 4'),
+        (FIVE, 'Day 5'),
+        (SIX, 'Day 6'),
+        (SEVEN, 'Day 7'),
+    )
+    day = models.IntegerField(max_length=7,
+                                      choices=DAYS,
+                                      default=ONE)
+
+class WorkoutPlan(models.Model):
+    
+    exercises = models.ManyToManyField(Exercise)
+
+
+class RegularAthlete(models.Model):
+    user = models.OneToOneField(User) #Inheritance of User model
+
+    goal_weight = models.IntegerField(default = 1, max_length=4)
+
+    workout_plan = models.OneToOneField(WorkoutPlan)
+
+    BEGGINER = 'BG'
+    INTERMEDIATE = 'IN'
+    ADVANCED = 'AD'
+    LEVELS = (
+        (BEGGINER, 'Begginer'),
+        (INTERMEDIATE, 'Intermediate'),
+        (ADVANCED, 'Advanced'),
+    )
+    level = models.CharField(max_length=2,
+                                      choices=LEVELS,
+                                      default=BEGGINER)
+
+    MORNING = 'MO'
+    AFTERNOON = 'AF'
+    NIGHT = 'NI'
+    TRAINING_PERIOD = (
+        (MORNING, 'Morning'),
+        (AFTERNOON, 'Afternoon'),
+        (NIGHT, 'Night'),
+    )
+    training_period = models.CharField(max_length=2,
+                                      choices=TRAINING_PERIOD,
+                                      default=MORNING)
+    
+    
+
+
+
+
+
+
 
 

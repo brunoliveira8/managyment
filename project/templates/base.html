@@ -17,6 +17,8 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static "css/starter-template.css" %}" rel="stylesheet">
+     <!-- Custom styles for this template -->
+    <link href="{% static "css/dashboard.css" %}" rel="stylesheet">
 
   </head>
 
@@ -38,13 +40,13 @@
             <li class="active"><a href="/index">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="/workout">Workout</a></li>
             <li><a href="/edit">Edit</a></li>
             <li><a href="/change_password">Change Password</a></li>
             {% if user.is_authenticated %}
               <li><a href="/buddy_match">Buddy Match</a></li>
               <li><a href="/tracker">Weight Tracker</a></li>
               <li><a href="/members">Send Message</a></li>
+              <li><a href="/workout_plan">Workout Plan</a></li>
               <li><a>Hello {{ user.first_name }}!</a></li>
               <li><a href="/logout/">Logout</a></li>
              
