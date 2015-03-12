@@ -4,42 +4,6 @@
 {% block content%}
 {% csrf_token %}
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-       <h1>Workout Plan</h1>
-            <div class="table table-bordered">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Weight</th>
-                            <th>Repetition</th>
-                            <th>Sets</th>
-                            <th>Day</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for exercise in exercises %}
-                        <tr>
-                            <td>{{exercise.task.name}}</td>
-                            <td>{{exercise.weight}}</td>
-                            <td>{{exercise.repetition}}</td>
-                            <td>{{exercise.sets}}</td>
-                            <td>{{exercise.day}}</td>
-                        </tr>
-                        {% endfor %}
-
-                    </tbody>
-                </table>
-            </div>
-
-            <ul class="nav nav-pills">
-              <li role="presentation" class="active"><a href="/add_workout">New Exercise</a></li>
-            </ul>
-         
-=======
->>>>>>> Stashed changes
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
@@ -56,11 +20,7 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-<<<<<<< Updated upstream
           <h1 class="page-header">Workout Plan</h1><br>
-=======
-          <h1 class="page-header">Workout Plan</h1>
->>>>>>> Stashed changes
 
           <h2 class="sub-header">Day 1</h2>
           <div class="table-responsive">
@@ -254,8 +214,4 @@
 
       </div>
     </div>     
-<<<<<<< Updated upstream
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
 {% endblock %}

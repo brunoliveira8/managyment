@@ -5,10 +5,6 @@ from django.contrib.auth.models import User
 
 
 class Tracker(models.Model):
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
->>>>>>> Stashed changes
     startWeightDate = models.DateField(auto_now_add=True)
     startWeight = models.IntegerField(max_length=4, default=0)
     previousWeightDate = models.DateField(auto_now=True)
@@ -17,19 +13,6 @@ class Tracker(models.Model):
     currentWeight = models.IntegerField(max_length=4, default=100)
     goalWeight = models.IntegerField(default=100, max_length=4)
 
-<<<<<<< Updated upstream
-=======
-=======
-    startDate = models.DateField(auto_now_add=True)
-    startWeight = models.IntegerField(max_length=4)
-    previousDate = models.DateField()
-    previousWeight = models.IntegerField(max_length=4)
-    lastDate = models.DateField(auto_now=True)
-    lastWeight = models.IntegerField(max_length=4)
->>>>>>> origin/master
-
-
->>>>>>> Stashed changes
 class Task(models.Model):
     name = models.CharField(max_length=32)
     LEG = 'LG'
@@ -82,17 +65,7 @@ class WorkoutPlan(models.Model):
 
 class RegularAthlete(models.Model):
     user = models.OneToOneField(User) #Inheritance of User model
-<<<<<<< Updated upstream
     tracker = models.OneToOneField(Tracker)
-=======
-
-<<<<<<< HEAD
-    tracker = models.OneToOneField(Tracker)
-=======
-    goal_weight = models.IntegerField(default = 1, max_length=4)
->>>>>>> origin/master
-
->>>>>>> Stashed changes
     workout_plan = models.OneToOneField(WorkoutPlan)
 
     BEGGINER = 'BG'
