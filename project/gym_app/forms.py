@@ -41,5 +41,14 @@ class ExerciseForm(forms.ModelForm):
 
     class Meta:
         model = Exercise
+<<<<<<< Updated upstream
+=======
+        fields = ('weight','repetition', 'sets','day')
+
+class ExerciseForm(forms.ModelForm):
+
+    class Meta:
+        model = Exercise
+>>>>>>> Stashed changes
         fields = ('weight','repetition', 'sets')
 

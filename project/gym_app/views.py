@@ -1,4 +1,11 @@
+<<<<<<< Updated upstream
 from __future__ import division
+=======
+<<<<<<< HEAD
+from __future__ import division
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -69,11 +76,23 @@ def register(request):
             athlete = RegularAthlete()
             workout_plan = WorkoutPlan()
             workout_plan.save()
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> Stashed changes
             tracker = Tracker()
             tracker.save()
             athlete.user = user
             athlete.workout_plan = workout_plan
             athlete.tracker = tracker
+<<<<<<< Updated upstream
+=======
+=======
+            athlete.user = user
+            athlete.workout_plan = workout_plan
+
+>>>>>>> origin/master
+>>>>>>> Stashed changes
             athlete.save()
             
             
@@ -276,6 +295,68 @@ def tracker(request):
     return render(request, 'gym_app/tracker.html', context)
 
 @login_required
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+def add_workout(request):
+
+    # If it's a HTTP POST, we're interested in processing form data.
+    if request.method == 'POST':
+        task_name = request.POST.get('task_name')
+        user = User.objects.get(username = request.user.username)
+        exercise_form = ExerciseForm(data=request.POST)
+        athlete = RegularAthlete.objects.get(user = request.user)
+
+        # If the forms are valid...
+        if exercise_form.is_valid():
+            # Save the user's form data to the database.
+            exercise = exercise_form.save(commit=False)
+            task = Task.objects.get(name = task_name)
+            exercise.task = task
+            exercise.save()
+            athlete.workout_plan.exercises.add(exercise)
+            athlete.save()
+
+
+            context_dict = {'boldmessage': "Edit successful"}
+            return redirect('/workout_plan/')
+
+        else:
+            print user_form.errors
+        
+
+    else:
+        t_list = Task.objects.all()
+        athlete = RegularAthlete.objects.get(user = request.user)
+        #user_form = UserEditForm(instance = request.user)
+        #athlete_form = RegularAthleteForm(instance = athlete)
+        exercise_form = ExerciseForm()
+
+        # Render the template depending on the context.
+        return render(request,
+            'gym_app/add_workout.html',
+            {'exercise_form': exercise_form, 'task_list' : t_list})    
+
+@login_required
+def workout_plan(request):
+
+    user = User.objects.get(username = request.user.username)
+    athlete = RegularAthlete.objects.get(user = request.user)
+    exercises = athlete.workout_plan.exercises.all()
+    
+
+    # Render the template depending on the context.
+    return render(request,
+        'gym_app/workout_plan.html',
+        {'exercises': exercises}) 
+=======
+=======
+>>>>>>> origin/master
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 def members(request):
     # Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
@@ -308,6 +389,15 @@ def message(request):
         #send_mail(sbj, msg, from_email,
         #['pent.alef@gmail.com'], fail_silently=False)
         return HttpResponseRedirect('/members/')    
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 
 
 @login_required
@@ -351,6 +441,12 @@ def message_match(request):
         # We make use of the shortcut function to make our lives easier.
         # Note that the first parameter is the template we wish to use.
         return render(request, 'gym_app/buddy_match.html', context)
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
+>>>>>>> Stashed changes
 
 def workout_plan(request):
 
@@ -374,6 +470,10 @@ def workout_plan(request):
 
 @login_required
 def workout_day(request, day = '1'):
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         task_name = request.POST.get('task_name')
@@ -388,6 +488,13 @@ def workout_day(request, day = '1'):
             task = Task.objects.get(name = task_name)
             exercise.task = task
             exercise.day = day
+<<<<<<< Updated upstream
+=======
+            exercise.save()
+            athlete.workout_plan.exercises.add(exercise)
+            athlete.save()
+
+>>>>>>> Stashed changes
 
             path = '/workout/days/{0}'.format(day)
             print path
@@ -405,7 +512,12 @@ def workout_day(request, day = '1'):
         exercise_form = ExerciseForm()
 
         # Render the template depending on the context.
+<<<<<<< Updated upstream
         return render(request, 'gym_app/workout_day.html',
+=======
+        return render(request,
+            'gym_app/workout_day.html',
+>>>>>>> Stashed changes
             {'exercise_form': exercise_form, 'task_list' : t_list, 'exercises' : exercises, 'day': day})  
 
 
@@ -416,3 +528,7 @@ def delete_exercise(request):
     path = '/workout/days/{0}'.format(request.POST.get("day"))
     return redirect(path)
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
