@@ -90,7 +90,7 @@ def register(request):
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
-        user_form = UserForm(initial={'username' : "bruno", 'first_name':"Bruno", 'last_name' : "Olivera", 'email':'bruno@email.com'})
+        user_form = UserForm()
         #profile_form = UserProfileForm()
 
     # Render the template depending on the context.
