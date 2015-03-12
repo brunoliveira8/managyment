@@ -388,6 +388,9 @@ def workout_day(request, day = '1'):
             task = Task.objects.get(name = task_name)
             exercise.task = task
             exercise.day = day
+            exercise.save()
+            athlete.workout_plan.exercises.add(exercise)
+            athlete.save()
 
             path = '/workout/days/{0}'.format(day)
             print path
