@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content%}
+       <h1>Edit</h1>
+
+       <form id="user_form" method="post" action="/add_workout/"
+                enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <label for="sel1">Select list:</label>
+            <select class="form-control" id="sel1" name="task_name">
+                {% for task in task_list %}
+                <option>{{ task.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Display each form. The as_p method wraps each element in a paragraph
+                 (<p>) element. This ensures each element appears on a new line,
+                 making everything look neater. -->
+            {{ exercise_form.as_p }}
+
+            <!-- Provide a button to click to submit the form. -->
+            <input type="submit" name="submit" value="Submit" />
+        </form>
+
+{% endblock %}
