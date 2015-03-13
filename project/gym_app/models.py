@@ -10,8 +10,8 @@ class Tracker(models.Model):
     previousWeightDate = models.DateField(auto_now=True)
     previousWeight = models.IntegerField(max_length=4, default=0)
     currentWeightDate = models.DateField(auto_now=True)
-    currentWeight = models.IntegerField(max_length=4, default=100)
-    goalWeight = models.IntegerField(default=100, max_length=4)
+    currentWeight = models.IntegerField(max_length=4, default=170)
+    goalWeight = models.IntegerField(default=160, max_length=4)
 
 class Task(models.Model):
     name = models.CharField(max_length=32)
