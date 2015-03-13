@@ -398,7 +398,7 @@ def workout_day(request, day = '1'):
             return redirect(path)
 
         else:
-            print user_form.errors
+            return HttpResponse('There are errors in the fields: {0}'.format(exercise_form.errors))
         
     else:
         t_list = Task.objects.all()
