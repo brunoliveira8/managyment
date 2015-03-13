@@ -8,12 +8,12 @@ class UserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
 
-        for fieldname in ['username', 'email', 'password']:
+        for fieldname in ['username', 'password', 'email']:
             self.fields[fieldname].help_text = None
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'first_name', 'last_name')
+        fields = ('username', , 'password', 'email', 'first_name', 'last_name')
 
 class UserEditForm(forms.ModelForm):
 
