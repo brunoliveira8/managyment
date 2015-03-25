@@ -4,6 +4,12 @@ from django.conf import settings
 from gym_app.views import index, register, user_login, user_logout, restricted, workout, edit, change_password, tracker, members, message, buddy_match, message_match,  workout_plan, workout_day, delete_exercise
 
 
+
+admin.site.site_title = 'Managyment'
+admin.site.site_index = 'Managyment'
+admin.site.site_header = 'Managyment'
+
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'project.views.home', name='home'),
