@@ -465,7 +465,7 @@ def upgrade_downgrade(request):
         else:
             resp = 'Your downgrade was requested.'
             msg = "The user {0} wish a downgrade account!".format(request.user.username)
-            sbj = "Upgrade Request"
+            sbj = "Downgrade Request"
             send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
             
         context = {'resp' : resp}
