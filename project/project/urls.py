@@ -1,13 +1,12 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
-from gym_app.views import index, register, user_login, user_logout, restricted, workout, edit, change_password, tracker, members, message, buddy_match, message_match,  workout_plan, workout_day, delete_exercise
-
+from gym_app.views import *
 
 
 admin.site.site_title = 'Managyment'
 admin.site.site_index = 'Managyment'
-admin.site.site_header = 'Managyment'
+admin.site.site_header = 'Dashboard'
 
 
 urlpatterns = patterns('',
@@ -32,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^workout_plan/', workout_plan),
     url(r'^workout/days/(?P<day>\d{1})/$', workout_day),
     url(r'^delete_exercise/', delete_exercise),
+    url(r'^upgrade_downgrade/', upgrade_downgrade),
 
 )
 

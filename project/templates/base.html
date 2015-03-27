@@ -42,7 +42,7 @@
             {% if user.is_authenticated %}
               <li class="active"><a href="/index">Hello {{ user.first_name }}!</a></li>
                 {% if group == 'admin' %}
-                  <li><a href="/admin/">Manage</a></li>
+                  <li><a href="/admin/">Dashboard</a></li>
                   <li><a href="/members">Send Message</a></li>
                   <li><a href="/logout/">Logout</a></li>
                 {% else %}
