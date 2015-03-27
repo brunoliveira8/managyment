@@ -293,15 +293,17 @@ def members(request):
     # Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
 
-    if request.user.is_superuser:
+    if request.user.is_superuser:   
         group = 'admin';
     else:
-        group = User.objects.get(user=request.user).groups.all()[0].name;
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
 
+    print group
     u_list = User.objects.all()
-
-    print "Test"
-
+    
     context = {'user_list' : u_list, 'group': group}
 
     # Return a rendered response to send to the client.
