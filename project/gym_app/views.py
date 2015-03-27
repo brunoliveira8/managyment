@@ -4,11 +4,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan
-from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm, ExerciseForm
+from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm, ExerciseForm, UserTypeForm
 from datetime import datetime
 from decimal import Decimal
 import urllib2, urllib
 from django.core.mail import send_mail
+from django.contrib.auth.models import Group
 
 # Create your views here.
 #This is the First Page's view.
@@ -25,7 +26,6 @@ def index(request):
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
-    
 
     context_dict = {'boldmessage': "Excuse us, programmers working :)", 'group': group}
     return render(request, 'gym_app/index.html', context_dict)
@@ -56,6 +56,7 @@ def register(request):
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and UserProfileForm.
         user_form = UserForm(data=request.POST)
+        type_form = UserTypeForm(data=request.POST)
 
         # If the two forms are valid...
         if user_form.is_valid():
@@ -66,6 +67,10 @@ def register(request):
             # Once hashed, we can update the user object.
             user.set_password(user.password)
             user.save()
+
+            if type_form.is_valid():
+                group = Group.objects.get(name=type_form.cleaned_data['group'])
+                user.groups.add(group)
 
             # Now sort out the UserProfile instance.
             # Since we need to set the user attribute ourselves, we set commit=False.
@@ -98,12 +103,13 @@ def register(request):
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
+        type_form = UserTypeForm()
         #profile_form = UserProfileForm()
 
     # Render the template depending on the context.
     return render(request,
             'gym_app/register.html',
-            {'user_form': user_form, 'registered': registered} )    
+            {'user_form': user_form, 'registered': registered, 'type_form':type_form} )    
 
 def user_login(request):
 

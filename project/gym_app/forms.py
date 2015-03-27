@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from gym_app.models import User, RegularAthlete, Tracker, Exercise
 
 class UserForm(forms.ModelForm):
+    
     password = forms.CharField(widget=forms.PasswordInput())
 
     def __init__(self, *args, **kwargs):
@@ -42,4 +43,14 @@ class ExerciseForm(forms.ModelForm):
     class Meta:
         model = Exercise
         fields = ('weight','repetition', 'sets')
+
+class UserTypeForm(forms.Form):
+
+    GROUPS = (
+        ('regular', 'Regular'),
+        ('personal_trainer', 'Personal Trainer'),
+    )
+
+    group = forms.ChoiceField(choices=GROUPS, required=True, label='User Type')
+
 
