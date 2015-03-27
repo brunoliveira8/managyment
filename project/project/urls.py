@@ -6,7 +6,7 @@ from gym_app.views import *
 
 admin.site.site_title = 'Managyment'
 admin.site.site_index = 'Managyment'
-admin.site.site_header = 'Managyment'
+admin.site.site_header = 'Dashboard'
 
 
 urlpatterns = patterns('',
