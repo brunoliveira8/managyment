@@ -16,7 +16,20 @@
             {{ athlete_form.as_p }}
 
             <!-- Provide a button to click to submit the form. -->
-            <input type="submit" class="btn btn-primary" name="submit" value="Edit" />
+            <input type="submit" class="btn btn-primary" name="edit" value="Edit" />
+        </form><br>
+        
+        {% if group == 'regular' %}
+         <form id="upgrade_form" method="post" action="/upgrade_downgrade/"
+                enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="submit" value="Upgrade" />
         </form>
-
+        {% else %}
+         <form id="upgrade_form" method="post" action="/upgrade_downgrade/"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="submit" value="Downgrade" />
+        </form>
+        {% endif %} 
 {% endblock %}

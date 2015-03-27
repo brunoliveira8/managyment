@@ -173,6 +173,14 @@ def restricted(request):
 @login_required
 def edit(request):
 
+    if request.user.is_superuser:   
+        group = 'admin';
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
+
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
 
@@ -206,7 +214,7 @@ def edit(request):
         # Render the template depending on the context.
         return render(request,
             'gym_app/edit.html',
-            {'user_form': user_form, 'athlete_form': athlete_form} )    
+            {'user_form': user_form, 'athlete_form': athlete_form, 'group': group} )    
 
 @login_required
 def change_password(request):
@@ -439,3 +447,28 @@ def delete_exercise(request):
     path = '/workout/days/{0}'.format(request.POST.get("day"))
     return redirect(path)
 
+@login_required
+def upgrade_downgrade(request):
+    
+    if request.method == 'POST':
+        option =  request.POST.get("submit")
+        admin = User.objects.get(username = 'admin')
+        admin_email = admin.email
+        to_email = admin.email
+
+        if option == 'Upgrade': 
+            resp = 'Your upgrade was requested'    
+            msg = "The user {0} wish an upgrade account!".format(request.user.username)
+            sbj = "Upgrade Request."
+            send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
+            
+        else:
+            resp = 'Your downgrade was requested.'
+            msg = "The user {0} wish a downgrade account!".format(request.user.username)
+            sbj = "Upgrade Request"
+            send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
+            
+        context = {'resp' : resp}
+        return render(request, 'gym_app/upgrade_downgrade.html', context)
+
+    return HttpResponseRedirect('/index/')   
