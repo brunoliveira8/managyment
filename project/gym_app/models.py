@@ -57,6 +57,8 @@ class Exercise(models.Model):
     day = models.IntegerField(max_length=7,
                                       choices=DAYS,
                                       default=ONE)
+    def __unicode__(self):
+        return u'%d' % (self.id)
 
 class WorkoutPlan(models.Model):
     
@@ -91,6 +93,9 @@ class RegularAthlete(models.Model):
     training_period = models.CharField(max_length=2,
                                       choices=TRAINING_PERIOD,
                                       default=MORNING)
+    def __unicode__(self):
+        if self.user.username:
+            return u'%s' % (self.user.username)
     
     
 

@@ -41,18 +41,26 @@
             
             {% if user.is_authenticated %}
               <li class="active"><a href="/index">Hello {{ user.first_name }}!</a></li>
-              <li><a href="/edit">Edit</a></li>
-              <li><a href="/change_password">Change Password</a></li>
-              <li><a href="/buddy_match">Buddy Match</a></li>
-              <li><a href="/tracker">Weight Tracker</a></li>
-              <li><a href="/members">Send Message</a></li>
-              <li><a href="/workout_plan">Workout Plan</a></li>
-              <li><a href="/logout/">Logout</a></li>
+                {% if group == 'admin' %}
+                  <li><a href="/admin/">Manage</a></li>
+                  <li><a href="/members">Send Message</a></li>
+                {% else %}
+                  <li><a href="/edit">Edit</a></li>
+                  <li><a href="/change_password">Change Password</a></li>
+                  <li><a href="/buddy_match">Buddy Match</a></li>
+                  <li><a href="/tracker">Weight Tracker</a></li>
+                  <li><a href="/members">Send Message</a></li>
+                  <li><a href="/workout_plan">Workout Plan</a></li>
+                  <li><a href="/logout/">Logout</a></li>
+                {% endif %}
+
             {% else %}
               <li class="active"><a href="/index">Home</a></li>
               <li><a href="/register/">Register Here</a></li>
               <li><a href="/login/">Login</a></li>
             {% endif %}
+
+
            
           </ul>
         </div><!--/.nav-collapse -->

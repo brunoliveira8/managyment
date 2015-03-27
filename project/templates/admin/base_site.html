@@ -1,0 +1,6 @@
+{% extends "admin/base.html" %}
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Managyment') }}</a></h1>
+<h1><a href="/index/">Home</a></h1>
+{% endblock %}
+{% block nav-global %}{% endblock %}
