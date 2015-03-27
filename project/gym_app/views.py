@@ -15,12 +15,15 @@ from django.core.mail import send_mail
 def index(request):
 	# Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
-    context_dict = {'boldmessage': "Excuse us, programmers working :)"}
-
+    if request.user.is_superuser:
+        group = 'admin';
+    else:
+        group = User.objects.get(user=request.user).groups.all()[0].name;
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
 
+    context_dict = {'boldmessage': "Excuse us, programmers working :)", 'group': group}
     return render(request, 'gym_app/index.html', context_dict)
 
 
