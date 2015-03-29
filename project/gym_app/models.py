@@ -98,10 +98,19 @@ class RegularAthlete(models.Model):
             return u'%s' % (self.user.username)
     
     
+#Message System
+class MailBox(models.Model):
+    owner = models.CharField(max_length=50)
+    messages = models.ForeignKey(Message)
 
+class Message(models.Model):
+    sbj = models.CharField(max_length=50)
+    body = models.TextField(max_length = 500)
+    dest = models.CharField(max_length=50)
+    src = models.CharField(max_length=50)
 
-
-
+class PlanMessage(Message):
+    pass
 
 
 
