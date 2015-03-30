@@ -103,6 +103,15 @@ class MailBox(models.Model):
     owner = models.CharField(max_length=50)
     messages = models.ForeignKey(Message)
 
+    def add_msg(self):
+        pass
+
+    def get_msg(self):
+        pass
+
+    def del_msg(self):
+        pass
+
 class Message(models.Model):
     sbj = models.CharField(max_length=50)
     body = models.TextField(max_length = 500)
@@ -110,7 +119,7 @@ class Message(models.Model):
     src = models.CharField(max_length=50)
 
 class PlanMessage(Message):
-    pass
+    is_upgraded = models.BooleanField(default = False)
 
 
 
