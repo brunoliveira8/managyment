@@ -2,8 +2,9 @@ from __future__ import division
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.decorators import login_required
-from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan
+from django.contrib.auth.decorators import login_required, permission_required
+
+from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan, MailBox, PlanMessage
 from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm, ExerciseForm, UserTypeForm
 from datetime import datetime
 from decimal import Decimal
@@ -87,6 +88,11 @@ def register(request):
             athlete.workout_plan = workout_plan
             athlete.tracker = tracker
             athlete.save()
+
+            #Create MailBox
+            mail_box = MailBox()
+            mail_box.owner = user.username
+            mail_box.save()
             
             
 
@@ -460,7 +466,15 @@ def upgrade_downgrade(request):
             resp = 'Your upgrade was requested'    
             msg = "The user {0} wish an upgrade account!".format(request.user.username)
             sbj = "Upgrade Request."
-            send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
+            #send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
+            '''message = PlanMessage()
+            message.sbj = sbj
+            message.body = msg
+            message.src = request.user.username
+            message.to_upgrade = True
+            message.save()'''
+            mail_box = MailBox.objects.get(owner = "admin")
+            mail_box.add_msg(msg, sbj, request.user.username)
             
         else:
             resp = 'Your downgrade was requested.'
@@ -472,3 +486,9 @@ def upgrade_downgrade(request):
         return render(request, 'gym_app/upgrade_downgrade.html', context)
 
     return HttpResponseRedirect('/index/')   
+
+@permission_required('auth.is_admin')
+def plan_manage(request):
+    return HttpResponseRedirect('/index/')  
+
+  

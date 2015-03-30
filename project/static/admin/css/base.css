@@ -688,7 +688,7 @@ a.deletelink:hover {
     float: left;
     color: #a;
     padding: .2em 10px;
-    background: #999;
+    background: #101010;
 }
 
 .object-tools a:hover, .object-tools li:hover a {
@@ -696,12 +696,12 @@ a.deletelink:hover {
 }
 
 .object-tools a.viewsitelink, .object-tools a.golink {
-    background: #999 url(../img/tooltag-arrowright.png) 95% center no-repeat;
+    background: #101010 url(../img/tooltag-arrowright.png) 95% center no-repeat;
     padding-right: 26px;
 }
 
 .object-tools a.addlink {
-    background: #999 url(../img/tooltag-add.png) 95% center no-repeat;
+    background: #101010 url(../img/tooltag-add.png) 95% center no-repeat;
     padding-right: 26px;
 }
 

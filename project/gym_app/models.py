@@ -99,12 +99,20 @@ class RegularAthlete(models.Model):
     
     
 #Message System
+class Message(models.Model):
+    sbj = models.CharField(max_length=50)
+    body = models.TextField(max_length = 500)
+    src = models.CharField(max_length=50)
+
+class PlanMessage(Message):
+    to_upgrade = models.BooleanField(default = False)
+
 class MailBox(models.Model):
     owner = models.CharField(max_length=50)
-    messages = models.ForeignKey(Message)
+    messages = models.ManyToManyField(Message)
 
-    def add_msg(self):
-        pass
+    def add_msg(self, body, sbj, src):
+        self.messages.create(body = body, sbj = sbj, src = src)
 
     def get_msg(self):
         pass
@@ -112,14 +120,9 @@ class MailBox(models.Model):
     def del_msg(self):
         pass
 
-class Message(models.Model):
-    sbj = models.CharField(max_length=50)
-    body = models.TextField(max_length = 500)
-    dest = models.CharField(max_length=50)
-    src = models.CharField(max_length=50)
 
-class PlanMessage(Message):
-    is_upgraded = models.BooleanField(default = False)
+
+
 
 
 
