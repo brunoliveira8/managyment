@@ -98,6 +98,25 @@ class RegularAthlete(models.Model):
             return u'%s' % (self.user.username)
     
     
+#Message System
+class Message(models.Model):
+    sbj = models.CharField(max_length=50)
+    body = models.TextField(max_length = 500)
+    src = models.CharField(max_length=50)
+
+
+class MailBox(models.Model):
+    owner = models.CharField(max_length=50)
+    messages = models.ManyToManyField(Message)
+
+    def add_msg(self, body, sbj, src):
+        self.messages.create(body = body, sbj = sbj, src = src)
+
+    def get_msg(self):
+        pass
+
+    def del_msg(self, id):
+        Message.objects.filter(id = id).delete()
 
 
 
