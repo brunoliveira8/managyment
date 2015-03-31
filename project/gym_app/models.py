@@ -61,8 +61,44 @@ class Exercise(models.Model):
         return u'%d' % (self.id)
 
 class WorkoutPlan(models.Model):
-    
     exercises = models.ManyToManyField(Exercise)
+
+
+class BodyScreening(models.Model):
+    screeningDate = models.DateField(auto_now_add=True, default=0)
+    triceps = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    biceps = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    subscapular = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    supraspinale = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    suprailic = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    abdominal = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    chest = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    thigh = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    calf = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    weight = models.IntegerField(max_length=4, default=0)
+    height = models.IntegerField(max_length=4, default=0)
+
+
+    EXCELLENT = 'EX'
+    GOOD = 'GO'
+    AVERAGE = 'AV'
+    BELOW_AVERAGE = 'BA'
+    POOR = 'PO'
+    RESULTS = (
+        (EXCELLENT, 'Excellent'),
+        (GOOD, 'Good'),
+        (AVERAGE, 'Average'),
+        (BELOW_AVERAGE, 'Below Average'),
+        (POOR, 'Poor'),
+    )
+    result = models.CharField(max_length=2,
+                                      choices=RESULTS,
+                                      default=EXCELLENT)
+
+
+    def __unicode__(self):
+        return u'%d' % (self.id)
+
 
 
 class RegularAthlete(models.Model):
@@ -93,11 +129,36 @@ class RegularAthlete(models.Model):
     training_period = models.CharField(max_length=2,
                                       choices=TRAINING_PERIOD,
                                       default=MORNING)
+
+    MALE = 'M'
+    FEMALE = 'F'
+    GENDERS = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+    )
+    gender = models.CharField(max_length=2,
+                                      choices=GENDERS,
+                                      default=MALE)
+
+    screenings = models.ManyToManyField(BodyScreening)
+    
     def __unicode__(self):
         if self.user.username:
             return u'%s' % (self.user.username)
-    
-    
+
+
+class PersonalTrainer(models.Model):
+    user = models.OneToOneField(User)
+
+    MALE = 'M'
+    FEMALE = 'F'
+    GENDERS = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+    )
+    gender = models.CharField(max_length=2,
+                                      choices=GENDERS,
+                                      default=MALE)
 
 
 
