@@ -5,7 +5,7 @@ import django
 django.setup()
 
 from gym_app.models import Task
-from django.contrib.auth.models import Permission, Group
+from django.contrib.auth.models import Permission, Group, User
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -24,6 +24,24 @@ def populate():
     add_permission(codename = 'is_regular', name = 'It is regular')
     add_permission(codename = 'is_premium', name = 'It is premium')
     add_permission(codename = 'is_personal', name = 'It is personal_trainer')
+
+    group = Group.objects.get(name='regular')
+    permission = Permission.objects.get(codename = 'is_regular')
+    group.permissions.add(permission)
+
+    group = Group.objects.get(name='premium')
+    permission = Permission.objects.get(codename = 'is_premium')
+    group.permissions.add(permission)
+
+    group = Group.objects.get(name='personal_trainer')
+    permission = Permission.objects.get(codename = 'is_personal')
+    group.permissions.add(permission)
+    
+    admin = User.objects.get(username = 'admin')
+    permission = Permission.objects.get(codename = 'is_admin')
+    admin.user_permissions.add(permission)
+    
+
     print Task.objects.all()
 
 def add_Task(name,typeTask):
