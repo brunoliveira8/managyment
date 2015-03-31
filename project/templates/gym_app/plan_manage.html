@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content%}
+{% csrf_token %}
+
+    <div class="container-fluid">
+      <div class="row">
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Change Plan</h1><br>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Request</th>   
+                    <th>Process</th>  
+                    <th align="left">Delete</th>  
+                </tr>
+              </thead>
+              <tbody>
+                
+                 {% for msg in messages %}
+                        <tr>
+                            <td align="left">{{msg.src}}</td>
+                            <td align="left">{{msg.body}}</td>
+                            <form method="post" action="/change_upgrade_downgrade/" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <td align="left"> <button  name ='change' type='submit' value='{{msg.src}}/{{msg.body}}/{{msg.id}}'class="btn btn-success btn-xs"><span class="glyphicon glyphicon-check"></span></button> </td>
+                            </form>
+                            
+                            <form method="post" action="/delete_plan_msg/" enctype="multipart/form-data">
+                                {% csrf_token %}
+                               <td align="left"> <button  name ='delete' type='submit' value='{{msg.id}}'class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button> </td>
+                            </form>
+                           
+
+                        </tr>
+                {% endfor %}         
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>  
+    
+{% endblock %}

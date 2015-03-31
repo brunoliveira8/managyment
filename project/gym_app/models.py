@@ -104,8 +104,6 @@ class Message(models.Model):
     body = models.TextField(max_length = 500)
     src = models.CharField(max_length=50)
 
-class PlanMessage(Message):
-    to_upgrade = models.BooleanField(default = False)
 
 class MailBox(models.Model):
     owner = models.CharField(max_length=50)
@@ -117,8 +115,8 @@ class MailBox(models.Model):
     def get_msg(self):
         pass
 
-    def del_msg(self):
-        pass
+    def del_msg(self, id):
+        Message.objects.filter(id = id).delete()
 
 
 

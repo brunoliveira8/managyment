@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required
 
-from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan, MailBox, PlanMessage
+from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan, MailBox
 from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm, ExerciseForm, UserTypeForm
 from datetime import datetime
 from decimal import Decimal
@@ -461,34 +461,62 @@ def upgrade_downgrade(request):
         admin = User.objects.get(username = 'admin')
         admin_email = admin.email
         to_email = admin.email
+        mail_box = MailBox.objects.get(owner = "admin")
 
         if option == 'Upgrade': 
             resp = 'Your upgrade was requested'    
             msg = "The user {0} wish an upgrade account!".format(request.user.username)
             sbj = "Upgrade Request."
             #send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
-            '''message = PlanMessage()
-            message.sbj = sbj
-            message.body = msg
-            message.src = request.user.username
-            message.to_upgrade = True
-            message.save()'''
-            mail_box = MailBox.objects.get(owner = "admin")
-            mail_box.add_msg(msg, sbj, request.user.username)
+           
+            mail_box.add_msg('UPGRADE', sbj, request.user.username)
             
         else:
             resp = 'Your downgrade was requested.'
             msg = "The user {0} wish a downgrade account!".format(request.user.username)
             sbj = "Downgrade Request"
-            send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
+            #send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
+            mail_box.add_msg('DOWNGRADE', sbj, request.user.username)
             
         context = {'resp' : resp}
         return render(request, 'gym_app/upgrade_downgrade.html', context)
 
     return HttpResponseRedirect('/index/')   
 
-@permission_required('auth.is_admin')
+@permission_required('auth.permission.is_admin', login_url='/permission_denied/')
 def plan_manage(request):
-    return HttpResponseRedirect('/index/')  
+    
+    if request.user.is_superuser:   
+        group = 'admin'
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name
+        except:
+            group = 'none'
+    
+    messages = MailBox.objects.get(owner = 'admin').messages.all()
+    context = {'messages' : messages, 'group' : group}
+    return render(request, 'gym_app/plan_manage.html', context)
 
+def permission_denied(request):
+    return render(request, 'gym_app/permission_denied.html')
   
+@permission_required('auth.permission.is_admin', login_url='/permission_denied/')
+def delete_plan_msg(request):
+    message_id = int(request.POST.get("delete"))
+    MailBox.objects.get(owner = 'admin').del_msg(message_id)
+    return HttpResponseRedirect('/plan_manage/')   
+
+@permission_required('auth.permission.is_admin', login_url='/permission_denied/')
+def change_upgrade_downgrade(request):
+    value = request.POST.get("change")
+    username, change_type, message_id = value.split('/')
+    user = User.objects.get(username = username)
+    if change_type == 'UPGRADE':
+        user.groups.remove(Group.objects.get(name = 'regular'))
+        user.groups.add(Group.objects.get(name = 'premium'))
+    else:
+        user.groups.remove(Group.objects.get(name = 'premium'))
+        user.groups.add(Group.objects.get(name = 'regular'))
+    MailBox.objects.get(owner = 'admin').del_msg(message_id)
+    return HttpResponseRedirect('/plan_manage/')  
