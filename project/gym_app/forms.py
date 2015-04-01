@@ -53,4 +53,70 @@ class UserTypeForm(forms.Form):
 
     group = forms.ChoiceField(choices=GROUPS, required=True, label='User Type')
 
+class PaymentForm(forms.Form):
+    owner = forms.CharField(
+        max_length=100, 
+        required=True, 
+        label='Name on Card', 
+        widget=forms.TextInput(attrs={'class': "form-control", 'placeholder' : "Card Holder's Name"}) 
+         )
+    
+    number = forms.CharField(
+        max_length=16, 
+        required=True, 
+        label='Card Number',
+        widget=forms.TextInput(attrs={'class': "form-control", 'placeholder' : "Debit/Credit Card Number"})
+        )
+    ccv = forms.CharField(
+        max_length=4, 
+        required=True, 
+        label='Card CCV',
+         widget=forms.TextInput(attrs={'class': "form-control", 'placeholder' : "Security Code"}) 
+        )
+
+    MONTHS = (
+        ('01', 'Jan (01)'),
+        ('02', 'Feb (02)'),
+        ('03', 'Mar (03)'),
+        ('04', 'Apr (04)'),
+        ('05', 'May (05)'),
+        ('06', 'Jun (06)'),
+        ('07', 'Jul (07)'),
+        ('08', 'Aug (08)'),
+        ('09', 'Sep (09)'),
+        ('10', 'Oct (10)'),
+        ('11', 'Nov (11)'),
+        ('12', 'Oct (12)'),
+        )
+    
+    YEARS = (
+        ('15','2015'),
+        ('16','2016'),
+        ('17','2017'),
+        ('18','2018'),
+        ('19','2019'),
+        ('20','2020'),
+        ('21','2021'),
+        ('22','2022'),
+        ('23','2023'),
+        ('24','2024'),
+        ('25','2025'),
+        ('26','2026'),
+        )
+
+    month = forms.ChoiceField(
+        choices=MONTHS, 
+        required=True, 
+        label='Month',
+        widget=forms.Select(attrs={'class': "form-control col-sm-2"})
+        )
+
+    year = forms.ChoiceField(
+        choices=YEARS, 
+        required=True, 
+        label='Year',
+        widget=forms.Select(attrs={'class': "form-control col-sm-2"}),
+        )
+
+
 

@@ -20,7 +20,7 @@
         </form><br>
         
         {% if group == 'regular' %}
-         <form id="upgrade_form" method="post" action="/upgrade_downgrade/"
+         <form id="upgrade_form" method="get" action="/payment/"
                 enctype="multipart/form-data">
             {% csrf_token %}
             <input type="submit" class="btn btn-primary" name="submit" value="Upgrade" />
