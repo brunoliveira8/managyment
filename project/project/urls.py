@@ -37,6 +37,9 @@ urlpatterns = patterns('',
     url(r'^delete_plan_msg/', delete_plan_msg),
     url(r'^change_upgrade_downgrade/', change_upgrade_downgrade),
     url(r'^payment/', payment),
+    url(r'^screenings/', screenings),
+    url(r'^create_screening/', create_screening),    
+    url(r'^delete_screening/', delete_screening),
 )
 
 

@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content%}
+  
+  {% if group == "personal_trainer" %}
+  <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li>           
+            </li>
+            <li><a href="/create_screening">Create screening</a></li>
+            <li><a href="/screenings">Access screenings</a></li>
+          </ul>
+        </div>
+       
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h2 class="sub-header">Access screenings</h2>
+          <form id="athlete_form" method="post" action="/screenings/" enctype="multipart/form-data"> 
+            {% csrf_token %}
+            <table class="table table-striped">
+              <tr>
+                <th>{{ athlete_form.athlete.label }}:</th>
+                <td>{{ athlete_form.athlete }}</td>
+                <td><input type="submit" class="btn btn-primary" name="submit" value="Choose" /></td>
+              </tr>
+            </table>
+        </form>
+    {% endif %}
+
+
+        {% if control %}
+        <table class="table table-striped">
+          <tr>
+              <th>Screening Date</th>
+              <th>Weight</th>
+              <th>Height</th>
+              <th>BMI</th>
+              <th>Body Fat</th>
+              <th>Skinfolds</th>
+              <th></th>
+
+            </tr>
+          {% for sc in screenings %}
+            <tr id="this-{{sc.id}}">
+              <td align="left">{{ sc.screeningDate }}</td>
+              <td align="left">{{ sc.weight }} lbs</td>
+              <td align="left">{{ sc.feet }}'{{ sc.inches }}''</td>
+              <td align="left">{{ sc.bmi }}</td>
+              <td align="left">{{ sc.bodyfat }} %</td>
+              <td align="left">
+                 <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary btn-s" data-toggle="modal" data-target="#myModal-{{sc.id}}">+</button>
+              </td>
+              <td align="left">
+                <form method="post" action="/delete_screening/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                  <button name ='delete' type='submit' value='{{sc.id}}'class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
+                </form>
+
+
+              </td>
+
+            </tr>
+          {% endfor %}
+        </table>
+
+          {% for sc in screenings %}
+            <div class="modal fade" id="myModal-{{sc.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Skinfolds on {{sc.screeningDate}} </h4>
+                  </div>
+                  <div class="modal-body">
+                    <table class="table table-striped">
+                      <tr>
+                          <th>Triceps</th>
+                          <th>Biceps</th>
+                          <th>Subscapular</th>
+                      </tr>
+                      <tr>
+                          <td align="left">{{ sc.triceps }} mm</td>
+                          <td align="left">{{ sc.biceps }} mm</td>
+                          <td align="left">{{ sc.subscapular }} mm</td>
+                      </tr>
+                      <tr>
+                          <th>Supraspinale</th>
+                          <th>Suprailic</th>
+                          <th>Abdominal</th>
+                      </tr>
+                      <tr>
+                          <td align="left">{{ sc.supraspinale }} mm</td>
+                          <td align="left">{{ sc.suprailic }} mm</td>
+                          <td align="left">{{ sc.abdominal }} mm</td>
+                      </tr>
+                      <tr>
+                          <th>Chest</th>
+                          <th>Thigh</th>
+                          <th>Calf</th>
+                      </tr>
+                      <tr>
+                          <td align="left">{{ sc.chest }} mm</td>
+                          <td align="left">{{ sc.thigh }} mm</td>
+                          <td align="left">{{ sc.calf }} mm</td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+        <div>
+          <button type="button" class="btn btn-primary btn-s" data-toggle="modal" data-target="#modal-BMI">Understand  BMI</button>
+          <button type="button" class="btn btn-primary btn-s" data-toggle="modal" data-target="#modal-Bodyfat">Understand Body Fat</button>
+        </div>
+
+        <div class="modal fade" id="modal-BMI" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Understand Body Mass Index</h4>
+              </div>
+              <div class="modal-body">
+                <table class="table table-striped">
+                  <tr>
+                      <th class="text-center">BMI</th>
+                      <th class="text-center">Category</th>
+                  </tr>
+                  <tr>
+                      <td align="center">&#60; 18.5</td>
+                      <td align="center">Underweight</td>
+                  </tr>
+                  <tr>
+                      <td align="center">18.5 – 24.9</td>
+                      <td align="center">Normal weight</td>
+                  </tr>
+                  <tr>
+                      <td align="center">25 – 29.9</td>
+                      <td align="center">Overweight</td>
+                  </tr>
+                  <tr>
+                      <td align="center">&#62;= 30</td>
+                      <td align="center">Obesity</td>
+                  </tr>
+                  </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="modal-Bodyfat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Understand Body Mass Index</h4>
+              </div>
+              <div class="modal-body">
+                <table class="table table-striped"><tbody>
+                    <tr>
+                    
+                    <th colspan="2" class="text-center">General 
+                      population</th>
+                    <th colspan="2" class="text-center">Athletes</th>
+                    <td width="171"></td>
+                  </tr>
+                  <tr>                    
+                    <th width="74" class="text-center">Males</th>
+                    <th width="96" class="text-center">Females</th>
+                    <th width="70" class="text-center">Males</th>
+                    <th width="56" class="text-center">Females</th>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td align="center">&lt; 12</td>
+                    <td align="center">&lt; 17</td>
+                    <td align="center">&lt; 7</td>
+                    <td align="center">&lt; 12</td>
+                    <td>Lean</td>
+                  </tr>
+                  <tr>                    
+                    <td align="center">12 - 21</td>
+                    <td align="center">17 - 28</td>
+                    <td align="center">7 - 15</td>
+                    <td align="center">12 - 25</td>
+                    <td>Acceptable</td>
+                  </tr>
+                  <tr>                    
+                    <td align="center">21 - 26</td>
+                    <td align="center">28 - 33</td>
+                    <td align="center"></td>
+                    <td align="center"></td>
+                    <td>Moderately overweight/td>
+                  </tr>
+                  <tr>                    
+                    <td align="center">&gt; 26</td>
+                    <td align="center">&gt; 33</td>
+                    <td align="center">&gt; 15</td>
+                    <td align="center">&gt; 25</td>
+                    <td>Overweight</td>
+                  </tr>
+                </tbody></table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endif %}
+
+       
+{% endblock %}

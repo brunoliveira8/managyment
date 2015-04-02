@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
 
@@ -61,8 +62,28 @@ class Exercise(models.Model):
         return u'%d' % (self.id)
 
 class WorkoutPlan(models.Model):
-    
     exercises = models.ManyToManyField(Exercise)
+
+
+class BodyScreening(models.Model):
+    screeningDate = models.DateField(default=datetime.now)
+    triceps = models.IntegerField(max_length=3, default=0)
+    biceps = models.IntegerField(max_length=3, default=0)
+    subscapular = models.IntegerField(max_length=3, default=0)
+    supraspinale = models.IntegerField(max_length=3, default=0)
+    suprailic = models.IntegerField(max_length=3, default=0)
+    abdominal = models.IntegerField(max_length=3, default=0)
+    chest = models.IntegerField(max_length=3, default=0)
+    thigh = models.IntegerField(max_length=3, default=0)
+    calf = models.IntegerField(max_length=3, default=0)
+    weight = models.IntegerField(max_length=4, default=0)
+    feet = models.IntegerField(max_length=4, default=0)
+    inches = models.IntegerField(max_length=4, default=0)
+    bodyfat = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    bmi = models.DecimalField(max_digits=6, decimal_places=1, default=0)
+    def __unicode__(self):
+        return u'%d' % (self.id)
+
 
 
 class RegularAthlete(models.Model):
@@ -93,11 +114,23 @@ class RegularAthlete(models.Model):
     training_period = models.CharField(max_length=2,
                                       choices=TRAINING_PERIOD,
                                       default=MORNING)
+
+    MALE = 'M'
+    FEMALE = 'F'
+    GENDERS = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+    )
+    gender = models.CharField(max_length=2,
+                                      choices=GENDERS,
+                                      default=MALE)
+
+    screenings = models.ManyToManyField(BodyScreening)
+
     def __unicode__(self):
         if self.user.username:
             return u'%s' % (self.user.username)
-    
-    
+
 #Message System
 class Message(models.Model):
     sbj = models.CharField(max_length=50)
@@ -117,6 +150,21 @@ class MailBox(models.Model):
 
     def del_msg(self, id):
         Message.objects.filter(id = id).delete()
+
+#end Message System
+
+class PersonalTrainer(models.Model):
+    user = models.OneToOneField(User)
+
+    MALE = 'M'
+    FEMALE = 'F'
+    GENDERS = (
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+    )
+    gender = models.CharField(max_length=2,
+                                      choices=GENDERS,
+                                      default=MALE)
 
 
 
