@@ -532,7 +532,7 @@ def upgrade_downgrade(request):
         #send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
         mail_box.add_msg('DOWNGRADE', sbj, request.user.username)
             
-        context = {'resp' : resp}
+        context = {'resp' : resp, 'group' : group}
         return render(request, 'gym_app/upgrade_downgrade.html', context)
             
     context = {'resp' : 'Your upgrade was requested.', 'group' : group}
