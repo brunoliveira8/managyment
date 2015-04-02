@@ -4,7 +4,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 import django
 django.setup()
 
-from gym_app.models import Task
+from gym_app.models import Task, MailBox
 from django.contrib.auth.models import Permission, Group, User
 from django.contrib.contenttypes.models import ContentType
 
@@ -16,9 +16,12 @@ def populate():
     add_Task(name = "Chest fly", typeTask = "CH")
     add_Task(name = "Shoulder fly", typeTask = "SH")
     add_Task(name = "Rest", typeTask = "NT")
+    
     add_group('regular')
     add_group('premium')
     add_group('personal_trainer')
+
+    add_mail_box('admin')
 
     add_permission(codename = 'is_admin', name = 'It is admin')
     add_permission(codename = 'is_regular', name = 'It is regular')
@@ -40,6 +43,8 @@ def populate():
     admin = User.objects.get(username = 'admin')
     permission = Permission.objects.get(codename = 'is_admin')
     admin.user_permissions.add(permission)
+
+
     
 
     print Task.objects.all()
@@ -59,6 +64,10 @@ def add_permission(codename, name):
     p = Permission.objects.get_or_create(codename = codename, content_type = content_type)[0]
     p.name = name
     p.save()
+
+def add_mail_box(owner):
+    g = MailBox.objects.get_or_create(owner = owner)[0]
+    g.save()
 
 
 # Start execution here!
