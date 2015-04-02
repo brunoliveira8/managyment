@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
-from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan
-from gym_app.forms import UserForm, RegularAthleteForm, UserEditForm, ChangePasswordForm, ExerciseForm, UserTypeForm
+from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan, PersonalTrainer, BodyScreening
+from gym_app.forms import UserForm, RegularAthleteForm, RegularAthleteSelectForm, PersonalTrainerForm, UserEditForm, ChangePasswordForm, ExerciseForm, BodyScreeningForm, UserTypeForm, UserGenderForm
 from datetime import datetime
 from decimal import Decimal
 import urllib2, urllib
@@ -34,10 +34,17 @@ def index(request):
 def workout(request):
     # Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
+    if request.user.is_superuser:   
+        group = 'admin';
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
 
     t_list = Task.objects.all()
 
-    context = {'task_list' : t_list}
+    context = {'task_list' : t_list, 'group':group}
 
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
@@ -57,6 +64,7 @@ def register(request):
         # Note that we make use of both UserForm and UserProfileForm.
         user_form = UserForm(data=request.POST)
         type_form = UserTypeForm(data=request.POST)
+        gender_form = UserGenderForm(data=request.POST)
 
         # If the two forms are valid...
         if user_form.is_valid():
@@ -77,17 +85,24 @@ def register(request):
             # This delays saving the model until we're ready to avoid integrity problems.
             #profile = profile_form.save(commit=False)
             #profile.user = user
-
-            athlete = RegularAthlete()
-            workout_plan = WorkoutPlan()
-            workout_plan.save()
-            tracker = Tracker()
-            tracker.save()
-            athlete.user = user
-            athlete.workout_plan = workout_plan
-            athlete.tracker = tracker
-            athlete.save()
-            
+            if group.name == "regular":
+                athlete = RegularAthlete()
+                workout_plan = WorkoutPlan()
+                workout_plan.save()
+                tracker = Tracker()
+                tracker.save()
+                athlete.user = user
+                athlete.workout_plan = workout_plan
+                athlete.tracker = tracker
+                if gender_form.is_valid():
+                    athlete.gender = gender_form.cleaned_data['gender']
+                athlete.save()
+            elif group.name == "personal_trainer":
+                personal = PersonalTrainer()
+                personal.user = user
+                if gender_form.is_valid():
+                    personal.gender = gender_form.cleaned_data['gender']
+                personal.save()
             
 
             # Update our variable to tell the template registration was successful.
@@ -104,12 +119,13 @@ def register(request):
     else:
         user_form = UserForm()
         type_form = UserTypeForm()
+        gender_form = UserGenderForm()
         #profile_form = UserProfileForm()
 
     # Render the template depending on the context.
     return render(request,
             'gym_app/register.html',
-            {'user_form': user_form, 'registered': registered, 'type_form':type_form} )    
+            {'user_form': user_form, 'registered': registered, 'type_form':type_form, 'gender_form':gender_form} )    
 
 def user_login(request):
 
@@ -186,38 +202,52 @@ def edit(request):
 
         user = User.objects.get(username = request.user.username)
         user_form = UserEditForm(data=request.POST, instance = user)
-        athlete = RegularAthlete.objects.get(user = request.user)
-        
-        athlete_form = RegularAthleteForm(data=request.POST, instance = athlete)
+
+        if group == "regular":
+            athlete = RegularAthlete.objects.get(user = request.user)
+            user_logged = RegularAthleteForm(data=request.POST, instance = athlete)
+        elif group == "personal_trainer":
+            personal = PersonalTrainer.objects.get(user = request.user)
+            user_logged = PersonalTrainerForm(data=request.POST, instance = personal)
 
         # If the forms are valid...
         if user_form.is_valid():
             # Save the user's form data to the database.
             user_form.save()
-            athlete_form.save()
-            context_dict = {'boldmessage': "Edit successful"}
+            user_logged.save()
+            context_dict = {'boldmessage': "Edit successful", 'group': group}
             return render(request, 'gym_app/index.html', context_dict)
 
         else:
             print user_form.errors
 
-       
-        
-
     else:
-        athlete = RegularAthlete.objects.get(user = request.user)
+        
         user_form = UserEditForm(instance = request.user)
-        athlete_form = RegularAthleteForm(instance = athlete)
+        if group == "regular":
+            athlete = RegularAthlete.objects.get(user = request.user)
+            user_logged = RegularAthleteForm(instance = athlete)
+        elif group == "personal_trainer":
+            personal = PersonalTrainer.objects.get(user = request.user)
+            user_logged = PersonalTrainerForm(instance = personal)
 
         #profile_form = UserProfileForm()
 
         # Render the template depending on the context.
         return render(request,
             'gym_app/edit.html',
-            {'user_form': user_form, 'athlete_form': athlete_form, 'group': group} )    
+            {'user_form': user_form, 'user_logged': user_logged, 'group': group} )    
 
 @login_required
 def change_password(request):
+    if request.user.is_superuser:   
+        group = 'admin';
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
+
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
 
@@ -234,7 +264,7 @@ def change_password(request):
             # Once hashed, we can update the user object.
             user.set_password(user.password)
             user.save()
-            context_dict = {'boldmessage': "Edit successful"}
+            context_dict = {'boldmessage': "Edit successful", 'group': group}
             return render(request, 'gym_app/index.html', context_dict)
 
         else:
@@ -245,10 +275,18 @@ def change_password(request):
         # Render the template depending on the context.
         return render(request,
             'gym_app/change_password.html',
-            {'user_form': user_form} )     
+            {'user_form': user_form, 'group': group} )     
 
 @login_required
 def tracker(request):
+    if request.user.is_superuser:   
+        group = 'admin';
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
+
     #User and tracker created at same time
     #Should always have the same ID but may be changed later
     user = User.objects.get(username = request.user.username)
@@ -292,7 +330,7 @@ def tracker(request):
             
     tracker.save()
 
-    context = {'tracker' : tracker, 'progress': progress}
+    context = {'tracker' : tracker, 'progress': progress, 'group': group}
 
     return render(request, 'gym_app/tracker.html', context)
 
@@ -309,7 +347,6 @@ def members(request):
         except:
             group = 'none'
 
-    print group
     u_list = User.objects.all()
     
     context = {'user_list' : u_list, 'group': group}
@@ -340,6 +377,14 @@ def message(request):
 
 @login_required
 def buddy_match(request):
+
+    if request.user.is_superuser:   
+        group = 'admin';
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
       
     # Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
@@ -347,7 +392,7 @@ def buddy_match(request):
     athlete = RegularAthlete.objects.get(user = request.user)    
     buddy_list = RegularAthlete.objects.filter(level = athlete.level, training_period = athlete.training_period).exclude(user = user)
     buddy_matched = 0;
-    context = {'buddy_list' : buddy_list, 'buddy_matched' : buddy_matched}
+    context = {'buddy_list' : buddy_list, 'buddy_matched' : buddy_matched, 'group': group}
 
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
@@ -363,7 +408,6 @@ def message_match(request):
         user = User.objects.get(username = request.user.username)
         user_email = user.email
         to_email = request.POST.get('username')
-        print
         msg = "The user {0} wish workout with you!".format(user)
         sbj = "Buddy Match Message"
 
@@ -382,6 +426,14 @@ def message_match(request):
 
 def workout_plan(request):
 
+    if request.user.is_superuser:   
+        group = 'admin';
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
+
     user = User.objects.get(username = request.user.username)
     athlete = RegularAthlete.objects.get(user = request.user)
     exercises_day1 = athlete.workout_plan.exercises.filter( day = 1)
@@ -397,7 +449,7 @@ def workout_plan(request):
     # Render the template depending on the context.
     return render(request,
         'gym_app/workout_plan.html',
-        {'day1': exercises_day1, 'day2': exercises_day2, 'day3': exercises_day3, 'day4': exercises_day5, 'day6': exercises_day6, 'day7': exercises_day7}) 
+        {'day1': exercises_day1, 'day2': exercises_day2, 'day3': exercises_day3, 'day4': exercises_day5, 'day6': exercises_day6, 'day7': exercises_day7, 'group': group}) 
 
 
 @login_required
@@ -441,7 +493,6 @@ def workout_day(request, day = '1'):
 
 
 def delete_exercise(request):
-
     exercise_id = int(request.POST.get("delete"))
     Exercise.objects.filter(id = exercise_id).delete()
     path = '/workout/days/{0}'.format(request.POST.get("day"))
@@ -472,3 +523,128 @@ def upgrade_downgrade(request):
         return render(request, 'gym_app/upgrade_downgrade.html', context)
 
     return HttpResponseRedirect('/index/')   
+
+@login_required
+def create_screening(request):
+
+    if request.user.is_superuser:   
+        group = 'admin';
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
+
+    control = False
+
+
+
+    if request.method == 'POST':
+        
+        athlete_form = RegularAthleteSelectForm(data=request.POST)
+        screening_form = BodyScreeningForm(data=request.POST)
+
+        if athlete_form.is_valid():
+            control = True
+            #user = User.objects.get(username = athlete_form.cleaned_data['athlete'])
+            username = athlete_form.cleaned_data['athlete']
+
+            user = User.objects.get(username = username)
+            screenings = RegularAthlete.objects.get(user = user.id).screenings.all()
+            if len(screenings) > 0:
+                current_screening = screenings[len(screenings)-1]
+                screening_form = BodyScreeningForm(instance=current_screening)
+            else:
+                screening_form = BodyScreeningForm(data=request.POST)
+
+            return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'username':username, 'group': group})   
+
+     
+        if screening_form.is_valid():
+            user = User.objects.get(username = request.POST.get('username'))
+            screening = screening_form.save(commit=False)
+            screening.save()
+            athlete = RegularAthlete.objects.get(user = user.id)
+
+            athlete.tracker.previousWeight=athlete.tracker.currentWeight
+            athlete.tracker.currentWeight=screening.weight
+            athlete.tracker.previousWeightDate=athlete.tracker.currentWeightDate
+            athlete.tracker.currentWeightDate=datetime.now()
+            athlete.tracker.save()
+
+            sum_seven_folds = screening.triceps + screening.biceps + screening.subscapular + screening.supraspinale + screening.abdominal + screening.thigh + screening.calf
+            if(athlete.gender == "M"):
+                screening.bodyfat = (0.1051 * (screening.triceps + screening.subscapular + screening.supraspinale + screening.abdominal + screening.thigh + screening.calf)) + 2.585
+            else:
+                screening.bodyfat = (0.097 * (screening.triceps + screening.subscapular + screening.suprailic + screening.abdominal + screening.thigh + screening.chest)) + 3.64
+            
+            screening.bmi = (screening.weight * 703) / ((screening.feet*12+screening.inches)**2)
+
+            screening.save()
+            athlete.screenings.add(screening)
+            athlete.save()
+
+
+            # Render the template depending on the context.
+            return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'group': group})   
+
+        if request.POST.get("submit") == "Choose":
+            athlete_form = RegularAthleteSelectForm()
+            return render(request, 'gym_app/create_screening.html', {'athlete_form': athlete_form, 'control' : control, 'group': group})
+
+        if request.POST.get("submit") == "Create":
+            control = True
+            #screening_form = BodyScreeningForm()
+            return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'group': group})   
+
+    
+    athlete_form = RegularAthleteSelectForm()
+    # Render the template depending on the context.
+    return render(request, 'gym_app/create_screening.html', {'athlete_form': athlete_form, 'control' : control, 'group': group})
+
+@login_required
+def screenings(request):
+    if request.user.is_superuser:   
+        group = 'admin';
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
+
+
+    if group == "personal_trainer":
+        control = False
+        if request.method == 'POST':
+            
+            athlete_form = RegularAthleteSelectForm(data=request.POST)
+
+            if athlete_form.is_valid():
+                control = True
+                user = User.objects.get(username = athlete_form.cleaned_data['athlete'])
+                athlete = RegularAthlete.objects.get(user = user.id)
+
+                screenings = athlete.screenings.all()
+
+                return render(request, 'gym_app/screenings.html', {'screenings': screenings, 'athlete_form': athlete_form, 'control' : control, 'group': group})   
+            else:
+                athlete_form = RegularAthleteSelectForm()
+                return render(request, 'gym_app/screenings.html', {'athlete_form': athlete_form, 'control' : control, 'group': group})
+
+            
+
+        
+        athlete_form = RegularAthleteSelectForm()
+        # Render the template depending on the context.
+        return render(request, 'gym_app/screenings.html', {'athlete_form': athlete_form, 'control' : control, 'group': group})
+    elif group == "regular":
+        control = True
+        screenings = RegularAthlete.objects.get(user = request.user.id).screenings.all()
+        return render(request, 'gym_app/screenings.html', {'screenings': screenings, 'control' : control, 'group': group})   
+
+def delete_screening(request):
+    screening_id = int(request.POST.get("delete"))
+    BodyScreening.objects.filter(id = screening_id).delete()
+    path = '/screenings/'
+    return redirect(path)
+        

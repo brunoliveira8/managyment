@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content%}
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li>           
+            </li>
+            <li><a href="/create_screening">Create screening</a></li>
+            <li><a href="/screenings">Access screenings</a></li>
+          </ul>
+        </div>
+
+
+
+
+       
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h2 class="sub-header">Create body screening</h2>
+          <form id="athlete_form" method="post" action="/create_screening/" enctype="multipart/form-data"> 
+            {% csrf_token %}
+            <table class="table table-striped">
+              <tr>
+                <th>{{ athlete_form.athlete.label }}:</th>
+                <td>{{ athlete_form.athlete }}</td>
+                <td><input type="submit" class="btn btn-primary" name="submit" value="Choose" /></td>
+              </tr>
+            </table>
+          
+
+        </form>
+
+        {% if control %}
+        <form id="screening_form" method="post" action="/create_screening/" enctype="multipart/form-data"> 
+          {% csrf_token %}
+          <input type='hidden' name="username" value="{{ username }}"/>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              {% for field in screening_form %}
+              <tr class="fieldWrapper">
+                <th>{{ field.label_tag }} </th>
+                <td>{{ field }}</td>
+                <td>
+                  {% if field.errors %}
+                  <div class="control-group error">
+                  {% for error in field.errors %}
+                 <label style = 'color: red' class="control-label" >{{ error|escape }}</label>
+                  {% endfor %}
+                 </div>
+                  {% endif %}</td>
+                  </tr>
+                  {% endfor %}
+
+            </table>
+          </div>
+        </div>
+        <input type="submit" class="btn btn-primary" name="submit" value="Create" />
+
+      </form>
+      {% endif %}
+      </div>
+    </div>     
+{% endblock %}

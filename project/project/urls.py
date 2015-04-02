@@ -32,6 +32,9 @@ urlpatterns = patterns('',
     url(r'^workout/days/(?P<day>\d{1})/$', workout_day),
     url(r'^delete_exercise/', delete_exercise),
     url(r'^upgrade_downgrade/', upgrade_downgrade),
+    url(r'^screenings/', screenings),
+    url(r'^create_screening/', create_screening),    
+    url(r'^delete_screening/', delete_screening),
 
 )
 

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
 
@@ -65,37 +66,21 @@ class WorkoutPlan(models.Model):
 
 
 class BodyScreening(models.Model):
-    screeningDate = models.DateField(auto_now_add=True, default=0)
-    triceps = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    biceps = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    subscapular = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    supraspinale = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    suprailic = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    abdominal = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    chest = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    thigh = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    calf = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    screeningDate = models.DateField(default=datetime.now)
+    triceps = models.IntegerField(max_length=3, default=0)
+    biceps = models.IntegerField(max_length=3, default=0)
+    subscapular = models.IntegerField(max_length=3, default=0)
+    supraspinale = models.IntegerField(max_length=3, default=0)
+    suprailic = models.IntegerField(max_length=3, default=0)
+    abdominal = models.IntegerField(max_length=3, default=0)
+    chest = models.IntegerField(max_length=3, default=0)
+    thigh = models.IntegerField(max_length=3, default=0)
+    calf = models.IntegerField(max_length=3, default=0)
     weight = models.IntegerField(max_length=4, default=0)
-    height = models.IntegerField(max_length=4, default=0)
-
-
-    EXCELLENT = 'EX'
-    GOOD = 'GO'
-    AVERAGE = 'AV'
-    BELOW_AVERAGE = 'BA'
-    POOR = 'PO'
-    RESULTS = (
-        (EXCELLENT, 'Excellent'),
-        (GOOD, 'Good'),
-        (AVERAGE, 'Average'),
-        (BELOW_AVERAGE, 'Below Average'),
-        (POOR, 'Poor'),
-    )
-    result = models.CharField(max_length=2,
-                                      choices=RESULTS,
-                                      default=EXCELLENT)
-
-
+    feet = models.IntegerField(max_length=4, default=0)
+    inches = models.IntegerField(max_length=4, default=0)
+    bodyfat = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    bmi = models.DecimalField(max_digits=6, decimal_places=1, default=0)
     def __unicode__(self):
         return u'%d' % (self.id)
 
@@ -141,7 +126,7 @@ class RegularAthlete(models.Model):
                                       default=MALE)
 
     screenings = models.ManyToManyField(BodyScreening)
-    
+
     def __unicode__(self):
         if self.user.username:
             return u'%s' % (self.user.username)

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from gym_app.models import User, RegularAthlete, Tracker, Exercise
+from gym_app.models import User, RegularAthlete, Tracker, Exercise, PersonalTrainer, BodyScreening
 
 class UserForm(forms.ModelForm):
     
@@ -33,10 +33,14 @@ class ChangePasswordForm(forms.ModelForm):
         fields = ('password', )
 
 class RegularAthleteForm(forms.ModelForm):
-
     class Meta:
         model = RegularAthlete
-        fields = ('level', 'training_period')
+        fields = ('level', 'training_period', 'gender')
+
+class PersonalTrainerForm(forms.ModelForm):
+    class Meta:
+        model = PersonalTrainer
+        fields = ('gender',)
 
 class ExerciseForm(forms.ModelForm):
 
@@ -44,13 +48,29 @@ class ExerciseForm(forms.ModelForm):
         model = Exercise
         fields = ('weight','repetition', 'sets')
 
+class BodyScreeningForm(forms.ModelForm):
+    class Meta:
+        model = BodyScreening
+        fields = ('triceps', 'biceps', 'subscapular','supraspinale','suprailic',
+        'abdominal','chest','thigh','calf','weight','feet', 'inches')
+
+class RegularAthleteSelectForm(forms.Form):
+    athlete = forms.ModelChoiceField(queryset=User.objects.filter(groups__name='regular'), empty_label='...', to_field_name='username')
+
 class UserTypeForm(forms.Form):
 
     GROUPS = (
         ('regular', 'Regular'),
         ('personal_trainer', 'Personal Trainer'),
     )
-
     group = forms.ChoiceField(choices=GROUPS, required=True, label='User Type')
+
+class UserGenderForm(forms.Form):
+    GENDERS = (
+        ('F', 'Female'),
+        ('M', 'Male'),
+    )   
+    gender = forms.ChoiceField(widget=forms.RadioSelect, choices=GENDERS, required=True, initial='F')
+
 
 
