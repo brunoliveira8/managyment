@@ -735,7 +735,7 @@ def screenings(request):
         athlete_form = RegularAthleteSelectForm()
         # Render the template depending on the context.
         return render(request, 'gym_app/screenings.html', {'athlete_form': athlete_form, 'control' : control, 'group': group})
-    elif group == "regular":
+    else:
         control = True
         screenings = RegularAthlete.objects.get(user = request.user.id).screenings.all()
         return render(request, 'gym_app/screenings.html', {'screenings': screenings, 'control' : control, 'group': group})   
