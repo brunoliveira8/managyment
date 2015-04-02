@@ -10,6 +10,8 @@ admin.site.register(PersonalTrainer)
 admin.site.register(BodyScreening)
 admin.site.register(WorkoutPlan)
 admin.site.register(Tracker)
+admin.site.register(MailBox)
+admin.site.register(Message)
 
 
 
