@@ -211,6 +211,9 @@ def edit(request):
         if group == "regular":
             athlete = RegularAthlete.objects.get(user = request.user)
             user_logged = RegularAthleteForm(data=request.POST, instance = athlete)
+        elif group == "premium":
+            athlete = RegularAthlete.objects.get(user = request.user)
+            user_logged = RegularAthleteForm(instance = athlete)
         elif group == "personal_trainer":
             personal = PersonalTrainer.objects.get(user = request.user)
             user_logged = PersonalTrainerForm(data=request.POST, instance = personal)
@@ -230,6 +233,9 @@ def edit(request):
         
         user_form = UserEditForm(instance = request.user)
         if group == "regular":
+            athlete = RegularAthlete.objects.get(user = request.user)
+            user_logged = RegularAthleteForm(instance = athlete)
+        elif group == "premium":
             athlete = RegularAthlete.objects.get(user = request.user)
             user_logged = RegularAthleteForm(instance = athlete)
         elif group == "personal_trainer":
@@ -505,6 +511,14 @@ def delete_exercise(request):
 
 @login_required
 def upgrade_downgrade(request):
+
+    if request.user.is_superuser:   
+        group = 'admin'
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name
+        except:
+            group = 'none'
       
     if request.method == 'POST':
         admin = User.objects.get(username = 'admin')
@@ -521,7 +535,7 @@ def upgrade_downgrade(request):
         context = {'resp' : resp}
         return render(request, 'gym_app/upgrade_downgrade.html', context)
             
-    context = {'resp' : 'Your upgrade was requested.'}
+    context = {'resp' : 'Your upgrade was requested.', 'group' : group}
     return render(request, 'gym_app/upgrade_downgrade.html', context)  
 
 @login_required
