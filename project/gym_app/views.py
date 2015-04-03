@@ -465,6 +465,14 @@ def workout_plan(request):
 
 @login_required
 def workout_day(request, day = '1'):
+    if request.user.is_superuser:   
+        group = 'admin';
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
+
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         task_name = request.POST.get('task_name')
@@ -500,7 +508,7 @@ def workout_day(request, day = '1'):
 
         # Render the template depending on the context.
         return render(request, 'gym_app/workout_day.html',
-            {'exercise_form': exercise_form, 'task_list' : t_list, 'exercises' : exercises, 'day': day})  
+            {'exercise_form': exercise_form, 'task_list' : t_list, 'exercises' : exercises, 'day': day,'group' : group})  
 
 
 def delete_exercise(request):
