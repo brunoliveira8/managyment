@@ -16,8 +16,6 @@
 
 
 
-
-       
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h2 class="sub-header">Create body screening</h2>
           <form id="athlete_form" method="post" action="/create_screening/" enctype="multipart/form-data"> 
@@ -60,6 +58,16 @@
         <input type="submit" class="btn btn-primary" name="submit" value="Create" />
 
       </form>
+
+        <script type="text/javascript">
+          window.onload = function(){
+            user_selected = "{{username}}"
+            if(user_selected != "undefined"){
+              $("#id_athlete").val(user_selected);
+            }
+          }
+
+        </script>
       {% endif %}
       </div>
     </div>     

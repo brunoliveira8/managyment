@@ -663,7 +663,7 @@ def create_screening(request):
             else:
                 screening_form = BodyScreeningForm(data=request.POST)
 
-            return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'username':username, 'group': group, 'username': username})   
+            return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'username':username, 'group': group})   
 
      
         if screening_form.is_valid():
@@ -703,7 +703,6 @@ def create_screening(request):
 
         if request.POST.get("submit") == "Create":
             control = True
-            #screening_form = BodyScreeningForm()
             username = User.objects.get(username = request.POST.get('user'))
             return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'group': group, 'username' : username})   
 
