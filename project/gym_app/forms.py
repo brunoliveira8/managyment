@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from gym_app.models import User, RegularAthlete, Tracker, Exercise, PersonalTrainer, BodyScreening
+from django.db.models import Q
 
 class UserForm(forms.ModelForm):
     
@@ -55,7 +56,7 @@ class BodyScreeningForm(forms.ModelForm):
         'abdominal','chest','thigh','calf','weight','feet', 'inches')
 
 class RegularAthleteSelectForm(forms.Form):
-    athlete = forms.ModelChoiceField(queryset=User.objects.filter(groups__name='regular'), empty_label='...', to_field_name='username')
+    athlete = forms.ModelChoiceField(queryset=User.objects.filter(Q(groups__name='regular') | Q(groups__name='premium')), empty_label='...', to_field_name='username')
 
 class UserTypeForm(forms.Form):
 
