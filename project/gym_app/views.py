@@ -663,11 +663,14 @@ def create_screening(request):
             else:
                 screening_form = BodyScreeningForm(data=request.POST)
 
-            return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'username':username, 'group': group})   
+            return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'username':username, 'group': group, 'username': username})   
 
      
         if screening_form.is_valid():
-            user = User.objects.get(username = request.POST.get('username'))
+            try:
+                user = User.objects.get(username = request.POST.get('username'))
+            except:
+                user = User.objects.get(username = request.POST.get('user'))
             screening = screening_form.save(commit=False)
             screening.save()
             athlete = RegularAthlete.objects.get(user = user.id)
@@ -701,7 +704,8 @@ def create_screening(request):
         if request.POST.get("submit") == "Create":
             control = True
             #screening_form = BodyScreeningForm()
-            return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'group': group})   
+            username = User.objects.get(username = request.POST.get('user'))
+            return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'group': group, 'username' : username})   
 
     
     athlete_form = RegularAthleteSelectForm()
