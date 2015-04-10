@@ -23,6 +23,8 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    {% block style %}
+    {% endblock %}
   </head>
 
   <body>
@@ -39,11 +41,13 @@
             <!--logo start-->
             <a href="/index/" class="logo"><b>Managyment</b></a>
             <!--logo end-->
+            {% if user.is_authenticated %}
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
                     <li><a class="logout" href="/logout/">Logout</a></li>
             	</ul>
             </div>
+            {% endif %}
         </header>
       <!--header end-->
       
@@ -51,6 +55,7 @@
       MAIN SIDEBAR MENU
       *********************************************************************************************************************************************************** -->
       <!--sidebar start-->
+      {% if user.is_authenticated %}
       <aside>
           <div id="sidebar"  class="nav-collapse ">
               <!-- sidebar menu start-->
@@ -100,6 +105,7 @@
           </div>
       </aside>
       <!--sidebar end-->
+      {% endif %}
       
       <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
@@ -139,6 +145,7 @@
     <script src="{% static "js/jquery.scrollTo.min.js" %}"></script>
     <script src="{% static "js/jquery.nicescroll.js" %}" type="text/javascript"></script>
     <script src="{% static "js/jquery.sparkline.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.backstretch.min.js" %}"></script>
 
 
     <!--common script for all pages-->
