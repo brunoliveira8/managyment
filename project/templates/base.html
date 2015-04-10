@@ -41,7 +41,7 @@
             <!--logo end-->
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="login.html">Logout</a></li>
+                    <li><a class="logout" href="/logout/">Logout</a></li>
             	</ul>
             </div>
         </header>
@@ -69,67 +69,32 @@
                   <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-desktop"></i>
-                          <span>UI Elements</span>
+                          <span>Workout Plan</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="general.html">General</a></li>
-                          <li><a  href="buttons.html">Buttons</a></li>
-                          <li><a  href="panels.html">Panels</a></li>
+                        <li><a href="/workout_plan/">All</a></li>
+                        <li><a href="/workout/days/1">Day 1</a></li>
+                        <li><a href="/workout/days/2">Day 2</a></li>
+                        <li><a href="/workout/days/3">Day 3</a></li>
+                        <li><a href="/workout/days/4">Day 4</a></li>
+                        <li><a href="/workout/days/5">Day 5</a></li>
+                        <li><a href="/workout/days/6">Day 6</a></li>
+                        <li><a href="/workout/days/7">Day 7</a></li>
                       </ul>
                   </li>
 
                   <li class="sub-menu">
-                      <a href="javascript:;" >
+                      <a href="/edit/">
                           <i class="fa fa-cogs"></i>
-                          <span>Components</span>
+                          <span>Settings</span>
                       </a>
-                      <ul class="sub">
-                          <li><a  href="calendar.html">Calendar</a></li>
-                          <li><a  href="gallery.html">Gallery</a></li>
-                          <li><a  href="todo_list.html">Todo List</a></li>
-                      </ul>
                   </li>
                   <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
+                      <a href="/members/" >
                           <i class="fa fa-book"></i>
-                          <span>Extra Pages</span>
+                          <span>Send Message</span>
                       </a>
-                      <ul class="sub">
-                          <li class="active"><a  href="blank.html">Blank Page</a></li>
-                          <li><a  href="login.html">Login</a></li>
-                          <li><a  href="lock_screen.html">Lock Screen</a></li>
-                      </ul>
                   </li>
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="fa fa-tasks"></i>
-                          <span>Forms</span>
-                      </a>
-                      <ul class="sub">
-                          <li><a  href="form_component.html">Form Components</a></li>
-                      </ul>
-                  </li>
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="fa fa-th"></i>
-                          <span>Data Tables</span>
-                      </a>
-                      <ul class="sub">
-                          <li><a  href="basic_table.html">Basic Table</a></li>
-                          <li><a  href="responsive_table.html">Responsive Table</a></li>
-                      </ul>
-                  </li>
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class=" fa fa-bar-chart-o"></i>
-                          <span>Charts</span>
-                      </a>
-                      <ul class="sub">
-                          <li><a  href="morris.html">Morris</a></li>
-                          <li><a  href="chartjs.html">Chartjs</a></li>
-                      </ul>
-                  </li>
-
               </ul>
               <!-- sidebar menu end-->
           </div>
@@ -157,7 +122,7 @@
       <footer class="site-footer">
           <div class="text-center">
               2014 - Alvarez.is
-              <a href="blank.html#" class="go-top">
+              <a href="" class="go-top">
                   <i class="fa fa-angle-up"></i>
               </a>
           </div>
@@ -170,9 +135,10 @@
     <script src="{% static "js/bootstrap.min.js" %}"></script>
     <script src="{% static "js/jquery-ui-1.9.2.custom.min.js" %}"></script>
     <script src="{% static "js/jquery.ui.touch-punch.min.js" %}"></script>
-    <script class="include" type="text/javascript" src="{ static "js/jquery.dcjqaccordion.2.7.js" %}"></script>
+    <script class="include" type="text/javascript" src="{% static "js/jquery.dcjqaccordion.2.7.js" %}"></script>
     <script src="{% static "js/jquery.scrollTo.min.js" %}"></script>
     <script src="{% static "js/jquery.nicescroll.js" %}" type="text/javascript"></script>
+    <script src="{% static "js/jquery.sparkline.js" %}"></script>
 
 
     <!--common script for all pages-->
