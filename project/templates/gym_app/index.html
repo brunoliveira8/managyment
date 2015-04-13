@@ -117,9 +117,79 @@
             </div><!-- /col-lg-9 END SECTION MIDDLE -->
 
 		{% endif %}
-             
+         
+        {% if group == "personal_trainer" %}   
+           <div class="col-lg-12 main-chart">  
+              <div class="row mt">
+
+              <div class="col-md-6 mb">
+					<!-- WHITE PANEL - TOP USER -->
+					<div class="white-panel pn">
+						<div class="white-header">
+							<div class="profile-01 centered">
+							<a href= "/create_screening/"><p>CREATE SCREENING</p></a>
+						</div>
+						</div>
+						<p><b>Add a new screening to an athlete.</b></p>
+					</div>
+				</div><!-- /col-md-4 -->
+              	
+
+                <div class="col-md-6 mb">
+					<!-- WHITE PANEL - TOP USER -->
+					<div class="white-panel pn">
+						<div class="white-header">
+							<div class="profile-01 centered">
+							<a href= "/screenings/"><p>ACCESS SCREENING</p></a>
+						</div>
+						</div>
+						<p><b>See the screenings of one athlete.</b></p>
+					</div>
+				</div><!-- /col-md-4 -->
+              	
+				                 	
+            </div><!-- /row -->
+
+        </div><!-- /col-lg-9 END SECTION MIDDLE -->  
 					
-                 
+         {% endif %}        
+
+
+         {% if group == "admin" %}   
+           <div class="col-lg-12 main-chart">  
+              <div class="row mt">
+
+              <div class="col-md-6 mb">
+					<!-- WHITE PANEL - TOP USER -->
+					<div class="white-panel pn">
+						<div class="white-header">
+							<div class="profile-01 centered">
+							<a href= "/admin/"><p>DASHBOARD</p></a>
+						</div>
+						</div>
+						<p><b>Manage database information.</b></p>
+					</div>
+				</div><!-- /col-md-4 -->
+              	
+
+                <div class="col-md-6 mb">
+					<!-- WHITE PANEL - TOP USER -->
+					<div class="white-panel pn">
+						<div class="white-header">
+							<div class="profile-01 centered">
+							<a href= "/plan_manage/"><p>PLAN MANAGEMENT</p></a>
+						</div>
+						</div>
+						<p><b>Manage the plan changes.</b></p>
+					</div>
+				</div><!-- /col-md-4 -->
+              	
+				                 	
+            </div><!-- /row -->
+
+        </div><!-- /col-lg-9 END SECTION MIDDLE -->  
+					
+         {% endif %}        
                       
                   
     {% block script %}
