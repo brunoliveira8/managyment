@@ -21,7 +21,8 @@
             <label class="col-sm-2 col-sm-2 control-label">Email:</label>
             <div class="col-lg-10">
                 {{ user_form.email }}
-            </div>    
+            </div>
+            {% if group == 'regular' or group == 'premium' %}    
             <label class="col-sm-2 col-sm-2 control-label">Level:</label>
             <div class="col-lg-10">
                 {{ user_logged.level }}
@@ -29,7 +30,8 @@
             <label class="col-sm-2 col-sm-2 control-label">Training Period:</label>
             <div class="col-lg-10">
                 {{ user_logged.training_period }}
-            </div>    
+            </div> 
+            {% endif %}    
             <label class="col-sm-2 col-sm-2 control-label">Gender:</label>
             <div class="col-lg-10">
                 {{ user_logged.gender }}

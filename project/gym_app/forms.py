@@ -6,8 +6,11 @@ from gym_app.models import User, RegularAthlete, Tracker, Exercise, PersonalTrai
 from django.db.models import Q
 
 class UserForm(forms.ModelForm):
-    
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'class': "form-control"}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))   
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
@@ -46,6 +49,7 @@ class RegularAthleteForm(forms.ModelForm):
         fields = ('level', 'training_period', 'gender')
 
 class PersonalTrainerForm(forms.ModelForm):
+    gender = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=RegularAthlete.GENDERS)
     class Meta:
         model = PersonalTrainer
         fields = ('gender',)
@@ -144,8 +148,7 @@ class UserGenderForm(forms.Form):
         ('M', 'Male'),
     )   
     gender = forms.ChoiceField(
-        widget=forms.RadioSelect(attrs={'class': "form-control" }),
-        choices=GENDERS, 
+        widget=forms.Select(attrs={'class': "form-control"}), choices=GENDERS, 
         required=True, 
         initial='F'
         )

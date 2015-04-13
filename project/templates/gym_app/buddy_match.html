@@ -2,27 +2,29 @@
 {% load staticfiles %}
 
 {% block content%}
+    {%if buddy_matched %}
+    </br>
+    <h3>{{message}}</h3>
 
-        {%if buddy_matched %}
-        </br>
-        <h3>{{message}}</h3>
+    {% else %}
+        <div class="row mt"><div class="col-lg-12"><div class="form-panel">
+            <h4 class="mb"><i class="fa fa-angle-right"></i> Find a workout buddy</h4>
+            <form class="form-horizontal style-form" method="post" action="/send_match/">
+                <div class="form-group">        
+                    {% csrf_token %}
+                    <label class="col-sm-2 col-sm-2 control-label">To:</label> 
+                    <div class="col-lg-10"> 
+                        <select class="form-control" name="username">
+                        {% for user in buddy_list %}
+                            <option value="{{ user.user.email }}">{{ user.user.username }}</option>
+                        {% endfor %}
+                        </select>  
+                    </div>
+                    <br /></br>
+                </div>
+                    <input type="submit" class="btn btn-primary" value="Match!" />
 
-        {% else %}
-        <h1>Find a workout buddy</h1>
-        <br/>
+        </form></div></div></div>
 
-        <form id="msg_form" method="post" action="/send_match/">
-            {% csrf_token %}
-            To:      
-            <select id="list_users" name="username">
-            {% for user in buddy_list %}
-              <option value="{{ user.user.email }}">{{ user.user.username }}</option>
-            {% endfor %}
-            </select>  
-            <br /></br>
-
-            <input type="submit" class="btn btn-primary" value="Match!" />
-        </form>
-
-        {% endif %}
+    {% endif %}
 {% endblock %}
