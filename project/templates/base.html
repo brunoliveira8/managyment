@@ -114,12 +114,16 @@
                   </li>
      
                   {% if group != "admin" %}
-                  <li class="sub-menu">
-                      <a href="/edit/">
-                          <i class="fa fa-cogs"></i>
-                          <span>Settings</span>
-                      </a>
-                  </li>
+                     <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-cogs"></i>
+                            <span>Settings</span>
+                        </a>
+                        <ul class="sub">
+                          <li><a href="/edit/">Profile</a></li>
+                          <li><a href="/change_password/">Account</a></li>
+                        </ul>
+                      </li>
 
                   {% endif %}
               </ul>
