@@ -1,11 +1,13 @@
 from django import forms
+from django.db import models
+from models import RegularAthlete
 from django.contrib.auth.models import User
 from gym_app.models import User, RegularAthlete, Tracker, Exercise, PersonalTrainer, BodyScreening
 from django.db.models import Q
 
 class UserForm(forms.ModelForm):
     
-    password = forms.CharField(widget=forms.PasswordInput())
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
@@ -18,7 +20,9 @@ class UserForm(forms.ModelForm):
         fields = ('username','password', 'email', 'first_name', 'last_name')
 
 class UserEditForm(forms.ModelForm):
-
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'class': "form-control"}))
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
 
@@ -27,13 +31,16 @@ class UserEditForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'email')
 
 class ChangePasswordForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': "form-control"}))
 
     class Meta:
         model = User
         fields = ('password', )
 
 class RegularAthleteForm(forms.ModelForm):
+    level = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=RegularAthlete.LEVELS)
+    training_period = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=RegularAthlete.TRAINING_PERIOD)
+    gender = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=RegularAthlete.GENDERS)
     class Meta:
         model = RegularAthlete
         fields = ('level', 'training_period', 'gender')
@@ -136,7 +143,12 @@ class UserGenderForm(forms.Form):
         ('F', 'Female'),
         ('M', 'Male'),
     )   
-    gender = forms.ChoiceField(widget=forms.RadioSelect, choices=GENDERS, required=True, initial='F')
+    gender = forms.ChoiceField(
+        widget=forms.RadioSelect(attrs={'class': "form-control" }),
+        choices=GENDERS, 
+        required=True, 
+        initial='F'
+        )
 
 
 
