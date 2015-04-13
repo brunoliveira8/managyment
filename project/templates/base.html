@@ -63,13 +63,58 @@
               
               	  <p class="centered"><a href="profile.html"><img src="{% static "img/ui-sam.jpg" %}" class="img-circle" width="60"></a></p>
               	  <h5 class="centered">{{ user.first_name }} {{ user.last_name }}</h5>
-              	  	
+                  {% if group == 'admin' %}             	  	
                   <li class="mt">
                       <a href="/index/">
                           <i class="fa fa-desktop"></i>
                           <span>Home</span>
+
                       </a>
                   </li>
+
+                  <li class="sub-menu">
+                      <a href="/plan_manage/">
+                          <i class="fa fa-cogs"></i>
+                          <span>Plan Management</span>
+                      </a>
+                  </li>
+
+                  {% elif group == 'regular' or group == 'premium' %}
+                  <li class="sub-menu">
+                      <a href="/edit/">
+                          <i class="fa fa-cogs"></i>
+                          <span>Settings</span>
+                      </a>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a href="/change_password/">
+                          <i class="fa fa-cogs"></i>
+                          <span>Change Password</span>
+                      </a>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a href="/buddy_match/">
+                          <i class="fa fa-cogs"></i>
+                          <span>Buddy Match</span>
+                      </a>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a href="/tracker/">
+                          <i class="fa fa-cogs"></i>
+                          <span>Weight Tracker</span>
+                      </a>
+                  </li>
+
+                  <li class="sub-menu">
+                      <a href="/screenings/" >
+                          <i class="fa fa-book"></i>
+                          <span>Screenings</span>
+                      </a>
+                  </li>
+
 
                   <li class="sub-menu">
                       <a href="javascript:;" >
@@ -96,8 +141,9 @@
                   </li>
 
                   <li class="sub-menu">
+
                       <a href="/edit/">
-                          <i class="fa fa-cogs"></i>
+                          <i class="fa fa-dashboard"></i>
                           <span>Settings</span>
                       </a>
                   </li>
