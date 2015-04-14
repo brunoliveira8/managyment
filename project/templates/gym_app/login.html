@@ -1,20 +1,44 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block style %}
+<style>
+body {
+    
+    background-image: url("{% static "img/login-bg.jpg" %}");
+}
+</style>
+{%endblock%}
+
 {% block content%}
-        <h1>Login</h1>
+        
+      <div id="login-page"  class = "col-md-9">
+              <form class="form-login" method="post" action="/login/">
+                {% csrf_token %}
+                <h2 class="form-login-heading">sign in now</h2>
+                <div class="login-wrap">
+                    <input type="text" name="username" class="form-control" placeholder="User ID" autofocus>
+                    <br>
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                      {% if invalid %}
+                            <br><p align = "center" style="color : red ">Incorrect username or password.</p>
+                         {% endif %}
+                    <input type="submit" class="btn btn-theme btn-block"  value="SIGN IN" />
+                    <hr>
+                    
+                    <div class="registration">
+                       
+                        Don't have an account yet?<br/>
+                        <a class="" href="/register/">
+                            Create an account
+                        </a>
+                    </div>
+        
+                </div>
+      
+              </form>  
+      </div>
 
-        <form id="login_form" method="post" action="/login/">
-            {% csrf_token %}
-            Username: <input type="text" name="username" value="" size="50" />
-            <br />
-            Password: <input type="password" name="password" value="" size="50" />
-            <br /></br>
 
-            <input type="submit" class="btn btn-primary" value="Submit" />
-        </form>
 
-        {% if invalid %}
-    		Incorrect username or password. 
-		{% endif %}
 {% endblock %}

@@ -1,102 +1,199 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
     <title>Managyment</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-
+    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
+    <!--external css-->
+    <link href="{% static "font-awesome/css/font-awesome.css" %}" rel="stylesheet">
+    <link href="{% static "css/zabuto_calendar.css" %}" rel="stylesheet">
+    <link href="{% static "js/gritter/css/jquery.gritter.css" %}" rel="stylesheet">
+    <link href="{% static "lineicons/style.css" %}" rel="stylesheet">  
+        
     <!-- Custom styles for this template -->
-    <link href="{% static "css/starter-template.css" %}" rel="stylesheet">
-     <!-- Custom styles for this template -->
-    <link href="{% static "css/dashboard.css" %}" rel="stylesheet">
-
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+    <link href="{% static "css/style-responsive.css" %}" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    {% block style %}
+    {% endblock %}
   </head>
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/index">Managyment</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            
-            
+  <section id="container" >
+      <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+      <header class="header black-bg">
+              <div class="sidebar-toggle-box">
+                  <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+              </div>
+            <!--logo start-->
+            <a href="/index/" class="logo"><b>Managyment</b></a>
+            <!--logo end-->
             {% if user.is_authenticated %}
-              <li class="active"><a href="/index">Hello {{ user.first_name }}!</a></li>
-                {% if group == 'admin' %}
-                  <li><a href="/admin/">Dashboard</a></li>
-                  <li><a href="/members">Send Message</a></li>
-                  <li><a href="/plan_manage">Plan Management</a></li>
-                  <li><a href="/logout/">Logout</a></li>
-                {% elif group == 'regular' %}
-                  <li><a href="/edit">Edit</a></li>
-                  <li><a href="/change_password">Change Password</a></li>
-                  <li><a href="/buddy_match">Buddy Match</a></li>
-                  <li><a href="/tracker">Weight Tracker</a></li>
-                  <li><a href="/members">Send Message</a></li>
-                  <li><a href="/workout_plan">Workout Plan</a></li>
-                  <li><a href="/logout/">Logout</a></li>
-                {% elif group == 'premium' %}
-                  <li><a href="/edit">Edit</a></li>
-                  <li><a href="/change_password">Change Password</a></li>
-                  <li><a href="/buddy_match">Buddy Match</a></li>
-                  <li><a href="/tracker">Weight Tracker</a></li>
-                  <li><a href="/members">Send Message</a></li>
-                  <li><a href="/screenings">Screenings</a></li>
-                  <li><a href="/workout_plan">Workout Plan</a></li>
-                  <li><a href="/logout/">Logout</a></li>
-                {% elif group == 'personal_trainer' %}
-                  <li><a href="/edit">Edit</a></li>
-                  <li><a href="/screenings">Screenings</a></li>
-                  <li><a href="/members">Send Message</a></li>
-                  <li><a href="/logout/">Logout</a></li>
-                {% endif %}
 
-            {% else %}
-              <li class="active"><a href="/index">Home</a></li>
-              <li><a href="/register/">Register Here</a></li>
-              <li><a href="/login/">Login</a></li>
+            <div class="top-menu">
+            	<ul class="nav pull-right top-menu">
+                    <li><a class="logout" href="/logout/">Logout</a></li>
+            	</ul>
+            </div>
             {% endif %}
+        </header>
+      <!--header end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+      <!--sidebar start-->
+      {% if user.is_authenticated %}
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion">
+              
+              	  <p class="centered"><a href="profile.html"><img src="{% static "img/ui-sam.jpg" %}" class="img-circle" width="60"></a></p>
+              	  <h5 class="centered">{{ user.first_name }} {{ user.last_name }}</h5>
+         	  	
+                  <li class="mt">
+                      <a href="/index/">
+                          <i class="fa fa-desktop"></i>
+                          <span>Home</span>
 
+                      </a>
+                  </li>
+                  {% if group == "regular" or group == "premium" %}
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-tasks"></i>
+                          <span>Workout Plan</span>
+                      </a>
+                      <ul class="sub">
+                        <li><a href="/workout_plan/">All</a></li>
+                        <li><a href="/workout/days/1">Day 1</a></li>
+                        <li><a href="/workout/days/2">Day 2</a></li>
+                        <li><a href="/workout/days/3">Day 3</a></li>
+                        <li><a href="/workout/days/4">Day 4</a></li>
+                        <li><a href="/workout/days/5">Day 5</a></li>
+                        <li><a href="/workout/days/6">Day 6</a></li>
+                        <li><a href="/workout/days/7">Day 7</a></li>
+                      </ul>
+                  </li>
+                  {% endif %} 
 
-           
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+                  {% if group == "personal_trainer" or group == "premium" %}
+                  <li class="sub-menu">
+                      <a href="javascript:;" >
+                          <i class="fa fa-tasks"></i>
+                          <span>Screenings</span>
+                      </a>
+                      <ul class="sub">
+                        <li><a href="/create_screening/">Create Screening</a></li>
+                        <li><a href="/screenings/">Access Screenings</a></li>
+                      </ul>
+                  </li>
 
-    <div class="container">
+                  {% endif %} 
+                   <li class="sub-menu">
+                      <a href="/members/" >
+                          <i class="fa fa-envelope"></i>
+                          <span>Send Message</span>
+                      </a>
+                  </li>
+     
+                  {% if group != "admin" %}
+                     <li class="sub-menu">
+                        <a href="javascript:;" >
+                            <i class="fa fa-cogs"></i>
+                            <span>Settings</span>
+                        </a>
+                        <ul class="sub">
+                          <li><a href="/edit/">Profile</a></li>
+                          <li><a href="/change_password/">Account</a></li>
+                        </ul>
+                      </li>
 
-      <div class="starter-template">
-        {% block content %}
-        {% endblock %}
-      </div>
+                  {% endif %}
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
+      {% endif %}
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper site-min-height">
+          	<div class="row mt">
+          		<div class="col-lg-12">
+          		{% block content %}
+              {% endblock %}
+          		</div>
+          	</div>
+			
+		</section><! --/wrapper -->
+      </section><!-- /MAIN CONTENT -->
 
-    </div><!-- /.container -->
+      <!--main content end-->
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2015 - Team 11
+              <a href="" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="{% static "js/jquery.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/jquery-ui-1.9.2.custom.min.js" %}"></script>
+    <script src="{% static "js/jquery.ui.touch-punch.min.js" %}"></script>
+    <script class="include" type="text/javascript" src="{% static "js/jquery.dcjqaccordion.2.7.js" %}"></script>
+    <script src="{% static "js/jquery.scrollTo.min.js" %}"></script>
+    <script src="{% static "js/jquery.nicescroll.js" %}" type="text/javascript"></script>
+    <script src="{% static "js/jquery.sparkline.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/jquery.backstretch.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/gritter/js/jquery.gritter.js" %}"></script>
+
+
+    <!--common script for all pages-->
+
+    <script src="{% static "js/common-scripts.js" %}"></script>
+
+    <!--script for this page-->
+    
+  <script>
+      //custom select box
+
+      $(function(){
+          $('select.styled').customSelect();
+      });
+
+  </script>
+
+  {% block script %}
+
+  {% endblock %}
+
   </body>
 </html>
