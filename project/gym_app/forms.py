@@ -78,11 +78,10 @@ class AthleteSelectForm(forms.Form):
 class UserTypeForm(forms.Form):
 
     GROUPS = (
-        ('regular', 'Regular'),
-        ('premium', 'Premium'),
+        ('regular', 'Athlete'),
         ('personal_trainer', 'Personal Trainer'),
     )
-    group = forms.ChoiceField(choices=GROUPS, required=True, label='User Type')
+    group = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}),choices=GROUPS, required=True, label='User Type')
 
 class PaymentForm(forms.Form):
     owner = forms.CharField(
