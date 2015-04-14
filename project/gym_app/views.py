@@ -73,6 +73,7 @@ def register(request):
 
             # Now we hash the password with the set_password method.
             # Once hashed, we can update the user object.
+            user.is_active = False
             user.set_password(user.password)
             user.save()
 
@@ -109,6 +110,9 @@ def register(request):
             mail_box = MailBox()
             mail_box.owner = user.username
             mail_box.save()
+
+            mail_box_admin = MailBox.objects.get(owner = "admin")
+            mail_box_admin.add_msg('SIGN UP', "Sign Up Request.", user.username)
 
             # Update our variable to tell the template registration was successful.
             registered = True
@@ -160,7 +164,7 @@ def user_login(request):
                 return HttpResponseRedirect('/index/')
             else:
                 # An inactive account was used - no logging in!
-                return HttpResponse("Your account is disabled.")
+                return HttpResponseRedirect('/permission_denied/')
         else:
             # Bad login details were provided. So we can't log the user in.
             return render(request, 'gym_app/login.html', {'invalid': True })
@@ -566,7 +570,7 @@ def plan_manage(request):
     context = {'messages' : messages, 'group' : group}
     return render(request, 'gym_app/plan_manage.html', context)
 
-@login_required
+
 def permission_denied(request):
 
     if request.user.is_superuser:   
@@ -595,9 +599,12 @@ def change_upgrade_downgrade(request):
     if change_type == 'UPGRADE':
         user.groups.remove(Group.objects.get(name = 'regular'))
         user.groups.add(Group.objects.get(name = 'premium'))
-    else:
+    elif change_type == 'DOWNGRADE':
         user.groups.remove(Group.objects.get(name = 'premium'))
         user.groups.add(Group.objects.get(name = 'regular'))
+    else:
+        user.is_active = True
+        user.save()
     MailBox.objects.get(owner = 'admin').del_msg(message_id)
     return HttpResponseRedirect('/plan_manage/')  
 
@@ -621,16 +628,8 @@ def payment(request):
 
         # If the two forms are valid...
         if payment_form.is_valid():
-            admin = User.objects.get(username = 'admin')
-            admin_email = admin.email
-            to_email = admin.email
             mail_box = MailBox.objects.get(owner = "admin")
-            
-  
-            msg = "The user {0} wish an upgrade account!".format(request.user.username)
-            sbj = "Upgrade Request."
-            #send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
-            mail_box.add_msg('UPGRADE', sbj, request.user.username)
+            mail_box.add_msg('UPGRADE', "Upgrade Request.", request.user.username)
             
             return HttpResponseRedirect('/upgrade_downgrade') 
             
