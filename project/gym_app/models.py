@@ -86,7 +86,7 @@ class BodyScreening(models.Model):
 
 
 
-class RegularAthlete(models.Model):
+class Athlete(models.Model):
     user = models.OneToOneField(User) #Inheritance of User model
     tracker = models.OneToOneField(Tracker)
     workout_plan = models.OneToOneField(WorkoutPlan)

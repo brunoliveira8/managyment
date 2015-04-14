@@ -2,8 +2,8 @@ from __future__ import division
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.decorators import login_required, permission_required
-from gym_app.models import RegularAthlete, Task, User, Tracker, Exercise, WorkoutPlan, MailBox,  PersonalTrainer, BodyScreening
+from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
+from gym_app.models import Athlete, Task, User, Tracker, Exercise, WorkoutPlan, MailBox,  PersonalTrainer, BodyScreening
 from gym_app.forms import *
 from datetime import datetime
 from decimal import Decimal
@@ -30,7 +30,7 @@ def index(request):
     context_dict = {'boldmessage': "Excuse us, programmers working :)", 'group': group}
     return render(request, 'gym_app/index.html', context_dict)
 
-
+@login_required
 def workout(request):
     # Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
@@ -86,8 +86,8 @@ def register(request):
             #profile = profile_form.save(commit=False)
             #profile.user = user
 
-            if group.name == "regular":
-                athlete = RegularAthlete()
+            if group.name == "regular" or group.name == "premium":
+                athlete = Athlete()
                 workout_plan = WorkoutPlan()
                 workout_plan.save()
                 tracker = Tracker()
@@ -208,12 +208,9 @@ def edit(request):
         user = User.objects.get(username = request.user.username)
         user_form = UserEditForm(data=request.POST, instance = user)
 
-        if group == "regular":
-            athlete = RegularAthlete.objects.get(user = request.user)
-            user_logged = RegularAthleteForm(data=request.POST, instance = athlete)
-        elif group == "premium":
-            athlete = RegularAthlete.objects.get(user = request.user)
-            user_logged = RegularAthleteForm(instance = athlete)
+        if group == "regular" or group == "premium":
+            athlete = Athlete.objects.get(user = request.user)
+            user_logged = AthleteForm(data=request.POST, instance = athlete)
         elif group == "personal_trainer":
             personal = PersonalTrainer.objects.get(user = request.user)
             user_logged = PersonalTrainerForm(data=request.POST, instance = personal)
@@ -233,11 +230,11 @@ def edit(request):
         
         user_form = UserEditForm(instance = request.user)
         if group == "regular":
-            athlete = RegularAthlete.objects.get(user = request.user)
-            user_logged = RegularAthleteForm(instance = athlete)
+            athlete = Athlete.objects.get(user = request.user)
+            user_logged = AthleteForm(instance = athlete)
         elif group == "premium":
-            athlete = RegularAthlete.objects.get(user = request.user)
-            user_logged = RegularAthleteForm(instance = athlete)
+            athlete = Athlete.objects.get(user = request.user)
+            user_logged = AthleteForm(instance = athlete)
         elif group == "personal_trainer":
             personal = PersonalTrainer.objects.get(user = request.user)
             user_logged = PersonalTrainerForm(instance = personal)
@@ -289,6 +286,7 @@ def change_password(request):
             {'user_form': user_form, 'group': group} )     
 
 @login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='regular') | Q(name='premium')).count() == 1, login_url='/permission_denied/')
 def tracker(request):
     if request.user.is_superuser:   
         group = 'admin';
@@ -301,7 +299,7 @@ def tracker(request):
     #User and tracker created at same time
     #Should always have the same ID but may be changed later
     user = User.objects.get(username = request.user.username)
-    athlete = RegularAthlete.objects.get(user = request.user)
+    athlete = Athlete.objects.get(user = request.user)
     tracker = athlete.tracker
     progress=0
     result=0
@@ -368,6 +366,7 @@ def members(request):
 
     return render(request, 'gym_app/members.html', context)
 
+@login_required
 def message(request):
 
     # If the request is a HTTP POST, try to pull out the relevant information.
@@ -387,6 +386,7 @@ def message(request):
 
 
 @login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='regular') | Q(name='premium')).count() == 1, login_url='/permission_denied/')
 def buddy_match(request):
 
     if request.user.is_superuser:   
@@ -400,8 +400,8 @@ def buddy_match(request):
     # Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
     user = User.objects.get(username = request.user.username)
-    athlete = RegularAthlete.objects.get(user = request.user)    
-    buddy_list = RegularAthlete.objects.filter(level = athlete.level, training_period = athlete.training_period).exclude(user = user)
+    athlete = Athlete.objects.get(user = request.user)    
+    buddy_list = Athlete.objects.filter(level = athlete.level, training_period = athlete.training_period).exclude(user = user)
     buddy_matched = 0;
     context = {'buddy_list' : buddy_list, 'buddy_matched' : buddy_matched, 'group': group}
 
@@ -435,6 +435,8 @@ def message_match(request):
         # Note that the first parameter is the template we wish to use.
         return render(request, 'gym_app/buddy_match.html', context)
 
+@login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='regular') | Q(name='premium')).count() == 1, login_url='/permission_denied/')
 def workout_plan(request):
 
     if request.user.is_superuser:   
@@ -446,7 +448,7 @@ def workout_plan(request):
             group = 'none'
 
     user = User.objects.get(username = request.user.username)
-    athlete = RegularAthlete.objects.get(user = request.user)
+    athlete = Athlete.objects.get(user = request.user)
     exercises_day1 = athlete.workout_plan.exercises.filter( day = 1)
     exercises_day2 = athlete.workout_plan.exercises.filter( day = 2)
     exercises_day3 = athlete.workout_plan.exercises.filter( day = 3)
@@ -464,6 +466,7 @@ def workout_plan(request):
 
 
 @login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='regular') | Q(name='premium')).count() == 1, login_url='/permission_denied/')
 def workout_day(request, day = '1'):
     if request.user.is_superuser:   
         group = 'admin';
@@ -478,7 +481,7 @@ def workout_day(request, day = '1'):
         task_name = request.POST.get('task_name')
         user = User.objects.get(username = request.user.username)
         exercise_form = ExerciseForm(data=request.POST)
-        athlete = RegularAthlete.objects.get(user = request.user)
+        athlete = Athlete.objects.get(user = request.user)
 
         # If the forms are valid...
         if exercise_form.is_valid():
@@ -502,7 +505,7 @@ def workout_day(request, day = '1'):
     else:
         t_list = Task.objects.all()
         #user = User.objects.get(username = request.user.username)
-        athlete = RegularAthlete.objects.get(user = request.user)
+        athlete = Athlete.objects.get(user = request.user)
         exercises = athlete.workout_plan.exercises.filter( day = int(day))
         exercise_form = ExerciseForm()
 
@@ -518,6 +521,7 @@ def delete_exercise(request):
     return redirect(path)
 
 @login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='regular') | Q(name='premium')).count() == 1, login_url='/permission_denied/')
 def upgrade_downgrade(request):
 
     if request.user.is_superuser:   
@@ -535,7 +539,7 @@ def upgrade_downgrade(request):
         mail_box = MailBox.objects.get(owner = "admin")
         
         resp = 'Your downgrade was requested.'
-        msg = "The user {0} wish a downgrade account!".format(request.user.username)
+        msg = "The user {0} wants an account downgrade!".format(request.user.username)
         sbj = "Downgrade Request"
         #send_mail(sbj, msg, admin_email,[to_email], fail_silently=False)
         mail_box.add_msg('DOWNGRADE', sbj, request.user.username)
@@ -564,7 +568,16 @@ def plan_manage(request):
 
 @login_required
 def permission_denied(request):
-    return render(request, 'gym_app/permission_denied.html')
+
+    if request.user.is_superuser:   
+        group = 'admin'
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name
+        except:
+            group = 'none'
+
+    return render(request, 'gym_app/permission_denied.html', {'group' : group})
 
 @login_required  
 @permission_required('auth.permission.is_admin', login_url='/permission_denied/')
@@ -590,6 +603,7 @@ def change_upgrade_downgrade(request):
 
 
 @login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='regular')).count() == 1, login_url='/permission_denied/')
 def payment(request):
     
     if request.user.is_superuser:   
@@ -631,6 +645,7 @@ def payment(request):
     return render(request, 'gym_app/payment.html', context) 
 
 @login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='personal_trainer')).count() == 1, login_url='/permission_denied/')
 def create_screening(request):
 
     if request.user.is_superuser:   
@@ -647,7 +662,7 @@ def create_screening(request):
 
     if request.method == 'POST':
         
-        athlete_form = RegularAthleteSelectForm(data=request.POST)
+        athlete_form = AthleteSelectForm(data=request.POST)
         screening_form = BodyScreeningForm(data=request.POST)
 
         if athlete_form.is_valid():
@@ -656,7 +671,7 @@ def create_screening(request):
             username = athlete_form.cleaned_data['athlete']
 
             user = User.objects.get(username = username)
-            screenings = RegularAthlete.objects.get(user = user.id).screenings.all()
+            screenings = Athlete.objects.get(user = user.id).screenings.all()
             if len(screenings) > 0:
                 current_screening = screenings[len(screenings)-1]
                 screening_form = BodyScreeningForm(instance=current_screening)
@@ -673,7 +688,7 @@ def create_screening(request):
                 user = User.objects.get(username = request.POST.get('user'))
             screening = screening_form.save(commit=False)
             screening.save()
-            athlete = RegularAthlete.objects.get(user = user.id)
+            athlete = Athlete.objects.get(user = user.id)
 
             athlete.tracker.previousWeight=athlete.tracker.currentWeight
             athlete.tracker.currentWeight=screening.weight
@@ -698,7 +713,7 @@ def create_screening(request):
             return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'group': group})   
 
         if request.POST.get("submit") == "Choose":
-            athlete_form = RegularAthleteSelectForm()
+            athlete_form = AthleteSelectForm()
             return render(request, 'gym_app/create_screening.html', {'athlete_form': athlete_form, 'control' : control, 'group': group})
 
         if request.POST.get("submit") == "Create":
@@ -707,11 +722,12 @@ def create_screening(request):
             return render(request, 'gym_app/create_screening.html', {'screening_form': screening_form, 'athlete_form': athlete_form, 'control' : control, 'group': group, 'username' : username})   
 
     
-    athlete_form = RegularAthleteSelectForm()
+    athlete_form = AthleteSelectForm()
     # Render the template depending on the context.
     return render(request, 'gym_app/create_screening.html', {'athlete_form': athlete_form, 'control' : control, 'group': group})
 
 @login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='premium') | Q(name='personal_trainer')).count() == 1, login_url='/permission_denied/')
 def screenings(request):
     if request.user.is_superuser:   
         group = 'admin';
@@ -726,31 +742,33 @@ def screenings(request):
         control = False
         if request.method == 'POST':
             
-            athlete_form = RegularAthleteSelectForm(data=request.POST)
+            athlete_form = AthleteSelectForm(data=request.POST)
 
             if athlete_form.is_valid():
                 control = True
                 user = User.objects.get(username = athlete_form.cleaned_data['athlete'])
-                athlete = RegularAthlete.objects.get(user = user.id)
+                athlete = Athlete.objects.get(user = user.id)
 
                 screenings = athlete.screenings.all()
 
                 return render(request, 'gym_app/screenings.html', {'screenings': screenings, 'athlete_form': athlete_form, 'control' : control, 'group': group})   
             else:
-                athlete_form = RegularAthleteSelectForm()
+                athlete_form = AthleteSelectForm()
                 return render(request, 'gym_app/screenings.html', {'athlete_form': athlete_form, 'control' : control, 'group': group})
 
             
 
         
-        athlete_form = RegularAthleteSelectForm()
+        athlete_form = AthleteSelectForm()
         # Render the template depending on the context.
         return render(request, 'gym_app/screenings.html', {'athlete_form': athlete_form, 'control' : control, 'group': group})
     else:
         control = True
-        screenings = RegularAthlete.objects.get(user = request.user.id).screenings.all()
+        screenings = Athlete.objects.get(user = request.user.id).screenings.all()
         return render(request, 'gym_app/screenings.html', {'screenings': screenings, 'control' : control, 'group': group})   
 
+@login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='personal_trainer')).count() == 1, login_url='/permission_denied/')
 def delete_screening(request):
     screening_id = int(request.POST.get("delete"))
     BodyScreening.objects.filter(id = screening_id).delete()
