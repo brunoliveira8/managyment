@@ -55,7 +55,9 @@ class PersonalTrainerForm(forms.ModelForm):
         fields = ('gender',)
 
 class ExerciseForm(forms.ModelForm):
-
+    weight = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    repetition = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    sets = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
     class Meta:
         model = Exercise
         fields = ('weight','repetition', 'sets')
