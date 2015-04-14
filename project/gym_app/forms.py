@@ -69,7 +69,7 @@ class BodyScreeningForm(forms.ModelForm):
         'abdominal','chest','thigh','calf','weight','feet', 'inches')
 
 class RegularAthleteSelectForm(forms.Form):
-    athlete = forms.ModelChoiceField(queryset=User.objects.filter(Q(groups__name='regular') | Q(groups__name='premium')), empty_label='...', to_field_name='username')
+    athlete = forms.ModelChoiceField(queryset=User.objects.filter(Q(groups__name='regular') | Q(groups__name='premium')), empty_label='...', to_field_name='username', widget=forms.Select(attrs={'class': "form-control"}))
 
 class UserTypeForm(forms.Form):
 
