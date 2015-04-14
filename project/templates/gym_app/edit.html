@@ -40,19 +40,5 @@
         <!-- Provide a button to click to submit the form. -->
         <input type="submit" class="btn btn-primary" name="edit" value="Save" />
     </form><br>
-        
-    {% if group == 'regular' %}
-     <form class="form-horizontal style-form" method="get" action="/payment/"
-            enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="submit" class="btn btn-primary" name="submit" value="Upgrade" />
-    </form>
-    {% elif group == 'premium' %}
-     <form class="form-horizontal style-form" method="post" action="/upgrade_downgrade/"
-            enctype="multipart/form-data">
-            {% csrf_token %}
-        <input type="submit" class="btn btn-primary" name="submit" value="Downgrade" />
-    </form>
-    {% endif %} 
 </div></div></div>
 {% endblock %}

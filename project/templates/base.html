@@ -94,7 +94,7 @@
                   </li>
                   {% endif %} 
 
-                  {% if group == "personal_trainer" or group == "premium" %}
+                  {% if group == "personal_trainer" %}
                   <li class="sub-menu">
                       <a href="javascript:;" >
                           <i class="fa fa-tasks"></i>
@@ -105,8 +105,17 @@
                         <li><a href="/screenings/">Access Screenings</a></li>
                       </ul>
                   </li>
+                  {% endif %}
 
-                  {% endif %} 
+                  {% if group == "premium" %}
+                  <li class="sub-menu">
+                      <a href="/screenings/" >
+                          <i class="fa fa-envelope"></i>
+                          <span>My Screenings</span>
+                      </a>
+                  </li>
+                  {% endif %}
+
                    <li class="sub-menu">
                       <a href="/members/" >
                           <i class="fa fa-envelope"></i>
