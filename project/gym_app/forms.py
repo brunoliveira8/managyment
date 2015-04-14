@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from gym_app.models import User, RegularAthlete, Tracker, Exercise, PersonalTrainer, BodyScreening
+from gym_app.models import User, Athlete, Tracker, Exercise, PersonalTrainer, BodyScreening
 from django.db.models import Q
 
 class UserForm(forms.ModelForm):
@@ -33,9 +33,9 @@ class ChangePasswordForm(forms.ModelForm):
         model = User
         fields = ('password', )
 
-class RegularAthleteForm(forms.ModelForm):
+class AthleteForm(forms.ModelForm):
     class Meta:
-        model = RegularAthlete
+        model = Athlete
         fields = ('level', 'training_period', 'gender')
 
 class PersonalTrainerForm(forms.ModelForm):
@@ -55,13 +55,14 @@ class BodyScreeningForm(forms.ModelForm):
         fields = ('triceps', 'biceps', 'subscapular','supraspinale','suprailic',
         'abdominal','chest','thigh','calf','weight','feet', 'inches')
 
-class RegularAthleteSelectForm(forms.Form):
+class AthleteSelectForm(forms.Form):
     athlete = forms.ModelChoiceField(queryset=User.objects.filter(Q(groups__name='regular') | Q(groups__name='premium')), empty_label='...', to_field_name='username')
 
 class UserTypeForm(forms.Form):
 
     GROUPS = (
         ('regular', 'Regular'),
+        ('premium', 'Premium'),
         ('personal_trainer', 'Personal Trainer'),
     )
     group = forms.ChoiceField(choices=GROUPS, required=True, label='User Type')
