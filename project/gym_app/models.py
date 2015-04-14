@@ -95,7 +95,7 @@ class Athlete(models.Model):
     INTERMEDIATE = 'IN'
     ADVANCED = 'AD'
     LEVELS = (
-        (BEGGINER, 'Begginer'),
+        (BEGGINER, 'Beginner'),
         (INTERMEDIATE, 'Intermediate'),
         (ADVANCED, 'Advanced'),
     )

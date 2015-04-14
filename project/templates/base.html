@@ -65,7 +65,7 @@
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
               
-              	  <p class="centered"><a href="profile.html"><img src="{% static "img/ui-sam.jpg" %}" class="img-circle" width="60"></a></p>
+              	  <p class="centered"><a href="profile.html"><i></i><img src="{% static "img/ui-sam.jpg" %}" class="img-circle" width="60"></a></p>
               	  <h5 class="centered">{{ user.first_name }} {{ user.last_name }}</h5>
          	  	
                   <li class="mt">
@@ -82,14 +82,14 @@
                           <span>Workout Plan</span>
                       </a>
                       <ul class="sub">
-                        <li><a href="/workout_plan/">All</a></li>
-                        <li><a href="/workout/days/1">Day 1</a></li>
-                        <li><a href="/workout/days/2">Day 2</a></li>
-                        <li><a href="/workout/days/3">Day 3</a></li>
-                        <li><a href="/workout/days/4">Day 4</a></li>
-                        <li><a href="/workout/days/5">Day 5</a></li>
-                        <li><a href="/workout/days/6">Day 6</a></li>
-                        <li><a href="/workout/days/7">Day 7</a></li>
+                        <li><a href="/workout_plan/"><i class="fa fa-calendar"></i><span>Whole Week</span></a></li>
+                        <li><a href="/workout/days/1"><i class="fa fa-calendar-o"></i><span>Day 1</span></a></li>
+                        <li><a href="/workout/days/2"><i class="fa fa-calendar-o"></i><span>Day 2</span></a></li>
+                        <li><a href="/workout/days/3"><i class="fa fa-calendar-o"></i><span>Day 3</span></a></li>
+                        <li><a href="/workout/days/4"><i class="fa fa-calendar-o"></i><span>Day 4</span></a></li>
+                        <li><a href="/workout/days/5"><i class="fa fa-calendar-o"></i><span>Day 5</span></a></li>
+                        <li><a href="/workout/days/6"><i class="fa fa-calendar-o"></i><span>Day 6</span></a></li>
+                        <li><a href="/workout/days/7"><i class="fa fa-calendar-o"></i><span>Day 7</span></a></li>
                       </ul>
                   </li>
                   {% endif %} 
@@ -97,23 +97,40 @@
                   {% if group == "personal_trainer" %}
                   <li class="sub-menu">
                       <a href="javascript:;" >
-                          <i class="fa fa-tasks"></i>
+                          <i class="fa fa fa-bar-chart-o"></i>
                           <span>Screenings</span>
                       </a>
                       <ul class="sub">
-                        <li><a href="/create_screening/">Create Screening</a></li>
-                        <li><a href="/screenings/">Access Screenings</a></li>
+                        <li><a href="/create_screening/"><i class="fa fa-plus-square"></i><span>Create screening</span></a></a></li>
+                        <li><a href="/screenings/"><i class="fa fa-list"></i><span>Access Screenings</span></a></a></li>
                       </ul>
                   </li>
                   {% endif %}
 
-                  {% if group == "premium" %}
-                  <li class="sub-menu">
+                  {% if group == "premium" or group == "regular" %}
+
+                    {% if group == "premium" %}
+                    <li class="sub-menu">
                       <a href="/screenings/" >
-                          <i class="fa fa-envelope"></i>
+                          <i class="fa fa-bar-chart-o"></i>
                           <span>My Screenings</span>
                       </a>
-                  </li>
+                    </li>
+                    {% endif %}
+                    <li class="sub-menu">
+                        <a href="/buddy_match/" >
+                            <i class="fa fa-users"></i>
+                            <span>Buddy match</span>
+                        </a>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="/tracker/">
+                            <i class="fa fa-tachometer"></i>
+                            <span>Weight Tracker</span>
+                        </a>
+                    </li>
+                  
+
                   {% endif %}
 
                    <li class="sub-menu">
@@ -122,6 +139,23 @@
                           <span>Send Message</span>
                       </a>
                   </li>
+
+                  {% if group == "admin" %}
+                    <li class="sub-menu">
+                      <a href="/plan_manage/" >
+                          <i class="fa fa-setting"></i>
+                          <span>Accounts Management</span>
+                      </a>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="/admin/" >
+                            <i class="fa fa-envelope"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                  {% endif %}
+
      
                   {% if group != "admin" %}
                      <li class="sub-menu">
@@ -130,8 +164,7 @@
                             <span>Settings</span>
                         </a>
                         <ul class="sub">
-                          <li><a href="/edit/">Profile</a></li>
-                          <li><a href="/change_password/">Account</a></li>
+                          <li><a href="/change_password/"><i class="fa fa-wrench"></i><span>Account</span></a></li>
                         </ul>
                       </li>
 
