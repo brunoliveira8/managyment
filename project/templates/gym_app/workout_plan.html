@@ -4,183 +4,206 @@
 {% block content%}
 {% csrf_token %}
 
-    <div class="container-fluid">
-      <div class="row">
-          <h2 class="sub-header" align= "center">Day 1</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Weight</th>
-                    <th>Repetition</th>
-                    <th>Sets</th>
-                </tr>
-              </thead>
-              <tbody>
-                
-                 {% for exercise in day1 %}
-                        <tr>
-                            <td align="left">{{exercise.task.name}}</td>
-                            <td align="left">{{exercise.weight}}</td>
-                            <td align="left">{{exercise.repetition}}</td>
-                            <td align="left">{{exercise.sets}}</td>
-                        </tr>
-                {% endfor %}         
-              </tbody>
-            </table>
-          </div>
-    
-            <h2 class="sub-header"> Day 2</h2>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Weight</th>
-                        <th>Repetition</th>
-                        <th>Sets</th>
-                    </tr>
-              </thead>
-              <tbody>
-                
-                 {% for exercise in day2 %}
-                        <tr>
-                            <td align="left">{{exercise.task.name}}</td>
-                            <td align="left">{{exercise.weight}}</td>
-                            <td align="left">{{exercise.repetition}}</td>
-                            <td align="left">{{exercise.sets}}</td>
-                        </tr>
-                {% endfor %}         
-              </tbody>
-            </table>
-          </div>
+  <h3><i class="fa fa-angle-right"></i> Workout Plan</h3>
+  <div class="row">
+    <div class="col-md-12">
+    <div class="content-panel">
+      <h4><i class="fa fa-angle-right"></i> Day 1</h4>
+      <hr>      
+      <table class="table table-striped table-advance table-hover">
+        <thead>
+          <tr>
+            <th><i class=" fa fa-edit"></i>Name</th>
+            <th><i class=" fa fa-edit"></i>Weight</th>
+            <th><i class=" fa fa-edit"></i>Repetition</th>
+            <th><i class=" fa fa-edit"></i>Sets</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for exercise in day1 %}
+            <tr>
+                <td align="left">{{exercise.task.name}}</td>
+                <td align="left">{{exercise.weight}}</td>
+                <td align="left">{{exercise.repetition}}</td>
+                <td align="left">{{exercise.sets}}</td>
+            </tr>
+          {% endfor %}         
+        </tbody>
+      </table>
+    </div><! --/content-panel -->
+    </div><!-- /col-md-12 -->
+  </div>
 
-            <h2 class="sub-header"> Day 3</h2>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Weight</th>
-                        <th>Repetition</th>
-                        <th>Sets</th>
-                    </tr>
-              </thead>
-              <tbody>
-                
-                 {% for exercise in day3 %}
-                        <tr>
-                            <td align="left">{{exercise.task.name}}</td>
-                            <td align="left">{{exercise.weight}}</td>
-                            <td align="left">{{exercise.repetition}}</td>
-                            <td align="left">{{exercise.sets}}</td>
-                        </tr>
-                {% endfor %}         
-              </tbody>
-            </table>
-          </div>
+  <div class="row mt">
+    <div class="col-md-12">
+    <div class="content-panel">
+      <h4><i class="fa fa-angle-right"></i> Day 2</h4>
+      <hr>      
+      <table class="table table-striped table-advance table-hover">
+        <thead>
+          <tr>
+            <th><i class=" fa fa-edit"></i>Name</th>
+            <th><i class=" fa fa-edit"></i>Weight</th>
+            <th><i class=" fa fa-edit"></i>Repetition</th>
+            <th><i class=" fa fa-edit"></i>Sets</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for exercise in day2 %}
+            <tr>
+                <td align="left">{{exercise.task.name}}</td>
+                <td align="left">{{exercise.weight}}</td>
+                <td align="left">{{exercise.repetition}}</td>
+                <td align="left">{{exercise.sets}}</td>
+            </tr>
+          {% endfor %}         
+        </tbody>
+      </table>
+    </div><! --/content-panel -->
+    </div><!-- /col-md-12 -->
+  </div>
+  <div class="row mt">
+    <div class="col-md-12">
+    <div class="content-panel">
+      <h4><i class="fa fa-angle-right"></i> Day 3</h4>
+      <hr>      
+      <table class="table table-striped table-advance table-hover">
+        <thead>
+          <tr>
+            <th><i class=" fa fa-edit"></i>Name</th>
+            <th><i class=" fa fa-edit"></i>Weight</th>
+            <th><i class=" fa fa-edit"></i>Repetition</th>
+            <th><i class=" fa fa-edit"></i>Sets</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for exercise in day3 %}
+            <tr>
+                <td align="left">{{exercise.task.name}}</td>
+                <td align="left">{{exercise.weight}}</td>
+                <td align="left">{{exercise.repetition}}</td>
+                <td align="left">{{exercise.sets}}</td>
+            </tr>
+          {% endfor %}         
+        </tbody>
+      </table>
+    </div><! --/content-panel -->
+    </div><!-- /col-md-12 -->
+  </div>
 
-            <h2 class="sub-header"> Day 4</h2>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Weight</th>
-                        <th>Repetition</th>
-                        <th>Sets</th>
-                    </tr>
-              </thead>
-              <tbody>
-                
-                 {% for exercise in day4 %}
-                        <tr>
-                            <td align="left">{{exercise.task.name}}</td>
-                            <td align="left">{{exercise.weight}}</td>
-                            <td align="left">{{exercise.repetition}}</td>
-                            <td align="left">{{exercise.sets}}</td>
-                        </tr>
-                {% endfor %}         
-              </tbody>
-            </table>
-          </div>
+  <div class="row mt">
+    <div class="col-md-12">
+    <div class="content-panel">
+      <h4><i class="fa fa-angle-right"></i> Day 4</h4>
+      <hr>      
+      <table class="table table-striped table-advance table-hover">
+        <thead>
+          <tr>
+            <th><i class=" fa fa-edit"></i>Name</th>
+            <th><i class=" fa fa-edit"></i>Weight</th>
+            <th><i class=" fa fa-edit"></i>Repetition</th>
+            <th><i class=" fa fa-edit"></i>Sets</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for exercise in day4 %}
+            <tr>
+                <td align="left">{{exercise.task.name}}</td>
+                <td align="left">{{exercise.weight}}</td>
+                <td align="left">{{exercise.repetition}}</td>
+                <td align="left">{{exercise.sets}}</td>
+            </tr>
+          {% endfor %}         
+        </tbody>
+      </table>
+    </div><! --/content-panel -->
+    </div><!-- /col-md-12 -->
+  </div>
 
-            <h2 class="sub-header"> Day 5</h2>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Weight</th>
-                        <th>Repetition</th>
-                        <th>Sets</th>
-                    </tr>
-              </thead>
-              <tbody>
-                
-                 {% for exercise in day5 %}
-                        <tr>
-                            <td align="left">{{exercise.task.name}}</td>
-                            <td align="left">{{exercise.weight}}</td>
-                            <td align="left">{{exercise.repetition}}</td>
-                            <td align="left">{{exercise.sets}}</td>
-                        </tr>
-                {% endfor %}         
-              </tbody>
-            </table>
-          </div>
+  <div class="row mt">
+    <div class="col-md-12">
+    <div class="content-panel">
+      <h4><i class="fa fa-angle-right"></i> Day 5</h4>
+      <hr>      
+      <table class="table table-striped table-advance table-hover">
+        <thead>
+          <tr>
+            <th><i class=" fa fa-edit"></i>Name</th>
+            <th><i class=" fa fa-edit"></i>Weight</th>
+            <th><i class=" fa fa-edit"></i>Repetition</th>
+            <th><i class=" fa fa-edit"></i>Sets</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for exercise in day5 %}
+            <tr>
+                <td align="left">{{exercise.task.name}}</td>
+                <td align="left">{{exercise.weight}}</td>
+                <td align="left">{{exercise.repetition}}</td>
+                <td align="left">{{exercise.sets}}</td>
+            </tr>
+          {% endfor %}         
+        </tbody>
+      </table>
+    </div><! --/content-panel -->
+    </div><!-- /col-md-12 -->
+  </div>
 
-            <h2 class="sub-header"> Day 6</h2>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Weight</th>
-                        <th>Repetition</th>
-                        <th>Sets</th>
-                    </tr>
-              </thead>
-              <tbody>
-                
-                 {% for exercise in day6 %}
-                        <tr>
-                            <td align="left">{{exercise.task.name}}</td>
-                            <td align="left">{{exercise.weight}}</td>
-                            <td align="left">{{exercise.repetition}}</td>
-                            <td align="left">{{exercise.sets}}</td>
-                        </tr>
-                {% endfor %}         
-              </tbody>
-            </table>
-          </div>
+  <div class="row mt">
+    <div class="col-md-12">
+    <div class="content-panel">
+      <h4><i class="fa fa-angle-right"></i> Day 6</h4>
+      <hr>      
+      <table class="table table-striped table-advance table-hover">
+        <thead>
+          <tr>
+            <th><i class=" fa fa-edit"></i>Name</th>
+            <th><i class=" fa fa-edit"></i>Weight</th>
+            <th><i class=" fa fa-edit"></i>Repetition</th>
+            <th><i class=" fa fa-edit"></i>Sets</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for exercise in day6 %}
+            <tr>
+                <td align="left">{{exercise.task.name}}</td>
+                <td align="left">{{exercise.weight}}</td>
+                <td align="left">{{exercise.repetition}}</td>
+                <td align="left">{{exercise.sets}}</td>
+            </tr>
+          {% endfor %}         
+        </tbody>
+      </table>
+    </div><! --/content-panel -->
+    </div><!-- /col-md-12 -->
+  </div>
 
-            <h2 class="sub-header"> Day 7</h2>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Weight</th>
-                        <th>Repetition</th>
-                        <th>Sets</th>
-                    </tr>
-              </thead>
-              <tbody>
-                
-                 {% for exercise in day7 %}
-                        <tr>
-                            <td align="left">{{exercise.task.name}}</td>
-                            <td align="left">{{exercise.weight}}</td>
-                            <td align="left">{{exercise.repetition}}</td>
-                            <td align="left">{{exercise.sets}}</td>
-                        </tr>
-                {% endfor %}         
-              </tbody>
-            </table>
-          </div>
-
-      </div>
-    </div>     
+  <div class="row mt">
+    <div class="col-md-12">
+    <div class="content-panel">
+      <h4><i class="fa fa-angle-right"></i> Day 7</h4>
+      <hr>      
+      <table class="table table-striped table-advance table-hover">
+        <thead>
+          <tr>
+            <th><i class=" fa fa-edit"></i>Name</th>
+            <th><i class=" fa fa-edit"></i>Weight</th>
+            <th><i class=" fa fa-edit"></i>Repetition</th>
+            <th><i class=" fa fa-edit"></i>Sets</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for exercise in day7 %}
+            <tr>
+                <td align="left">{{exercise.task.name}}</td>
+                <td align="left">{{exercise.weight}}</td>
+                <td align="left">{{exercise.repetition}}</td>
+                <td align="left">{{exercise.sets}}</td>
+            </tr>
+          {% endfor %}         
+        </tbody>
+      </table>
+    </div><! --/content-panel -->
+    </div><!-- /col-md-12 --> 
+  </div>                     
 {% endblock %}
