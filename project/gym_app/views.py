@@ -13,6 +13,7 @@ from django.contrib.auth.models import Group
 
 # Create your views here.
 #This is the First Page's view.
+@login_required
 def index(request):
 	# Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!

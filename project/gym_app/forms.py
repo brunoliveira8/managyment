@@ -1,11 +1,15 @@
 from django import forms
+from django.db import models
 from django.contrib.auth.models import User
 from gym_app.models import User, Athlete, Tracker, Exercise, PersonalTrainer, BodyScreening
 from django.db.models import Q
 
 class UserForm(forms.ModelForm):
-    
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'class': "form-control"}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control'}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))   
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
@@ -18,7 +22,9 @@ class UserForm(forms.ModelForm):
         fields = ('username','password', 'email', 'first_name', 'last_name')
 
 class UserEditForm(forms.ModelForm):
-
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'class': "form-control"}))
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
 
@@ -27,24 +33,33 @@ class UserEditForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'email')
 
 class ChangePasswordForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': "form-control"}))
 
     class Meta:
         model = User
         fields = ('password', )
 
+
 class AthleteForm(forms.ModelForm):
+
+    level = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=Athlete.LEVELS)
+    training_period = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=Athlete.TRAINING_PERIOD)
+    gender = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=Athlete.GENDERS)
+
     class Meta:
         model = Athlete
         fields = ('level', 'training_period', 'gender')
 
 class PersonalTrainerForm(forms.ModelForm):
+    gender = forms.ChoiceField(widget=forms.Select(attrs={'class': "form-control"}), choices=Athlete.GENDERS)
     class Meta:
         model = PersonalTrainer
         fields = ('gender',)
 
 class ExerciseForm(forms.ModelForm):
-
+    weight = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    repetition = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    sets = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
     class Meta:
         model = Exercise
         fields = ('weight','repetition', 'sets')
@@ -56,7 +71,9 @@ class BodyScreeningForm(forms.ModelForm):
         'abdominal','chest','thigh','calf','weight','feet', 'inches')
 
 class AthleteSelectForm(forms.Form):
-    athlete = forms.ModelChoiceField(queryset=User.objects.filter(Q(groups__name='regular') | Q(groups__name='premium')), empty_label='...', to_field_name='username')
+
+    athlete = forms.ModelChoiceField(queryset=User.objects.filter(Q(groups__name='regular') | Q(groups__name='premium')), empty_label='...', to_field_name='username', widget=forms.Select(attrs={'class': "form-control"}))
+
 
 class UserTypeForm(forms.Form):
 
@@ -137,7 +154,11 @@ class UserGenderForm(forms.Form):
         ('F', 'Female'),
         ('M', 'Male'),
     )   
-    gender = forms.ChoiceField(widget=forms.RadioSelect, choices=GENDERS, required=True, initial='F')
+    gender = forms.ChoiceField(
+        widget=forms.Select(attrs={'class': "form-control"}), choices=GENDERS, 
+        required=True, 
+        initial='F'
+        )
 
 
 

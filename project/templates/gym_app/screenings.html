@@ -4,19 +4,8 @@
 {% block content%}
   
   {% if group == "personal_trainer" %}
-  <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li>           
-            </li>
-            <li><a href="/create_screening">Create screening</a></li>
-            <li><a href="/screenings">Access screenings</a></li>
-          </ul>
-        </div>
-       
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h2 class="sub-header">Access screenings</h2>
+  <div class="row mt"><div class="col-lg-12"><div class="form-panel">
+          <h3 class="mb"><i class="fa fa-angle-right"></i>Access Screening</h3>
           <form id="athlete_form" method="post" action="/screenings/" enctype="multipart/form-data"> 
             {% csrf_token %}
             <table class="table table-striped">
@@ -26,7 +15,7 @@
                 <td><input type="submit" class="btn btn-primary" name="submit" value="Choose" /></td>
               </tr>
             </table>
-        </form>
+        </form></div></div></div>
     {% endif %}
 
 
@@ -164,7 +153,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Understand Body Mass Index</h4>
+                <h4 class="modal-title" id="myModalLabel">Understand Body Fat</h4>
               </div>
               <div class="modal-body">
                 <table class="table table-striped"><tbody>

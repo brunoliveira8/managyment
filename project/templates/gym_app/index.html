@@ -1,11 +1,197 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-
 {% block content%}
 
-<h1>Managyment</h1>
-<p class="lead"> {{boldmessage}} </p>
+                
+        
+                {% if group == "regular" %}   
+                   <div class="col-lg-12 main-chart">  
+                      <div class="row mt">
+     
+                      <div class="col-md-4 mb">
+							<!-- WHITE PANEL - TOP USER -->
+							<div class="white-panel pn">
+								<div class="white-header">
+									<div class="profile-01 centered">
+									<a href= "/workout_plan/"><p>WORKOUT PLAN</p></a>
+								</div>
+								</div>
+								<p><b>See your exercises.</b></p>
+							</div>
+						</div><!-- /col-md-4 -->
+                      	
 
-<img src="{% static "images/hog.jpg" %}" alt="Picture of Hog" /> <!-- New line -->
+                        <div class="col-md-4 mb">
+							<!-- WHITE PANEL - TOP USER -->
+							<div class="white-panel pn">
+								<div class="white-header">
+									<div class="profile-01 centered">
+									<a href= "/tracker/"><p>WEIGHT TRACKER</p></a>
+								</div>
+								</div>
+								<p><b>See your weight progress.</b></p>
+							</div>
+						</div><!-- /col-md-4 -->
+                      	
+						<div class="col-md-4 mb">
+							<!-- WHITE PANEL - TOP USER -->
+							<div class="white-panel pn">
+								<div class="white-header">
+									<div class="profile-01 centered">
+									<a href= "/buddy_match/"><p>BUDDY MATCH</p></a>
+								</div>
+								</div>
+								<p><b>Ask someone to workout with you.</b></p>
+							</div>
+						</div><!-- /col-md-4 -->                  	
 
+                    </div><!-- /row -->
+
+                </div><!-- /col-lg-9 END SECTION MIDDLE -->
+
+			{% endif %}
+
+
+            {% if group == "premium" %}   
+               <div class="col-lg-12 main-chart">  
+                  <div class="row mt">
+ 
+                  <div class="col-md-6 mb">
+						<!-- WHITE PANEL - TOP USER -->
+						<div class="white-panel pn">
+							<div class="white-header">
+								<div class="profile-01 centered">
+								<a href= "/workout_plan/"><p>WORKOUT PLAN</p></a>
+							</div>
+							</div>
+							<p><b>See your exercises.</b></p>
+						</div>
+					</div><!-- /col-md-4 -->
+                  	
+
+                    <div class="col-md-6 mb">
+						<!-- WHITE PANEL - TOP USER -->
+						<div class="white-panel pn">
+							<div class="white-header">
+								<div class="profile-01 centered">
+								<a href= "/tracker/"><p>WEIGHT TRACKER</p></a>
+							</div>
+							</div>
+							<p><b>See your weight progress.</b></p>
+						</div>
+					</div><!-- /col-md-4 -->
+                  	
+				                
+                </div><!-- /row -->
+
+
+                 <div class="row mt">
+					<div class="col-md-6 mb">
+						<!-- WHITE PANEL - TOP USER -->
+						<div class="white-panel pn">
+							<div class="white-header">
+								<div class="profile-01 centered">
+								<a href= "/buddy_match/"><p>BUDDY MATCH</p></a>
+							</div>
+							</div>
+							<p><b>Ask someone to workout with you.</b></p>
+						</div>
+					</div><!-- /col-md-4 -->  
+
+ 
+                  <div class="col-md-6 mb">
+						<!-- WHITE PANEL - TOP USER -->
+						<div class="white-panel pn">
+							<div class="white-header">
+								<div class="profile-01 centered">
+								<a href= "/screenings/"><p>SCREENINGS</p></a>
+							</div>
+							</div>
+							<p><b>See your physical evaluations.</b></p>
+						</div>
+					</div><!-- /col-md-4 -->
+                              	
+
+                </div><!-- /row -->
+
+            </div><!-- /col-lg-9 END SECTION MIDDLE -->
+
+		{% endif %}
+         
+        {% if group == "personal_trainer" %}   
+           <div class="col-lg-12 main-chart">  
+              <div class="row mt">
+
+              <div class="col-md-6 mb">
+					<!-- WHITE PANEL - TOP USER -->
+					<div class="white-panel pn">
+						<div class="white-header">
+							<div class="profile-01 centered">
+							<a href= "/create_screening/"><p>CREATE SCREENING</p></a>
+						</div>
+						</div>
+						<p><b>Add a new screening to an athlete.</b></p>
+					</div>
+				</div><!-- /col-md-4 -->
+              	
+
+                <div class="col-md-6 mb">
+					<!-- WHITE PANEL - TOP USER -->
+					<div class="white-panel pn">
+						<div class="white-header">
+							<div class="profile-01 centered">
+							<a href= "/screenings/"><p>ACCESS SCREENING</p></a>
+						</div>
+						</div>
+						<p><b>See the screenings of one athlete.</b></p>
+					</div>
+				</div><!-- /col-md-4 -->
+              	
+				                 	
+            </div><!-- /row -->
+
+        </div><!-- /col-lg-9 END SECTION MIDDLE -->  
+					
+         {% endif %}        
+
+
+         {% if group == "admin" %}   
+           <div class="col-lg-12 main-chart">  
+              <div class="row mt">
+
+              <div class="col-md-6 mb">
+					<!-- WHITE PANEL - TOP USER -->
+					<div class="white-panel pn">
+						<div class="white-header">
+							<div class="profile-01 centered">
+							<a href= "/admin/"><p>DASHBOARD</p></a>
+						</div>
+						</div>
+						<p><b>Manage database information.</b></p>
+					</div>
+				</div><!-- /col-md-4 -->
+              	
+
+                <div class="col-md-6 mb">
+					<!-- WHITE PANEL - TOP USER -->
+					<div class="white-panel pn">
+						<div class="white-header">
+							<div class="profile-01 centered">
+							<a href= "/plan_manage/"><p>PLAN MANAGEMENT</p></a>
+						</div>
+						</div>
+						<p><b>Manage the plan changes.</b></p>
+					</div>
+				</div><!-- /col-md-4 -->
+              	
+				                 	
+            </div><!-- /row -->
+
+        </div><!-- /col-lg-9 END SECTION MIDDLE -->  
+					
+         {% endif %}        
+                      
+                  
+    {% block script %}
+    {% endblock %}
 {% endblock %}
