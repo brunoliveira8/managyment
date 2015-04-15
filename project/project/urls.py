@@ -4,9 +4,9 @@ from django.conf import settings
 from gym_app.views import *
 
 
-admin.site.site_title = 'Managyment'
-admin.site.site_index = 'Managyment'
-admin.site.site_header = 'Dashboard'
+admin.site.site_title = 'MANAGYMENT'
+admin.site.site_index = 'MANAGYMENT'
+admin.site.site_header = 'DASHBOARD'
 
 
 urlpatterns = patterns('',
