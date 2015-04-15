@@ -768,7 +768,7 @@ def screenings(request):
         return render(request, 'gym_app/screenings.html', {'screenings': screenings, 'control' : control, 'group': group})   
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(Q(name='personal_trainer')).count() == 1, login_url='/permission_denied/')
+@user_passes_test(lambda u: u.groups.filter(Q(name='personal_trainer') | Q(name='premium')).count() == 1, login_url='/permission_denied/')
 def delete_screening(request):
     screening_id = int(request.POST.get("delete"))
     BodyScreening.objects.filter(id = screening_id).delete()

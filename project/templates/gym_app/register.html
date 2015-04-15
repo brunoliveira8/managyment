@@ -3,11 +3,11 @@
 
 {% block content%}
     {% if registered %}
-        <strong>Thank you for registering!</strong>
+        <strong>Thank you for signing up!</strong>
         <a href="/index/">Return to the homepage.</a><br />
     {% else %}
         <div class="row mt"><div class="col-lg-12"><div class="form-panel">
-            <h4 class="mb"><i class="fa fa-angle-right"></i> Register</h4>
+            <h4 class="mb"><i class="fa fa-angle-right"></i> Sign up</h4>
             <form class="form-horizontal style-form" method="post" action="/register/" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
@@ -46,7 +46,7 @@
                  making everything look neater. -->
 
             <!-- Provide a button to click to submit the form. -->
-            <input type="submit" class="btn btn-primary" name="submit" value="Register" />
+            <input type="submit" class="btn btn-primary" name="submit" value="Sign up" />
         </form></div></div></div>
         {% endif %}
 {% endblock %}
