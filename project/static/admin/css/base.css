@@ -27,7 +27,7 @@ a img {
 }
 
 a.section:link, a.section:visited {
-    color: #9d9d9d;
+    color: #ffffff;
     text-decoration: none;
 }
 
@@ -47,8 +47,8 @@ h1,h2,h3,h4,h5 {
 }
 
 h1 {
-    font-size: 18px;
-    color: #666;
+    font-size: 24px;
+    color: #797979;
     padding: 0 6px 0 0;
     margin: 0 0 .2em 0;
 }
@@ -501,8 +501,8 @@ textarea, select, .vTextField {
     font-size: 12px;
     text-align: left;
     font-weight: bold;
-    background: #333; url(../img/default-bg.gif) top left repeat-x;
-    color: #fff;
+    background: #68dff0; url(../img/default-bg.gif) top left repeat-x;
+    color: #ffffff;
 }
 
 .module table {
@@ -783,9 +783,10 @@ table#change-history tbody th {
 
 #header {
     width: 100%;
-    background: #333;
-    color: #9d9d9d;
+    background: #ffd777;
+    color: #ffffff;
     overflow: hidden;
+    border-bottom: 1px solid #c9aa5f;
 }
 
 #header a:link, #header a:visited {
@@ -807,7 +808,7 @@ table#change-history tbody th {
 }
 
 #branding h1, #branding h1 a:link, #branding h1 a:visited {
-    color: #9d9d9d;
+    color: #ffffff;
 }
 
 #branding h2 {
