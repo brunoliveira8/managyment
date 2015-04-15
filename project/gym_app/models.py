@@ -16,19 +16,6 @@ class Tracker(models.Model):
 
 class Task(models.Model):
     name = models.CharField(max_length=32)
-    LEG = 'LG'
-    CHEST = 'CH'
-    SHOULDER = 'SH'
-    NOTYPE = 'NT'
-    TYPE_OF_TASKS_CHOICES = (
-        (NOTYPE, 'No type'),
-        (LEG, 'Leg'),
-        (SHOULDER, 'Shoulder'),
-        (CHEST, 'Chest'),
-    )
-    typeTask = models.CharField(max_length=2,
-                                      choices=TYPE_OF_TASKS_CHOICES,
-                                      default=NOTYPE)
 
     def __unicode__(self):
         return u'%s' % (self.name)

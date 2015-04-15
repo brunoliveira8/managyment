@@ -12,11 +12,11 @@ from django.contrib.contenttypes.models import ContentType
 
 def populate():
     Task.objects.all().delete()
-    add_Task(name = "Leg Press", typeTask = "LG")
-    add_Task(name = "Chest fly", typeTask = "CH")
-    add_Task(name = "Shoulder fly", typeTask = "SH")
-    add_Task(name = "Rest", typeTask = "NT")
-    
+    add_Task(name = "Leg Press")
+    add_Task(name = "Chest fly")
+    add_Task(name = "Shoulder fly")
+    add_Task(name = "Rest")
+
     add_group('regular')
     add_group('premium')
     add_group('personal_trainer')
@@ -49,9 +49,8 @@ def populate():
 
     print Task.objects.all()
 
-def add_Task(name,typeTask):
+def add_Task(name):
     a = Task.objects.get_or_create(name = name)[0]
-    a.typeTask = typeTask
     a.save()
     return a
 
