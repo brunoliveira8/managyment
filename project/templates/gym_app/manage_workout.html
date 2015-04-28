@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content%}
+  
+  {% if group == "personal_trainer" %}
+  <div class="row mt"><div class="col-lg-12"><div class="form-panel">
+          <h3 class="mb"><i class="fa fa-angle-right"></i> Manage Workout</h3>
+          <form id="athlete_form" method="post" action="/manage_workout/" enctype="multipart/form-data"> 
+            {% csrf_token %}
+            <table class="table table-striped">
+              <tr>
+                <th>{{ athlete_form.athlete.label }}:</th>
+                <td>{{ athlete_form.athlete }}</td>
+                <th>{{ athlete_form.day.label }}:</td>
+                <td>{{ athlete_form.day }}</td>
+                <td><input type="submit" class="btn btn-primary" name="submit" value="Choose" /></td>
+              </tr>
+            </table>
+        </form></div></div></div>
+    {% endif %}
+
+       
+{% endblock %}

@@ -39,7 +39,9 @@ urlpatterns = patterns('',
     url(r'^payment/', payment),
     url(r'^screenings/', screenings),
     url(r'^create_screening/', create_screening),    
-    url(r'^delete_screening/', delete_screening),
+    url(r'^delete_screening/', delete_screening),    
+    url(r'^manage_workout/', manage_workout),
+
 )
 
 

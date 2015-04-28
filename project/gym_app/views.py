@@ -471,7 +471,7 @@ def workout_plan(request):
 
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(Q(name='regular') | Q(name='premium')).count() == 1, login_url='/permission_denied/')
+@user_passes_test(lambda u: u.groups.filter(Q(name='regular') | Q(name='premium') | Q(name='personal_trainer')).count() == 1, login_url='/permission_denied/')
 def workout_day(request, day = '1'):
     if request.user.is_superuser:   
         group = 'admin';
@@ -484,9 +484,15 @@ def workout_day(request, day = '1'):
     # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
         task_name = request.POST.get('task_name')
-        user = User.objects.get(username = request.user.username)
+        #user = User.objects.get(username = request.user.username)
         exercise_form = ExerciseForm(data=request.POST)
-        athlete = Athlete.objects.get(user = request.user)
+        if group == "personal_trainer":
+            username = request.POST.get("username")
+        else:
+            username = request.user.username
+        user = User.objects.get(username = username)
+        athlete = Athlete.objects.get(user = user.id)
+
 
         # If the forms are valid...
         if exercise_form.is_valid():
@@ -499,10 +505,14 @@ def workout_day(request, day = '1'):
             athlete.workout_plan.exercises.add(exercise)
             athlete.save()
 
-            path = '/workout/days/{0}'.format(day)
-            print path
-
-            return redirect(path)
+            if group == "personal_trainer":
+                t_list = Task.objects.all()
+                exercises = athlete.workout_plan.exercises.filter( day = int(day))
+                exercise_form = ExerciseForm()
+                return render(request, 'gym_app/workout_day.html', {'exercise_form': exercise_form, 'task_list' : t_list, 'exercises' : exercises, 'day': day, 'username': username, 'group' : group})
+            else:
+                path = '/workout/days/{0}'.format(day)
+                return redirect(path)
 
         else:
             return HttpResponse('There are errors in the fields: {0}'.format(exercise_form.errors))
@@ -510,7 +520,13 @@ def workout_day(request, day = '1'):
     else:
         t_list = Task.objects.all()
         #user = User.objects.get(username = request.user.username)
-        athlete = Athlete.objects.get(user = request.user)
+        #athlete = Athlete.objects.get(user = request.user)
+        if group == "personal_trainer":
+            username = request.POST.get("username")
+        else:
+            username = request.user.username
+        user = User.objects.get(username = username)
+        athlete = Athlete.objects.get(user = user.id)
         exercises = athlete.workout_plan.exercises.filter( day = int(day))
         exercise_form = ExerciseForm()
 
@@ -518,12 +534,35 @@ def workout_day(request, day = '1'):
         return render(request, 'gym_app/workout_day.html',
             {'exercise_form': exercise_form, 'task_list' : t_list, 'exercises' : exercises, 'day': day,'group' : group})  
 
-
+@login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='regular') | Q(name='premium') | Q(name='personal_trainer')).count() == 1, login_url='/permission_denied/')
 def delete_exercise(request):
+    if request.user.is_superuser:   
+        group = 'admin'
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name
+        except:
+            group = 'none'
+
+    day = request.POST.get("day")
     exercise_id = int(request.POST.get("delete"))
     Exercise.objects.filter(id = exercise_id).delete()
-    path = '/workout/days/{0}'.format(request.POST.get("day"))
-    return redirect(path)
+    path = '/workout/days/{0}'.format(day)
+
+
+    if group == "personal_trainer":
+        username = request.POST.get("username")
+        t_list = Task.objects.all()
+        user = User.objects.get(username = username)
+        athlete = Athlete.objects.get(user = user.id)
+        exercises = athlete.workout_plan.exercises.filter( day = int(day))
+        exercise_form = ExerciseForm()
+        return render(request, 'gym_app/workout_day.html', {'exercise_form': exercise_form, 'task_list' : t_list, 'exercises' : exercises, 'day': day, 'username': username, 'group' : group})
+            
+    else:
+        return redirect(path)
+    
 
 @login_required
 @user_passes_test(lambda u: u.groups.filter(Q(name='regular') | Q(name='premium')).count() == 1, login_url='/permission_denied/')
@@ -774,3 +813,51 @@ def delete_screening(request):
     BodyScreening.objects.filter(id = screening_id).delete()
     path = '/screenings/'
     return redirect(path)
+
+@login_required
+@user_passes_test(lambda u: u.groups.filter(Q(name='personal_trainer')).count() == 1, login_url='/permission_denied/')
+def manage_workout(request):
+    if request.user.is_superuser:   
+        group = 'admin';
+    else:
+        try:
+            group = User.objects.get(username=request.user.username).groups.all()[0].name;
+        except:
+            group = 'none'
+
+
+    if request.method == 'POST':
+        
+        athlete_form = AthleteWorkoutDaySelectForm(data=request.POST)
+
+        if athlete_form.is_valid():
+            username = athlete_form.cleaned_data['athlete']
+            user = User.objects.get(username = username)
+            athlete = Athlete.objects.get(user = user.id)
+            day = athlete_form.cleaned_data['day']
+            if day == "Whole week":
+                exercises_day1 = athlete.workout_plan.exercises.filter( day = 1)
+                exercises_day2 = athlete.workout_plan.exercises.filter( day = 2)
+                exercises_day3 = athlete.workout_plan.exercises.filter( day = 3)
+                exercises_day4 = athlete.workout_plan.exercises.filter( day = 4)
+                exercises_day5 = athlete.workout_plan.exercises.filter( day = 5)
+                exercises_day6 = athlete.workout_plan.exercises.filter( day = 6)
+                exercises_day7 = athlete.workout_plan.exercises.filter( day = 7)
+
+                return render(request,
+                    'gym_app/workout_plan.html',
+                    {'day1': exercises_day1, 'day2': exercises_day2, 'day3': exercises_day3, 'day4': exercises_day5, 'day6': exercises_day6, 'day7': exercises_day7, 'group': group}) 
+            else:
+                t_list = Task.objects.all()
+                exercises = athlete.workout_plan.exercises.filter( day = int(day))
+                exercise_form = ExerciseForm()
+
+
+                # Render the template depending on the context.
+                return render(request, 'gym_app/workout_day.html', {'exercise_form': exercise_form, 'task_list' : t_list, 'exercises' : exercises, 'day': day, 'username': username, 'group' : group})
+
+
+    athlete_form = AthleteWorkoutDaySelectForm()
+    return render(request, 'gym_app/manage_workout.html', {'athlete_form': athlete_form, 'group': group})
+
+   
