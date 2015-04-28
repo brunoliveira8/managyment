@@ -71,10 +71,10 @@ class BodyScreeningForm(forms.ModelForm):
         'abdominal','chest','thigh','calf','weight','feet', 'inches')
 
 class AthleteSelectForm(forms.Form):
-    athlete = forms.ModelChoiceField(queryset=User.objects.filter(Q(groups__name='regular') | Q(groups__name='premium')), empty_label='...', to_field_name='username', widget=forms.Select(attrs={'class': "form-control"}))
+    athlete = forms.ModelChoiceField(queryset=User.objects.filter( Q(groups__name='premium')), empty_label='...', to_field_name='username', widget=forms.Select(attrs={'class': "form-control"}))
 
 class AthleteWorkoutDaySelectForm(forms.Form):
-    athlete = forms.ModelChoiceField(queryset=User.objects.filter(Q(groups__name='regular') | Q(groups__name='premium')), empty_label='...', to_field_name='username', widget=forms.Select(attrs={'class': "form-control"}))
+    athlete = forms.ModelChoiceField(queryset=User.objects.filter(Q(groups__name='premium')), empty_label='...', to_field_name='username', widget=forms.Select(attrs={'class': "form-control"}))
     DAYS = (
         ('Whole week', 'Whole week'),
         ('1', '1'),
