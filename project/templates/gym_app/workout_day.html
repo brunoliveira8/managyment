@@ -44,6 +44,7 @@
             </table>     
 
            <!-- Provide a button to click to submit the form. -->
+            <input type="hidden" name="username" value="{{username}}">
             <input type="submit" class="btn btn-primary" name="submit" value="Add Exercise" />
         </form>
       </div>
@@ -75,6 +76,7 @@
                             <form method="post" action="/delete_exercise/" enctype="multipart/form-data">
                                 {% csrf_token %}
                                <td align="left"> <button  name ='delete' type='submit' value='{{exercise.id}}'class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button> </td>
+                               <input type="hidden" name="username" value="{{username}}">
                                <input type="hidden" name="day" value="{{day}}">
                             </form>
                            
