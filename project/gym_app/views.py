@@ -380,7 +380,7 @@ def message(request):
         user = User.objects.get(username = request.user.username)
         user_email = user.email
         to_email = request.POST.get('username')
-        msg = request.POST.get('msg')
+        msg = request.POST.get('msg')+'\nMessage from: '+request.user.username
         sbj = request.POST.get('subject')
 
         send_mail(sbj, msg, user_email,
