@@ -361,7 +361,7 @@ def members(request):
         except:
             group = 'none'
 
-    u_list = User.objects.all()
+    u_list = User.objects.all().exclude(username = request.user.username)
     
     context = {'user_list' : u_list, 'group': group}
 
