@@ -24,3 +24,5 @@ Enviroment Setup:
   8. Runs the server -> $python manage.py runserver
 
 note: the symbol '$' represents the terminal.
+
+test
