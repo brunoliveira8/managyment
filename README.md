@@ -1,4 +1,4 @@
-# CSCE 3513 Team 11
+# Managyment - Manage your gym.
 
 Project: Fitness Tracker Application
 
@@ -9,7 +9,6 @@ Technologies:
   
   - Frontend:
     - Twitter Bootstrap
-    - Angular Js (not decided yet)
     
 Enviroment Setup:
   1. Install Python 2.7 (Linux distributions and OS X already have Python 2.7)
@@ -24,5 +23,7 @@ Enviroment Setup:
   8. Runs the server -> $python manage.py runserver
 
 note: the symbol '$' represents the terminal.
+
+Contact: tarcisiobrunooliveira@gmail.com
 
 
