@@ -24,6 +24,20 @@ Enviroment Setup:
 
 note: the symbol '$' represents the terminal.
 
+Screenshots:
+  1. Login Page
+![alt text](screenshots/login.png "Login page")
+
+  1. User Dashboard Page
+![alt text](screenshots/normal-user.png "User Dashboard Page")
+
+  1. Personal Trainer Dashboard Page
+![alt text](screenshots/personal-trainer.png "Personal Trainer Dashboard Page")
+
+  1. Admin Dashboard Page
+![alt text](screenshots/admin.png "Admin Dashboard Page")
+
+
 Contact: tarcisiobrunooliveira@gmail.com
 
 
