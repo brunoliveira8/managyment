@@ -48,6 +48,8 @@ Screenshots:
 License
 ------------
 
+This software is under the MIT License. You are free to use, copy, modify and distribute it.
+
 Contact:
 ------------
 
