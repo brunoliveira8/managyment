@@ -30,15 +30,15 @@ Screenshots:
   
 ![alt text](screenshots/login.png "Login page")
 
-  - User Dashboard Page
+####User Dashboard Page
   
 ![alt text](screenshots/normal-user.png "User Dashboard Page")
 
-###Personal Trainer Dashboard Page
+####Personal Trainer Dashboard Page
   
 ![alt text](screenshots/personal-trainer.png "Personal Trainer Dashboard Page")
 
-###Admin Dashboard Page
+####Admin Dashboard Page
   
 ![alt text](screenshots/admin.png "Admin Dashboard Page")
 
