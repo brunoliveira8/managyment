@@ -1,8 +1,5 @@
 # Managyment - Manage your gym.
 
-Project: Fitness Tracker Application
-------------
-
 Technologies:
 ------------
   - Backend:
@@ -29,7 +26,7 @@ note: the symbol '$' represents the terminal.
 
 Screenshots:
 ------------
-  - Login Page
+####Login Page
   
 ![alt text](screenshots/login.png "Login page")
 
@@ -37,11 +34,11 @@ Screenshots:
   
 ![alt text](screenshots/normal-user.png "User Dashboard Page")
 
-  - Personal Trainer Dashboard Page
+###Personal Trainer Dashboard Page
   
 ![alt text](screenshots/personal-trainer.png "Personal Trainer Dashboard Page")
 
-  - Admin Dashboard Page
+###Admin Dashboard Page
   
 ![alt text](screenshots/admin.png "Admin Dashboard Page")
 
