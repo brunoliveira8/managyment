@@ -29,19 +29,19 @@ note: the symbol '$' represents the terminal.
 
 Screenshots:
 ------------
-  1. Login Page
+  - Login Page
   
 ![alt text](screenshots/login.png "Login page")
 
-  2. User Dashboard Page
+  - User Dashboard Page
   
 ![alt text](screenshots/normal-user.png "User Dashboard Page")
 
-  3. Personal Trainer Dashboard Page
+  - Personal Trainer Dashboard Page
   
 ![alt text](screenshots/personal-trainer.png "Personal Trainer Dashboard Page")
 
-  4. Admin Dashboard Page
+  - Admin Dashboard Page
   
 ![alt text](screenshots/admin.png "Admin Dashboard Page")
 
