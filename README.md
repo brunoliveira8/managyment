@@ -1,8 +1,10 @@
 # Managyment - Manage your gym.
 
 Project: Fitness Tracker Application
+------------
 
 Technologies:
+------------
   - Backend:
     - Python 2.7
     - Django 1.7.5
@@ -11,6 +13,7 @@ Technologies:
     - Twitter Bootstrap
     
 Enviroment Setup:
+------------
   1. Install Python 2.7 (Linux distributions and OS X already have Python 2.7)
   2. Install pip -> https://pip.pypa.io/en/latest/installing.html
   3. Install virtualenv -> https://virtualenv.pypa.io/en/latest/installation.html
@@ -25,19 +28,29 @@ Enviroment Setup:
 note: the symbol '$' represents the terminal.
 
 Screenshots:
+------------
   1. Login Page
+  
 ![alt text](screenshots/login.png "Login page")
 
-  1. User Dashboard Page
+  2. User Dashboard Page
+  
 ![alt text](screenshots/normal-user.png "User Dashboard Page")
 
-  1. Personal Trainer Dashboard Page
+  3. Personal Trainer Dashboard Page
+  
 ![alt text](screenshots/personal-trainer.png "Personal Trainer Dashboard Page")
 
-  1. Admin Dashboard Page
+  4. Admin Dashboard Page
+  
 ![alt text](screenshots/admin.png "Admin Dashboard Page")
 
+License
+------------
 
-Contact: tarcisiobrunooliveira@gmail.com
+Contact:
+------------
+
+tarcisiobrunooliveira@gmail.com
 
 
