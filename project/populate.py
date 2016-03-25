@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 
@@ -12,37 +13,34 @@ from django.contrib.contenttypes.models import ContentType
 
 def populate():
     Task.objects.all().delete()
-    add_Task(name = "Leg Press")
+    add_Task(name = "Esteira")
+    add_Task(name = "Elíptico")
+    add_Task(name = "Bicicleta")
+    add_Task(name = "Rosca Inversa")
+    add_Task(name = "Rosca Concentrada")
+    add_Task(name = "Rosca Martelo")
+    add_Task(name = "Rosca Direta")
+    add_Task(name = "Rosca Alternada")
+    add_Task(name = "Remada Unilateral")
+    add_Task(name = "Puxada na Frente com Triângulo e Polia Alta")
+    add_Task(name = "Puxada na Frente com Polia Alta")
+    add_Task(name = "Puxada Alta com Braços Estendidos")
     add_Task(name = "Chest fly")
-    add_Task(name = "Shoulder fly")
-    add_Task(name = "Squat")
-    add_Task(name = "Lunge")
-    add_Task(name = "Deadlift")
-    add_Task(name = "Leg extension")
-    add_Task(name = "Leg curl")
-    add_Task(name = "Standing calf raise")
-    add_Task(name = "Seated calf raise")
-    add_Task(name = "Hip adductor")
-    add_Task(name = "Bench press")
-    add_Task(name = "Chest fly")
-    add_Task(name = "Push-up")
-    add_Task(name = "Pulldown")
-    add_Task(name = "Pull-up")
-    add_Task(name = "Bent-over row")
-    add_Task(name = "Upright row")
-    add_Task(name = "Shoulder press")
-    add_Task(name = "Shoulder fly")
-    add_Task(name = "Lateral raise")
-    add_Task(name = "Shoulder shrug")
-    add_Task(name = "Pushdown")
-    add_Task(name = "Triceps extension")
-    add_Task(name = "Biceps curl")
-    add_Task(name = "Crunch")
-    add_Task(name = "Russian twist")
-    add_Task(name = "Leg raise")
-    add_Task(name = "Back extension")
-    add_Task(name = "Rest")
-
+    add_Task(name = "Crucifixo")
+    add_Task(name = "Crossover")
+    add_Task(name = "Supino Inclinado")
+    add_Task(name = "Supino Reto")
+    add_Task(name = "Glúteos Quatro Apoios e Perna Estendida")
+    add_Task(name = "Abdução de Quadril")
+    add_Task(name = "Mesa Flexora")
+    add_Task(name = "Cadeira Extensora")
+    add_Task(name = "Cadeira Abdutora")
+    add_Task(name = "Leg Press Inclinado")
+    add_Task(name = "Remada Alta")
+    add_Task(name = "Desenvolvimento com Halteres")
+    add_Task(name = "Elevação Frontal")
+    add_Task(name = "Elevação Lateral")
+'''
     add_group('regular')
     add_group('premium')
     add_group('personal_trainer')
@@ -69,7 +67,7 @@ def populate():
     admin = User.objects.get(username = 'admin')
     permission = Permission.objects.get(codename = 'is_admin')
     admin.user_permissions.add(permission)
-
+'''
 
     
 
