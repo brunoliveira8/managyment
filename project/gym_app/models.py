@@ -15,7 +15,7 @@ class Tracker(models.Model):
     goalWeight = models.IntegerField(default=160, max_length=4)
 
 class Task(models.Model):
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=256)
 
     def __unicode__(self):
         return u'%s' % (self.name)
